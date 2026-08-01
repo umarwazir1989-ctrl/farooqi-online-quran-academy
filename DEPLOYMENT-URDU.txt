@@ -1,0 +1,25 @@
+اہم: ویب سائٹ کی مرکزی زبان English ہے۔ مرکزی URL /en اور اردو URL /ur ہے۔
+
+فاروقی آن لائن قرآن اکیڈمی — فوری Deployment Commands
+
+1. فولڈر VS Code میں کھولیں
+2. Terminal کھولیں
+3. چلائیں:
+
+npm install
+npm run dev
+
+4. GitHub Repository بنانے کے بعد:
+
+git init
+git add .
+git commit -m "Initial bilingual website"
+git branch -M main
+git remote add origin https://github.com/YOUR-USERNAME/farooqi-online-quran-academy.git
+git push -u origin main
+
+5. Vercel.com میں GitHub سے login
+6. Add New Project
+7. Repository Import
+8. Environment Variables درج کریں
+9. Deploy
