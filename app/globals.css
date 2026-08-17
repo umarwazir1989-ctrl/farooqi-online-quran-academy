@@ -1,6 +1,1519 @@
 @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap');
-:root{--ink:#1b1a17;--muted:#615c52;--cream:#faf6ec;--soft:#f1ead9;--green:#0b4f3f;--deep:#062e24;--gold:#c6952f;--line:rgba(27,26,23,.12);--shadow:0 24px 60px -32px rgba(6,46,36,.45)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:Inter,Arial,sans-serif;line-height:1.7}.urdu{font-family:'Noto Nastaliq Urdu',serif}.english{font-family:Inter,Arial,sans-serif}a{color:inherit;text-decoration:none}button,input,textarea,select{font:inherit}.wrap{width:min(1180px,calc(100% - 40px));margin:auto}.skip-link{position:absolute;left:-9999px}.skip-link:focus{left:20px;top:20px;z-index:1000;background:white;padding:10px}.topbar{background:var(--deep);color:#f6ead0;font-size:.78rem}.topbar-inner{display:flex;justify-content:space-between;gap:20px;padding:8px 0}.topbar-inner div{display:flex;gap:20px}header{position:sticky;top:0;z-index:50;background:rgba(250,246,236,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}.nav{height:78px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:12px}.brand img{border-radius:10px;object-fit:cover}.brand span{display:flex;flex-direction:column;line-height:1.3}.brand strong{color:var(--deep);font-size:1.05rem}.brand small{color:var(--gold);font-family:Inter,sans-serif}.nav-links{display:flex;gap:25px;align-items:center}.nav-links a{color:var(--muted);font-size:.9rem}.nav-links a:hover{color:var(--green)}.nav-actions{display:flex;align-items:center;gap:10px}.language{border:1px solid var(--line);padding:7px 13px;border-radius:999px}.language-mobile{display:none}.menu{display:none;border:0;background:transparent;padding:8px}.menu span{display:block;width:24px;height:2px;background:var(--deep);margin:5px}.btn{display:inline-flex;align-items:center;justify-content:center;background:var(--green);color:white;padding:12px 23px;border:1px solid transparent;border-radius:999px;font-weight:700;cursor:pointer;transition:.25s}.btn:hover{transform:translateY(-2px);box-shadow:var(--shadow)}.btn-small{padding:9px 16px;font-size:.82rem}.btn-outline{background:transparent;color:var(--deep);border-color:var(--green)}.btn-gold{background:var(--gold);color:var(--deep)}section{padding:92px 0}.hero{padding:84px 0;background:radial-gradient(circle at 85% 15%,rgba(198,149,47,.17),transparent 35%),radial-gradient(circle at 5% 90%,rgba(11,79,63,.12),transparent 35%)}.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center}.eyebrow{display:inline-block;color:var(--green);background:var(--soft);border:1px solid #e9d9a9;border-radius:999px;padding:6px 14px;font:700 .72rem Inter,sans-serif;letter-spacing:.04em;margin-bottom:18px}.hero h1{font-family:Amiri,'Noto Nastaliq Urdu',serif;font-size:clamp(2.7rem,5vw,4.8rem);line-height:1.15;color:var(--deep);margin:0 0 20px}.hero h1 em{display:block;color:var(--gold);font-style:normal}.lead{font-size:1.08rem;color:var(--muted);max-width:680px}.hero-actions{display:flex;gap:13px;flex-wrap:wrap;margin:28px 0 36px}.stats{display:flex;border-top:1px solid var(--line);padding-top:24px}.stats div{flex:1}.stats strong{display:block;color:var(--deep);font-size:1.8rem}.stats span{color:var(--muted);font-size:.82rem}.hero-card{background:var(--deep);color:#fff;border-radius:28px;padding:48px;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero-card:after{content:'۞';position:absolute;font:200px Amiri;opacity:.05;bottom:-90px;right:-25px}.arabic{font:700 2.1rem Amiri,serif;color:#e9d9a9;margin-bottom:12px}.hero-card p{color:#d7dedb}.mini-list{display:grid;gap:12px;margin-top:26px}.mini-list span{border-top:1px solid rgba(255,255,255,.12);padding-top:12px}.section-head{max-width:720px;margin-bottom:48px}.section-head h2{font-family:Amiri,'Noto Nastaliq Urdu',serif;color:var(--deep);font-size:clamp(2rem,4vw,3rem);line-height:1.3;margin:0}.section-head p{color:var(--muted)}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:27px;box-shadow:0 8px 30px -30px rgba(0,0,0,.4);transition:.25s}.card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}.number{font:700 .75rem Inter;color:var(--gold)}.card h3,.feature-grid h3,.steps h3,.teacher-grid h3,.plan h3{font-family:Amiri,'Noto Nastaliq Urdu',serif;color:var(--deep);font-size:1.35rem;margin:10px 0 7px}.card p,.feature-grid p,.steps p,.teacher-grid p{color:var(--muted);font-size:.9rem}.dark{background:var(--deep);color:white}.section-head.light h2{color:white}.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid rgba(255,255,255,.12);border-radius:18px;overflow:hidden}.feature-grid article{padding:30px;border:1px solid rgba(255,255,255,.07)}.feature-grid span{color:var(--gold);font-size:1.5rem}.feature-grid h3{color:#fff}.feature-grid p{color:rgba(255,255,255,.67)}.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:25px}.steps strong{font-size:3rem;color:#e9d9a9;-webkit-text-stroke:1px var(--gold)}.soft{background:var(--soft)}.teacher-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}.teacher-grid article{text-align:center;background:white;border:1px solid var(--line);border-radius:18px;padding:25px}.avatar{width:74px;height:74px;margin:auto;border-radius:50%;display:grid;place-items:center;background:var(--green);color:var(--gold);font-size:2rem}.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch}.plan{background:white;border:1px solid var(--line);border-radius:20px;padding:32px;display:flex;flex-direction:column}.plan.featured{background:var(--deep);color:#fff;transform:translateY(-10px)}.plan.featured h3{color:#fff}.plan-tag{color:var(--gold);font-size:.85rem}.plan h3{font-size:2rem}.plan ul{list-style:none;padding:0;margin:15px 0 26px;flex:1}.plan li{padding:10px 0;border-bottom:1px solid var(--line)}.contact{background:linear-gradient(125deg,var(--green),var(--deep));border-radius:30px;padding:55px;display:grid;grid-template-columns:1fr 1fr;gap:48px;color:#fff}.contact h2{font-family:Amiri,'Noto Nastaliq Urdu',serif;font-size:2.5rem;line-height:1.3;margin:0}.contact p{color:rgba(255,255,255,.75)}.contact-lines{display:grid;gap:10px;margin-top:25px}.contact form{background:var(--cream);color:var(--ink);padding:27px;border-radius:18px}.contact label{display:grid;gap:6px;font-size:.83rem;margin-bottom:13px}.contact input,.contact textarea,.contact select{width:100%;border:1px solid var(--line);background:#fff;padding:11px 13px;border-radius:10px;color:var(--ink)}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.contact form .btn{width:100%}.form-status{color:var(--green)!important;min-height:25px;font-size:.8rem}footer{background:var(--deep);color:rgba(255,255,255,.68);padding:45px 0}.footer{display:grid;grid-template-columns:1.4fr 1fr auto;align-items:center;gap:25px}.footer .brand strong{color:white}.floating-whatsapp{position:fixed;z-index:60;bottom:22px;right:22px;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:#25d366;color:white;font:800 .82rem Inter;box-shadow:0 12px 30px rgba(0,0,0,.22)}
-:focus-visible{outline:3px solid var(--gold);outline-offset:3px}@media(max-width:960px){.nav-links{display:none;position:absolute;top:78px;left:0;right:0;background:var(--cream);padding:25px 20px;border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch}.nav-links.open{display:flex}.language-mobile{display:block}.language,.nav-actions .btn-small{display:none}.menu{display:block}.hero-grid,.contact{grid-template-columns:1fr}.cards,.feature-grid{grid-template-columns:repeat(2,1fr)}.steps,.teacher-grid{grid-template-columns:repeat(2,1fr)}.footer{grid-template-columns:1fr}}
-@media(max-width:640px){.wrap{width:min(100% - 28px,1180px)}.topbar-inner{justify-content:center}.topbar-inner>span,.topbar-inner div a:last-child{display:none}.nav{height:70px}.brand strong{font-size:.88rem}.brand img{width:44px;height:44px}.hero{padding:55px 0}.hero-card{padding:30px}.stats{gap:12px}.stats strong{font-size:1.35rem}.cards,.feature-grid,.steps,.teacher-grid,.plans{grid-template-columns:1fr}.plan.featured{transform:none}.contact{padding:30px 20px;border-radius:20px}.form-row{grid-template-columns:1fr}.footer{display:block}.footer p{margin-top:22px}section{padding:64px 0}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+:root{
+  --ink:#1b1a17;
+  --muted:#615c52;
+  --cream:#faf6ec;
+  --soft:#f1ead9;
+  --green:#0b4f3f;
+  --deep:#062e24;
+  --gold:#c6952f;
+  --line:rgba(27,26,23,.12);
+  --shadow:0 24px 60px -32px rgba(6,46,36,.45)
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--cream);
+  color:var(--ink);
+  font-family:Inter,Arial,sans-serif;
+  line-height:1.7
+}
+
+.urdu{font-family:'Noto Nastaliq Urdu',serif}
+.english{font-family:Inter,Arial,sans-serif}
+
+a{color:inherit;text-decoration:none}
+button,input,textarea,select{font:inherit}
+
+.wrap{
+  width:min(1180px,calc(100% - 40px));
+  margin:auto
+}
+
+.skip-link{
+  position:absolute;
+  left:-9999px
+}
+
+.skip-link:focus{
+  left:20px;
+  top:20px;
+  z-index:1000;
+  background:white;
+  padding:10px
+}
+
+/* ---------- Topbar ---------- */
+
+.topbar{
+  background:var(--deep);
+  color:#f6ead0;
+  font-size:.78rem
+}
+
+.topbar-inner{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  padding:8px 0
+}
+
+.topbar-inner div{
+  display:flex;
+  gap:20px
+}
+
+/* ---------- Header / Navigation ---------- */
+
+header{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:rgba(250,246,236,.94);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line)
+}
+
+.nav{
+  min-height:78px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-shrink:0
+}
+
+.brand img{
+  border-radius:10px;
+  object-fit:cover
+}
+
+.brand span{
+  display:flex;
+  flex-direction:column;
+  line-height:1.3
+}
+
+.brand strong{
+  color:var(--deep);
+  font-size:1.05rem
+}
+
+.brand small{
+  color:var(--gold);
+  font-family:Inter,sans-serif
+}
+
+.nav-links{
+  display:flex;
+  gap:22px;
+  align-items:center
+}
+
+.nav-links a{
+  color:var(--muted);
+  font-size:.88rem;
+  white-space:nowrap
+}
+
+.nav-links a:hover{
+  color:var(--green)
+}
+
+.nav-actions{
+  display:flex;
+  align-items:center;
+  gap:9px
+}
+
+.language,
+.portal-link{
+  border:1px solid var(--line);
+  padding:7px 13px;
+  border-radius:999px;
+  font-size:.82rem;
+  white-space:nowrap
+}
+
+.portal-link{
+  color:var(--green);
+  font-weight:700
+}
+
+.portal-link:hover,
+.language:hover{
+  border-color:var(--green);
+  background:#fff
+}
+
+.language-mobile,
+.portal-mobile{
+  display:none
+}
+
+.menu{
+  display:none;
+  border:0;
+  background:transparent;
+  padding:8px
+}
+
+.menu span{
+  display:block;
+  width:24px;
+  height:2px;
+  background:var(--deep);
+  margin:5px
+}
+
+/* ---------- Buttons ---------- */
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--green);
+  color:white;
+  padding:12px 23px;
+  border:1px solid transparent;
+  border-radius:999px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.25s
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow)
+}
+
+.btn-small{
+  padding:9px 16px;
+  font-size:.82rem
+}
+
+.btn-outline{
+  background:transparent;
+  color:var(--deep);
+  border-color:var(--green)
+}
+
+.btn-gold{
+  background:var(--gold);
+  color:var(--deep)
+}
+
+/* ---------- Sections ---------- */
+
+section{
+  padding:92px 0
+}
+
+/* ---------- Homepage Hero ---------- */
+
+.hero{
+  padding:84px 0;
+  background:
+    radial-gradient(circle at 85% 15%,rgba(198,149,47,.17),transparent 35%),
+    radial-gradient(circle at 5% 90%,rgba(11,79,63,.12),transparent 35%)
+}
+
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:60px;
+  align-items:center
+}
+
+.eyebrow{
+  display:inline-block;
+  color:var(--green);
+  background:var(--soft);
+  border:1px solid #e9d9a9;
+  border-radius:999px;
+  padding:6px 14px;
+  font:700 .72rem Inter,sans-serif;
+  letter-spacing:.03em;
+  margin-bottom:18px
+}
+
+.urdu .eyebrow{
+  font-family:'Noto Nastaliq Urdu',serif;
+  letter-spacing:0
+}
+
+.hero h1{
+  font-family:Amiri,'Noto Nastaliq Urdu',serif;
+  font-size:clamp(2.7rem,5vw,4.8rem);
+  line-height:1.15;
+  color:var(--deep);
+  margin:0 0 20px
+}
+
+.urdu .hero h1{
+  line-height:1.65
+}
+
+.hero h1 em{
+  display:block;
+  color:var(--gold);
+  font-style:normal
+}
+
+.lead{
+  font-size:1.08rem;
+  color:var(--muted);
+  max-width:680px
+}
+
+.hero-actions{
+  display:flex;
+  gap:13px;
+  flex-wrap:wrap;
+  margin:28px 0 36px
+}
+
+/* ---------- Homepage Stats ---------- */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+  border-top:1px solid var(--line);
+  padding-top:24px
+}
+
+.stats div{
+  padding-inline-end:16px
+}
+
+.stats strong{
+  display:block;
+  color:var(--deep);
+  font-size:1.65rem;
+  line-height:1.2
+}
+
+.stats span{
+  display:block;
+  color:var(--muted);
+  font-size:.76rem;
+  margin-top:5px
+}
+
+.urdu .stats span{
+  line-height:2
+}
+
+/* ---------- Hero Quran Card ---------- */
+
+.hero-card{
+  background:var(--deep);
+  color:#fff;
+  border-radius:28px;
+  padding:48px;
+  box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden
+}
+
+.hero-card:after{
+  content:'✦';
+  position:absolute;
+  font-size:180px;
+  line-height:1;
+  opacity:.035;
+  bottom:-42px;
+  right:-20px
+}
+
+.arabic{
+  font:700 2.1rem Amiri,serif;
+  color:#e9d9a9;
+  margin-bottom:12px;
+  direction:rtl
+}
+
+.hero-card p{
+  color:#d7dedb
+}
+
+.mini-list{
+  display:grid;
+  gap:12px;
+  margin-top:26px
+}
+
+.mini-list span{
+  border-top:1px solid rgba(255,255,255,.12);
+  padding-top:12px
+}
+
+/* ---------- Section Headings ---------- */
+
+.section-head{
+  max-width:720px;
+  margin-bottom:48px
+}
+
+.section-head h2{
+  font-family:Amiri,'Noto Nastaliq Urdu',serif;
+  color:var(--deep);
+  font-size:clamp(2rem,4vw,3rem);
+  line-height:1.3;
+  margin:0
+}
+
+.urdu .section-head h2{
+  line-height:1.8
+}
+
+.section-head p{
+  color:var(--muted)
+}
+
+/* ---------- Courses Cards ---------- */
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:22px
+}
+
+.card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:27px;
+  box-shadow:0 8px 30px -30px rgba(0,0,0,.4);
+  transition:.25s
+}
+
+.card:hover{
+  transform:translateY(-6px);
+  box-shadow:var(--shadow)
+}
+
+.number{
+  font:700 .75rem Inter;
+  color:var(--gold)
+}
+
+.card h3,
+.feature-grid h3,
+.steps h3,
+.teacher-grid h3,
+.plan h3{
+  font-family:Amiri,'Noto Nastaliq Urdu',serif;
+  color:var(--deep);
+  font-size:1.35rem;
+  margin:10px 0 7px
+}
+
+.card p,
+.feature-grid p,
+.steps p,
+.teacher-grid p{
+  color:var(--muted);
+  font-size:.9rem
+}
+
+/* ---------- Why Us ---------- */
+
+.dark{
+  background:var(--deep);
+  color:white
+}
+
+.section-head.light h2{
+  color:white
+}
+
+.feature-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:18px;
+  overflow:hidden
+}
+
+.feature-grid article{
+  padding:30px;
+  border:1px solid rgba(255,255,255,.07)
+}
+
+.feature-grid span{
+  color:var(--gold);
+  font-size:1.5rem
+}
+
+.feature-grid h3{
+  color:#fff
+}
+
+.feature-grid p{
+  color:rgba(255,255,255,.67)
+}
+
+/* ---------- Process ---------- */
+
+.steps{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:25px
+}
+
+.steps strong{
+  font-size:3rem;
+  color:#e9d9a9;
+  -webkit-text-stroke:1px var(--gold)
+}
+
+/* ---------- Teachers ---------- */
+
+.soft{
+  background:var(--soft)
+}
+
+.teacher-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:22px
+}
+
+.teacher-grid article{
+  text-align:center;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:25px
+}
+
+.avatar{
+  width:74px;
+  height:74px;
+  margin:auto;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:var(--green);
+  color:var(--gold);
+  font-size:2rem
+}
+
+/* ---------- Fee Plans ---------- */
+
+.plans{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:22px;
+  align-items:stretch
+}
+
+.plan{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:32px;
+  display:flex;
+  flex-direction:column
+}
+
+.plan.featured{
+  background:var(--deep);
+  color:#fff;
+  transform:translateY(-10px)
+}
+
+.plan.featured h3{
+  color:#fff
+}
+
+.plan-tag{
+  color:var(--gold);
+  font-size:.85rem
+}
+
+.plan h3{
+  font-size:2rem
+}
+
+.plan ul{
+  list-style:none;
+  padding:0;
+  margin:15px 0 26px;
+  flex:1
+}
+
+.plan li{
+  padding:10px 0;
+  border-bottom:1px solid var(--line)
+}
+
+/* ---------- Contact / Free Trial ---------- */
+
+.contact{
+  background:linear-gradient(125deg,var(--green),var(--deep));
+  border-radius:30px;
+  padding:55px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:48px;
+  color:#fff
+}
+
+.contact h2{
+  font-family:Amiri,'Noto Nastaliq Urdu',serif;
+  font-size:2.5rem;
+  line-height:1.3;
+  margin:0
+}
+
+.urdu .contact h2{
+  line-height:1.8
+}
+
+.contact p{
+  color:rgba(255,255,255,.75)
+}
+
+.contact-lines{
+  display:grid;
+  gap:10px;
+  margin-top:25px
+}
+
+.contact form{
+  background:var(--cream);
+  color:var(--ink);
+  padding:27px;
+  border-radius:18px
+}
+
+.contact label{
+  display:grid;
+  gap:6px;
+  font-size:.83rem;
+  margin-bottom:13px
+}
+
+.contact input,
+.contact textarea,
+.contact select{
+  width:100%;
+  border:1px solid var(--line);
+  background:#fff;
+  padding:11px 13px;
+  border-radius:10px;
+  color:var(--ink)
+}
+
+.form-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px
+}
+
+.contact form .btn{
+  width:100%
+}
+
+.form-status{
+  color:var(--green)!important;
+  min-height:25px;
+  font-size:.8rem
+}
+
+/* ---------- Footer ---------- */
+
+footer{
+  background:var(--deep);
+  color:rgba(255,255,255,.68);
+  padding:45px 0
+}
+
+.footer{
+  display:grid;
+  grid-template-columns:1.4fr 1fr auto;
+  align-items:center;
+  gap:25px
+}
+
+.footer .brand strong{
+  color:white
+}
+
+/* ---------- Floating WhatsApp ---------- */
+
+.floating-whatsapp{
+  position:fixed;
+  z-index:60;
+  bottom:22px;
+  right:22px;
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#25d366;
+  color:white;
+  font:800 .82rem Inter;
+  box-shadow:0 12px 30px rgba(0,0,0,.22)
+}
+
+/* ---------- Portal ---------- */
+
+.portal-page{
+  min-height:100vh;
+  background:var(--cream);
+  display:grid;
+  place-items:center;
+  padding:30px
+}
+
+.portal-card{
+  width:min(620px,100%);
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:44px;
+  box-shadow:var(--shadow);
+  text-align:center
+}
+
+.portal-card h1{
+  font-family:Amiri,serif;
+  color:var(--deep);
+  font-size:2.4rem;
+  margin:10px 0
+}
+
+.portal-card p{
+  color:var(--muted)
+}
+
+.portal-actions{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:25px
+}
+
+/* ==========================================================
+   PHASE 2A — INTERNAL PAGES
+   ========================================================== */
+
+/* ---------- Internal Hero ---------- */
+
+.inner-hero{
+  padding:70px 0;
+  background:
+    radial-gradient(circle at 80% 10%,rgba(198,149,47,.14),transparent 35%),
+    var(--soft)
+}
+
+.inner-hero-grid{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:48px;
+  align-items:center
+}
+
+.inner-hero h1{
+  font-family:Amiri,'Noto Nastaliq Urdu',serif;
+  color:var(--deep);
+  font-size:clamp(2.4rem,5vw,4rem);
+  line-height:1.2;
+  margin:0 0 16px
+}
+
+.urdu .inner-hero h1{
+  line-height:1.7
+}
+
+.inner-hero p{
+  color:var(--muted);
+  max-width:760px
+}
+
+.inner-verse{
+  background:var(--deep);
+  padding:34px;
+  border-radius:22px;
+  color:#fff
+}
+
+.inner-verse p{
+  color:rgba(255,255,255,.72)
+}
+
+/* ---------- General Information Cards ---------- */
+
+.info-grid,
+.contact-info-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px
+}
+
+.contact-info-grid{
+  grid-template-columns:repeat(3,1fr)
+}
+
+.info-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:25px
+}
+
+.info-card h3{
+  font-family:Amiri,'Noto Nastaliq Urdu',serif;
+  color:var(--deep);
+  font-size:1.45rem;
+  margin:0 0 10px
+}
+
+.info-card p{
+  color:var(--muted);
+  margin:0
+}
+
+/* ---------- Content Panels ---------- */
+
+.content-panel{
+  margin-top:34px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:32px
+}
+
+.content-panel h2{
+  font-family:Amiri,'Noto Nastaliq Urdu',serif;
+  color:var(--deep);
+  font-size:2rem;
+  margin:0 0 10px
+}
+
+.content-panel p{
+  color:var(--muted)
+}
+
+.notice-panel{
+  border-inline-start:5px solid var(--gold)
+}
+
+/* ---------- Course Detail Page ---------- */
+
+.course-detail-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:22px
+}
+
+.course-detail-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:28px
+}
+
+.course-detail-card h2{
+  font-family:Amiri,'Noto Nastaliq Urdu',serif;
+  color:var(--deep);
+  font-size:1.7rem;
+  margin:10px 0
+}
+
+.course-detail-card p{
+  color:var(--muted)
+}
+
+.course-detail-card small{
+  display:block;
+  color:var(--gold);
+  font-weight:700;
+  margin:12px 0 20px
+}
+
+.text-link{
+  color:var(--green);
+  font-weight:700
+}
+
+/* ---------- Teacher Detail Page ---------- */
+
+.teacher-detail-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:22px
+}
+
+.teacher-detail-card{
+  text-align:center;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:28px
+}
+
+.teacher-detail-card h2{
+  font-family:Amiri,'Noto Nastaliq Urdu',serif;
+  color:var(--deep)
+}
+
+/* ---------- Trial Page ---------- */
+
+.trial-layout{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:35px;
+  align-items:start
+}
+
+.trial-steps{
+  display:grid;
+  gap:16px
+}
+
+.trial-step{
+  display:flex;
+  gap:18px;
+  align-items:flex-start;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:20px
+}
+
+.trial-step strong{
+  width:42px;
+  height:42px;
+  flex:0 0 42px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:var(--deep);
+  color:var(--gold)
+}
+
+.trial-step p{
+  margin:5px 0 0;
+  color:var(--muted)
+}
+
+.standalone-form{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:30px;
+  display:grid;
+  gap:14px
+}
+
+.standalone-form h2{
+  font-family:Amiri,'Noto Nastaliq Urdu',serif;
+  color:var(--deep);
+  font-size:2rem;
+  margin:0
+}
+
+.standalone-form p{
+  color:var(--muted)
+}
+
+/* ---------- Internal Navigation ---------- */
+
+.internal-nav{
+  gap:18px
+}
+
+/* ---------- Focus ---------- */
+
+:focus-visible{
+  outline:3px solid var(--gold);
+  outline-offset:3px
+}
+
+/* ---------- Responsive ---------- */
+
+@media(max-width:1100px){
+  .nav-links{gap:15px}
+  .nav-links a{font-size:.82rem}
+  .portal-link{display:none}
+}
+
+@media(max-width:1000px){
+  .internal-nav{display:none}
+  .inner-hero-grid,
+  .trial-layout{
+    grid-template-columns:1fr
+  }
+
+  .info-grid,
+  .teacher-detail-grid{
+    grid-template-columns:repeat(2,1fr)
+  }
+}
+
+@media(max-width:960px){
+  .nav-links{
+    display:none;
+    position:absolute;
+    top:78px;
+    left:0;
+    right:0;
+    background:var(--cream);
+    padding:25px 20px;
+    border-bottom:1px solid var(--line);
+    flex-direction:column;
+    align-items:stretch
+  }
+
+  .nav-links.open{
+    display:flex
+  }
+
+  .language-mobile,
+  .portal-mobile{
+    display:block
+  }
+
+  .language,
+  .nav-actions .btn-small{
+    display:none
+  }
+
+  .menu{
+    display:block
+  }
+
+  .hero-grid,
+  .contact{
+    grid-template-columns:1fr
+  }
+
+  .cards,
+  .feature-grid{
+    grid-template-columns:repeat(2,1fr)
+  }
+
+  .steps,
+  .teacher-grid{
+    grid-template-columns:repeat(2,1fr)
+  }
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+    gap:20px
+  }
+
+  .footer{
+    grid-template-columns:1fr
+  }
+}
+
+@media(max-width:700px){
+  .course-detail-grid,
+  .info-grid,
+  .contact-info-grid,
+  .teacher-detail-grid{
+    grid-template-columns:1fr
+  }
+}
+
+@media(max-width:640px){
+  .wrap{
+    width:min(100% - 28px,1180px)
+  }
+
+  .topbar-inner{
+    justify-content:center
+  }
+
+  .topbar-inner>span,
+  .topbar-inner div a:last-child{
+    display:none
+  }
+
+  .nav{
+    min-height:70px
+  }
+
+  .brand strong{
+    font-size:.88rem
+  }
+
+  .brand img{
+    width:44px;
+    height:44px
+  }
+
+  .hero{
+    padding:55px 0
+  }
+
+  .hero-card{
+    padding:30px
+  }
+
+  .stats{
+    grid-template-columns:1fr 1fr
+  }
+
+  .stats strong{
+    font-size:1.35rem
+  }
+
+  .cards,
+  .feature-grid,
+  .steps,
+  .teacher-grid,
+  .plans{
+    grid-template-columns:1fr
+  }
+
+  .plan.featured{
+    transform:none
+  }
+
+  .contact{
+    padding:30px 20px;
+    border-radius:20px
+  }
+
+  .form-row{
+    grid-template-columns:1fr
+  }
+
+  .footer{
+    display:block
+  }
+
+  .footer p{
+    margin-top:22px
+  }
+
+  section{
+    padding:64px 0
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{
+    scroll-behavior:auto!important;
+    transition:none!important
+  }
+}
+
+/* ==========================================================
+   EXPANDED COURSE CATALOG
+   ========================================================== */
+
+.course-tracks-section{
+  padding-bottom:30px;
+}
+
+.course-catalog-section{
+  padding-top:30px;
+}
+
+.course-tracks{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:22px;
+}
+
+.track-card{
+  background:var(--deep);
+  color:#fff;
+  border-radius:20px;
+  padding:28px;
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.track-card span{
+  color:var(--gold);
+  font-size:1.4rem;
+}
+
+.track-card h3{
+  font-family:Amiri,'Noto Nastaliq Urdu',serif;
+  font-size:1.55rem;
+  margin:10px 0;
+}
+
+.track-card p{
+  color:rgba(255,255,255,.70);
+  margin:0;
+}
+
+/* ==========================================================
+   PHASE 2B — TRIAL DATABASE, FEES & ADMIN
+   ========================================================== */
+
+.trial-page-grid{
+  display:grid;
+  grid-template-columns:.8fr 1.2fr;
+  gap:34px;
+  align-items:start;
+}
+
+.trial-application-form{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:32px;
+  box-shadow:0 22px 55px -45px rgba(6,46,36,.55);
+}
+
+.form-section-head h2{
+  font-family:Amiri,'Noto Nastaliq Urdu',serif;
+  color:var(--deep);
+  font-size:2rem;
+  margin:0 0 24px;
+}
+
+.trial-application-form label{
+  display:grid;
+  gap:7px;
+  margin-bottom:15px;
+  color:var(--deep);
+  font-size:.88rem;
+}
+
+.trial-application-form input,
+.trial-application-form select,
+.trial-application-form textarea{
+  width:100%;
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--ink);
+  border-radius:11px;
+  padding:12px 14px;
+}
+
+.trial-application-form input:focus,
+.trial-application-form select:focus,
+.trial-application-form textarea:focus{
+  border-color:var(--gold);
+  outline:none;
+  box-shadow:0 0 0 3px rgba(198,149,47,.12);
+}
+
+.days-fieldset{
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:16px;
+  margin:0 0 15px;
+}
+
+.days-fieldset legend{
+  padding:0 8px;
+  color:var(--deep);
+  font-size:.88rem;
+}
+
+.days-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:9px;
+}
+
+.check-option{
+  display:flex!important;
+  grid-template-columns:none!important;
+  flex-direction:row;
+  align-items:center;
+  gap:7px!important;
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:8px 10px;
+  margin:0!important;
+  cursor:pointer;
+}
+
+.check-option input{
+  width:auto!important;
+  margin:0;
+}
+
+.fee-table-wrap,
+.admin-table-wrap{
+  width:100%;
+  overflow-x:auto;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:20px;
+}
+
+.fee-table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:850px;
+}
+
+.fee-table th,
+.fee-table td{
+  padding:18px 16px;
+  border-bottom:1px solid var(--line);
+  text-align:center;
+}
+
+.fee-table th{
+  background:var(--deep);
+  color:#fff;
+  font-size:.82rem;
+}
+
+.fee-table td:first-child{
+  text-align:start;
+}
+
+.fee-table td strong{
+  display:block;
+  color:var(--deep);
+}
+
+.fee-table td small{
+  display:block;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+.recommended-row{
+  background:#fffaf0;
+}
+
+.recommended-row td{
+  border-top:2px solid var(--gold);
+  border-bottom:2px solid var(--gold);
+}
+
+.fee-benefits{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+  margin-top:25px;
+}
+
+.fee-benefits article{
+  background:var(--soft);
+  border:1px solid #e9d9a9;
+  border-radius:16px;
+  padding:20px;
+  text-align:center;
+}
+
+.fee-benefits strong{
+  display:block;
+  font-size:1.7rem;
+  color:var(--deep);
+}
+
+.fee-benefits span{
+  color:var(--muted);
+  font-size:.82rem;
+}
+
+.admin-shell{
+  min-height:100vh;
+  background:#f5f2e9;
+  padding:38px;
+}
+
+.admin-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:20px;
+  margin-bottom:25px;
+}
+
+.admin-top h1{
+  font-family:Amiri,serif;
+  font-size:2.5rem;
+  color:var(--deep);
+  margin:0;
+}
+
+.admin-top p{
+  color:var(--muted);
+  margin:4px 0 0;
+}
+
+.admin-table{
+  width:100%;
+  min-width:1100px;
+  border-collapse:collapse;
+}
+
+.admin-table th,
+.admin-table td{
+  padding:13px 14px;
+  border-bottom:1px solid var(--line);
+  text-align:left;
+  vertical-align:top;
+  font-size:.83rem;
+}
+
+.admin-table th{
+  background:var(--deep);
+  color:#fff;
+  position:sticky;
+  top:0;
+}
+
+.admin-table td strong,
+.admin-table td small{
+  display:block;
+}
+
+.admin-table td small{
+  color:var(--muted);
+}
+
+.admin-error{
+  background:#fff0f0;
+  border:1px solid #e5b4b4;
+  border-radius:12px;
+  padding:14px;
+  margin-bottom:20px;
+}
+
+.status-pill{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:999px;
+  background:#eceae4;
+  font-size:.72rem;
+  text-transform:capitalize;
+}
+
+.status-new{
+  background:#fff2c9;
+  color:#6d5200;
+}
+
+.status-contacted{
+  background:#e8f1ff;
+  color:#174b8a;
+}
+
+.status-trial_scheduled{
+  background:#e9e5ff;
+  color:#44348c;
+}
+
+.status-trial_completed{
+  background:#e6f7f2;
+  color:#17624d;
+}
+
+.status-approved{
+  background:#ddf6e6;
+  color:#196132;
+}
+
+.status-enrolled{
+  background:#d5f0de;
+  color:#135829;
+}
+
+/* ---------- Final responsive additions ---------- */
+
+@media(max-width:900px){
+  .trial-page-grid{
+    grid-template-columns:1fr;
+  }
+
+  .fee-benefits{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .days-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:800px){
+  .course-tracks{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:600px){
+  .trial-application-form{
+    padding:22px 17px;
+  }
+
+  .fee-benefits{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .admin-shell{
+    padding:18px;
+  }
+}
+
+/* ==========================================================
+   PHASE 3A — ROLE-BASED PORTAL (FINAL MERGE)
+   ========================================================== */
+
+.portal-login-page{min-height:100vh;display:grid;place-items:center;padding:28px;background:radial-gradient(circle at 15% 20%,rgba(198,149,47,.16),transparent 30%),radial-gradient(circle at 85% 80%,rgba(11,79,63,.12),transparent 35%),var(--cream)}
+.portal-login-card{width:min(520px,100%);background:#fff;border:1px solid var(--line);border-radius:26px;padding:40px;box-shadow:var(--shadow)}
+.portal-login-card h1{font-family:Amiri,'Noto Nastaliq Urdu',serif;color:var(--deep);font-size:2.5rem;line-height:1.2;margin:0 0 8px}
+.portal-login-card>p{color:var(--muted)}
+.portal-login-form{display:grid;gap:15px;margin-top:25px}
+.portal-login-form label{display:grid;gap:7px;color:var(--deep);font-size:.88rem}
+.portal-login-form input{width:100%;border:1px solid var(--line);border-radius:11px;padding:12px 14px;background:#fff;color:var(--ink)}
+.portal-login-form input:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 3px rgba(198,149,47,.12)}
+.portal-login-form .btn{width:100%}
+.portal-login-status{min-height:24px;margin:0;color:#9b2828;font-size:.82rem}
+.portal-login-links{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:24px;color:var(--muted);font-size:.85rem}
+
+.dashboard-shell{min-height:100vh;display:grid;grid-template-columns:260px minmax(0,1fr);background:#f5f2e9}
+.dashboard-sidebar{background:var(--deep);color:#fff;padding:28px 22px;display:flex;flex-direction:column;min-height:100vh;position:sticky;top:0;align-self:start}
+.dashboard-sidebar>div{display:grid;gap:4px;margin-bottom:30px}
+.dashboard-brand{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;background:var(--gold);color:var(--deep);font-weight:800;font-family:Inter,Arial,sans-serif;margin-bottom:10px}
+.dashboard-sidebar strong{color:#fff}
+.dashboard-sidebar small{color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.08em}
+.dashboard-sidebar nav{display:grid;gap:7px}
+.dashboard-sidebar nav a{display:block;padding:11px 12px;border-radius:10px;color:rgba(255,255,255,.76);transition:.2s}
+.dashboard-sidebar nav a:hover{background:rgba(255,255,255,.09);color:#fff;transform:translateX(2px)}
+.dashboard-sidebar form{margin-top:auto}
+.dashboard-logout{width:100%;border:1px solid rgba(255,255,255,.20);background:transparent;color:#fff;padding:11px 12px;border-radius:10px;cursor:pointer;transition:.2s}
+.dashboard-logout:hover{background:rgba(255,255,255,.08)}
+
+.dashboard-main{min-width:0;padding:38px}
+.dashboard-header{display:flex;justify-content:space-between;align-items:flex-end;gap:25px;margin-bottom:28px}
+.dashboard-header h1{font-family:Amiri,'Noto Nastaliq Urdu',serif;font-size:clamp(2rem,4vw,2.8rem);line-height:1.15;color:var(--deep);margin:0}
+.dashboard-header p{margin:6px 0 0;color:var(--muted)}
+.dashboard-user{display:grid;text-align:right;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 15px;min-width:180px}
+.dashboard-user span{color:var(--muted);font-size:.75rem}
+.dashboard-user strong{color:var(--deep)}
+
+.dashboard-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.dashboard-cards article{min-width:0;background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 10px 30px -28px rgba(6,46,36,.5)}
+.dashboard-cards article>strong{display:block;color:var(--gold);font-size:1.8rem;line-height:1.2}
+.dashboard-cards h2{font-family:Amiri,'Noto Nastaliq Urdu',serif;color:var(--deep);margin:8px 0 5px;font-size:1.35rem;line-height:1.3}
+.dashboard-cards p{margin:0;color:var(--muted);font-size:.82rem}
+.dashboard-panel{margin-top:22px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px}
+.dashboard-panel h2{font-family:Amiri,'Noto Nastaliq Urdu',serif;color:var(--deep);margin:0 0 6px}
+.dashboard-panel p{color:var(--muted);margin:0}
+
+@media(max-width:1100px){.dashboard-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){.dashboard-shell{grid-template-columns:1fr}.dashboard-sidebar{position:relative;min-height:auto}.dashboard-sidebar nav{grid-template-columns:repeat(3,minmax(0,1fr))}.dashboard-sidebar form{margin-top:22px}}
+@media(max-width:650px){.dashboard-main{padding:20px}.dashboard-header{display:block}.dashboard-user{text-align:left;margin-top:18px;min-width:0}.dashboard-sidebar nav{grid-template-columns:1fr}.dashboard-cards{grid-template-columns:1fr}.portal-login-card{padding:28px 20px}}
+
