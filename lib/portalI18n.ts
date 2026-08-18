@@ -1,0 +1,38 @@
+export type PortalLocale = "en" | "ur";
+
+export const portalText = {
+  en: {
+    dashboard: "Dashboard",
+    students: "Students",
+    teachers: "Teachers",
+    parents: "Parents",
+    schedules: "Schedules",
+    reports: "Reports",
+    attendance: "Attendance",
+    announcements: "Announcements",
+    notifications: "Notifications",
+    leave: "Leave",
+    calendar: "Calendar",
+    analytics: "Analytics",
+    audit: "Audit Log",
+    backup: "Backup & Export",
+    logout: "Logout",
+  },
+  ur: {
+    dashboard: "ڈیش بورڈ",
+    students: "طلبہ",
+    teachers: "اساتذہ",
+    parents: "والدین",
+    schedules: "کلاس اوقات",
+    reports: "رپورٹس",
+    attendance: "حاضری",
+    announcements: "اعلانات",
+    notifications: "اطلاعات",
+    leave: "رخصت",
+    calendar: "تعلیمی کیلنڈر",
+    analytics: "تجزیاتی رپورٹ",
+    audit: "سرگرمی ریکارڈ",
+    backup: "بیک اَپ اور ایکسپورٹ",
+    logout: "لاگ آؤٹ",
+  },
+} as const;

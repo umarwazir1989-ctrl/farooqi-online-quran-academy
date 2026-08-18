@@ -1516,4 +1516,1104 @@ footer{
 @media(max-width:1100px){.dashboard-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:900px){.dashboard-shell{grid-template-columns:1fr}.dashboard-sidebar{position:relative;min-height:auto}.dashboard-sidebar nav{grid-template-columns:repeat(3,minmax(0,1fr))}.dashboard-sidebar form{margin-top:22px}}
 @media(max-width:650px){.dashboard-main{padding:20px}.dashboard-header{display:block}.dashboard-user{text-align:left;margin-top:18px;min-width:0}.dashboard-sidebar nav{grid-template-columns:1fr}.dashboard-cards{grid-template-columns:1fr}.portal-login-card{padding:28px 20px}}
+/* ==========================================================
+   PHASE 3B — ACADEMIC MANAGEMENT
+   ========================================================== */
 
+.admin-detail-shell{
+  min-height:100vh;
+  background:#f5f2e9;
+  padding:38px;
+}
+
+.admin-detail-top{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  align-items:flex-end;
+  margin-bottom:24px;
+}
+
+.admin-detail-top h1{
+  font-family:Amiri,'Noto Nastaliq Urdu',serif;
+  color:var(--deep);
+  font-size:2.6rem;
+  margin:8px 0 0;
+}
+
+.admin-detail-top p{
+  color:var(--muted);
+  margin:0;
+}
+
+.admin-detail-grid{
+  display:grid;
+  grid-template-columns:.9fr 1.1fr;
+  gap:22px;
+  align-items:start;
+}
+
+.admin-detail-card,
+.convert-trial-form{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:28px;
+}
+
+.admin-detail-card h2,
+.convert-trial-form h2{
+  font-family:Amiri,'Noto Nastaliq Urdu',serif;
+  color:var(--deep);
+  font-size:1.9rem;
+  margin:0 0 20px;
+}
+
+.detail-list{
+  display:grid;
+  gap:0;
+  margin:0;
+}
+
+.detail-list>div{
+  display:grid;
+  grid-template-columns:145px 1fr;
+  gap:15px;
+  padding:11px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.detail-list dt{
+  color:var(--muted);
+  font-size:.8rem;
+}
+
+.detail-list dd{
+  margin:0;
+  color:var(--deep);
+}
+
+.convert-trial-form label{
+  display:grid;
+  gap:7px;
+  margin-bottom:15px;
+  color:var(--deep);
+  font-size:.86rem;
+}
+
+.convert-trial-form input,
+.convert-trial-form select,
+.convert-trial-form textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:11px 13px;
+  background:#fff;
+}
+
+.convert-trial-form small{
+  color:var(--muted);
+}
+
+.table-action{
+  display:inline-flex;
+  padding:6px 10px;
+  border-radius:8px;
+  background:var(--soft);
+  color:var(--green);
+  font-weight:700;
+  font-size:.78rem;
+}
+
+.table-action:hover{
+  background:#e9d9a9;
+}
+
+@media(max-width:900px){
+  .admin-detail-grid{grid-template-columns:1fr}
+}
+
+@media(max-width:600px){
+  .admin-detail-shell{padding:20px}
+  .admin-detail-top{display:block}
+  .detail-list>div{grid-template-columns:1fr;gap:2px}
+}
+/* ==========================================================
+   PHASE 3C — PORTAL ACCOUNT PROVISIONING + REAL DASHBOARDS
+   ========================================================== */
+
+.account-table{min-width:950px}
+
+.role-badge{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:999px;
+  background:var(--soft);
+  color:var(--green);
+  font-size:.72rem;
+  font-weight:700;
+  text-transform:capitalize;
+}
+
+.account-linked{
+  display:inline-block;
+  padding:7px 10px;
+  border-radius:9px;
+  background:#ddf6e6;
+  color:#196132;
+  font-size:.78rem;
+  font-weight:700;
+}
+
+.invite-inline-form{
+  display:grid;
+  grid-template-columns:minmax(190px,1fr) auto;
+  gap:7px;
+  align-items:center;
+  min-width:330px;
+}
+
+.invite-inline-form input{
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:8px 10px;
+  min-width:0;
+}
+
+.invite-inline-form button{
+  border:0;
+  border-radius:9px;
+  padding:9px 11px;
+  background:var(--green);
+  color:#fff;
+  cursor:pointer;
+  font-weight:700;
+  font-size:.75rem;
+}
+
+.invite-inline-form button:disabled{
+  opacity:.6;
+  cursor:wait;
+}
+
+.invite-inline-form small{
+  grid-column:1/-1;
+  min-height:16px;
+  color:var(--muted);
+}
+
+.set-password-wrap h1{
+  font-family:Amiri,'Noto Nastaliq Urdu',serif;
+  color:var(--deep);
+  font-size:2.4rem;
+  line-height:1.2;
+  margin:0 0 8px;
+}
+
+.set-password-wrap>p{color:var(--muted)}
+
+.portal-data-list{
+  display:grid;
+  gap:10px;
+  margin-top:16px;
+}
+
+.portal-data-list article{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+  align-items:center;
+  padding:15px 17px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:#faf9f5;
+}
+
+.portal-data-list article>div{
+  display:grid;
+  gap:2px;
+}
+
+.portal-data-list strong{color:var(--deep)}
+
+.portal-data-list span{
+  color:var(--muted);
+  font-size:.77rem;
+}
+
+@media(max-width:700px){
+  .invite-inline-form{min-width:270px}
+  .portal-data-list article{grid-template-columns:1fr;gap:10px}
+}
+/* ==========================================================
+   PHASE 4 — ATTENDANCE, CLASS PROGRESS, HOMEWORK & REPORTS
+   ========================================================== */
+
+.teacher-class-stack{
+  display:grid;
+  gap:22px;
+  margin-top:22px;
+}
+
+.class-record-form,
+.monthly-report-form{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:24px;
+}
+
+.class-record-heading h2,
+.monthly-report-form h3{
+  color:var(--deep);
+  margin:4px 0 18px;
+  font-family:Amiri,'Noto Nastaliq Urdu',serif;
+}
+
+.class-record-form label,
+.monthly-report-form label{
+  display:grid;
+  gap:7px;
+  margin-bottom:14px;
+  color:var(--deep);
+  font-size:.84rem;
+}
+
+.class-record-form input,
+.class-record-form select,
+.class-record-form textarea,
+.monthly-report-form input,
+.monthly-report-form textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:10px 12px;
+  background:#fff;
+}
+
+.progress-timeline{
+  display:grid;
+  gap:10px;
+  margin-top:16px;
+}
+
+.progress-timeline article{
+  display:grid;
+  grid-template-columns:110px minmax(0,1fr) 120px;
+  gap:18px;
+  align-items:start;
+  padding:15px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#faf9f5;
+}
+
+.progress-timeline p{margin:3px 0}
+
+.progress-timeline small{
+  display:block;
+  color:var(--muted);
+}
+
+.progress-date{
+  font-weight:700;
+  color:var(--green);
+}
+
+.report-card-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin-top:16px;
+}
+
+.report-card-grid article{
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:16px;
+  background:#faf9f5;
+  display:grid;
+  gap:7px;
+}
+
+.report-card-grid strong{
+  color:var(--deep);
+  font-size:1.15rem;
+}
+
+.report-card-grid span,
+.report-card-grid small{
+  color:var(--muted);
+  font-size:.78rem;
+}
+
+.monthly-report-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+  margin-bottom:26px;
+}
+
+.publish-check{
+  display:flex!important;
+  grid-template-columns:auto 1fr;
+  align-items:center;
+}
+
+.publish-check input{width:auto}
+
+.status-present,
+.status-published{background:#ddf6e6!important;color:#196132!important}
+.status-absent{background:#fde3e3!important;color:#8d2424!important}
+.status-late{background:#fff0cc!important;color:#765000!important}
+.status-leave{background:#e6ecff!important;color:#294c9a!important}
+.status-cancelled{background:#eee!important;color:#555!important}
+.status-draft{background:#f1ead9!important;color:#6b5829!important}
+
+@media(max-width:900px){
+  .monthly-report-grid{grid-template-columns:1fr}
+  .report-card-grid{grid-template-columns:1fr}
+}
+
+@media(max-width:700px){
+  .progress-timeline article{
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+}
+/* ==========================================================
+   PHASE 5 — CALENDAR, RESCHEDULE, NOTIFICATIONS, ANALYTICS
+   ========================================================== */
+
+.calendar-grid,
+.reschedule-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+  margin-top:16px;
+}
+
+.calendar-grid article,
+.reschedule-form{
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#faf9f5;
+  padding:16px;
+}
+
+.calendar-grid article{
+  display:grid;
+  gap:5px;
+}
+
+.calendar-grid article strong{color:var(--deep)}
+
+.calendar-grid article span,
+.calendar-grid article small{color:var(--muted)}
+
+.reschedule-form h3{
+  color:var(--deep);
+  margin:0 0 14px;
+}
+
+.reschedule-form label{
+  display:grid;
+  gap:6px;
+  margin-bottom:12px;
+  font-size:.82rem;
+  color:var(--deep);
+}
+
+.reschedule-form input,
+.reschedule-form select,
+.reschedule-form textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:9px 11px;
+  background:#fff;
+}
+
+.decision-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+.decision-actions button{
+  border:0;
+  border-radius:8px;
+  padding:7px 9px;
+  cursor:pointer;
+  font-size:.74rem;
+}
+
+.decision-actions button:first-child{
+  background:#ddf6e6;
+  color:#196132;
+}
+
+.decision-actions button:nth-child(2){
+  background:#fde3e3;
+  color:#8d2424;
+}
+
+.notification-list{
+  display:grid;
+  gap:10px;
+}
+
+.notification-list article{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:16px;
+  background:#faf9f5;
+}
+
+.notification-list article>div{
+  display:grid;
+  gap:6px;
+}
+
+.notification-list article p{margin:0}
+
+.notification-list time{
+  color:var(--muted);
+  font-size:.74rem;
+  white-space:nowrap;
+}
+
+.notification-unread{
+  border-left:4px solid var(--gold)!important;
+}
+
+.analytics-card-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+  margin-bottom:24px;
+}
+
+.analytics-card-grid article{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:20px;
+  display:grid;
+  gap:5px;
+}
+
+.analytics-card-grid strong{
+  font-size:1.8rem;
+  color:var(--gold);
+}
+
+.analytics-card-grid span{
+  color:var(--deep);
+  font-weight:700;
+}
+
+.status-pending{background:#fff0cc!important;color:#765000!important}
+.status-approved{background:#ddf6e6!important;color:#196132!important}
+.status-rejected{background:#fde3e3!important;color:#8d2424!important}
+.status-completed{background:#e5edff!important;color:#294c9a!important}
+
+@media(max-width:900px){
+  .calendar-grid,
+  .reschedule-grid,
+  .analytics-card-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:650px){
+  .notification-list article{display:grid}
+  .notification-list time{white-space:normal}
+}
+/* ==========================================================
+   PHASE 6 — ADMIN OPERATIONS + BILINGUAL PORTAL FOUNDATION
+   ========================================================== */
+
+.admin-ops-form{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:24px;
+  margin-bottom:24px;
+}
+
+.admin-ops-form h2{
+  color:var(--deep);
+  font-family:Amiri,'Noto Nastaliq Urdu',serif;
+  margin:0 0 18px;
+}
+
+.admin-ops-form label{
+  display:grid;
+  gap:7px;
+  margin-bottom:14px;
+  color:var(--deep);
+  font-size:.84rem;
+}
+
+.admin-ops-form input,
+.admin-ops-form select,
+.admin-ops-form textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:10px 12px;
+  background:#fff;
+}
+
+.announcement-list{
+  display:grid;
+  gap:12px;
+}
+
+.announcement-list article{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:18px;
+  background:#faf9f5;
+}
+
+.announcement-list article>div{
+  display:grid;
+  gap:6px;
+}
+
+.announcement-list p{margin:0}
+
+.announcement-urdu{
+  border-top:1px dashed var(--line);
+  margin-top:8px;
+  padding-top:10px;
+  font-family:'Noto Nastaliq Urdu',serif;
+  line-height:2;
+}
+
+.priority-important{
+  border-left:4px solid var(--gold)!important;
+}
+
+.priority-urgent{
+  border-left:4px solid #a92d2d!important;
+  background:#fff8f8!important;
+}
+
+.calendar-event-list{
+  display:grid;
+  gap:12px;
+}
+
+.calendar-event-list article{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:18px;
+  background:#faf9f5;
+}
+
+.calendar-event-list article>div{
+  display:grid;
+  gap:5px;
+}
+
+.calendar-event-list article>div:last-child{
+  text-align:right;
+  align-content:center;
+}
+
+.backup-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+  margin-bottom:24px;
+}
+
+.backup-grid article{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:20px;
+}
+
+.backup-grid strong{
+  color:var(--deep);
+  font-size:1.05rem;
+}
+
+.backup-grid p{
+  color:var(--muted);
+  min-height:44px;
+}
+
+@media(max-width:900px){
+  .backup-grid{grid-template-columns:1fr 1fr}
+}
+
+@media(max-width:650px){
+  .backup-grid{grid-template-columns:1fr}
+  .announcement-list article,
+  .calendar-event-list article{
+    display:grid;
+  }
+}
+/* ==========================================================
+   PHASE 7 — LANGUAGE SWITCH, CRUD, TRANSFERS, ARCHIVE, SEARCH
+   ========================================================== */
+
+.portal-language-toggle{
+  width:100%;
+  border:1px solid rgba(255,255,255,.20);
+  color:#fff;
+  background:rgba(255,255,255,.05);
+  border-radius:10px;
+  padding:10px 12px;
+  margin-top:18px;
+  cursor:pointer;
+  font-family:'Noto Nastaliq Urdu',Inter,sans-serif;
+}
+
+.portal-language-toggle:hover{
+  background:rgba(255,255,255,.10);
+}
+
+.portal-rtl{
+  font-family:'Noto Nastaliq Urdu',Inter,sans-serif;
+}
+
+.portal-rtl .dashboard-header,
+.portal-rtl .dashboard-user{
+  text-align:right;
+}
+
+.portal-rtl .dashboard-sidebar nav a:hover{
+  transform:translateX(-2px);
+}
+
+.table-action-button{
+  border:0;
+  cursor:pointer;
+}
+
+.admin-search-form{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:10px;
+  margin-bottom:24px;
+}
+
+.admin-search-form input{
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:11px 16px;
+  background:#fff;
+}
+
+.search-result-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+}
+
+.search-result-grid .content-panel{
+  margin-top:0;
+}
+
+.search-result-item{
+  display:grid;
+  gap:3px;
+  padding:12px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.search-result-item strong{
+  color:var(--deep);
+}
+
+.search-result-item span,
+.search-result-item small{
+  color:var(--muted);
+  font-size:.78rem;
+}
+
+.notification-read-label{
+  color:var(--muted);
+  font-size:.74rem;
+}
+
+@media(max-width:800px){
+  .search-result-grid{grid-template-columns:1fr}
+}
+
+@media(max-width:600px){
+  .admin-search-form{grid-template-columns:1fr}
+}
+/* ==========================================================
+   PHASE 8 — OFFICE TOOLS, IMPORTS, PRINT, NAVIGATION
+   ========================================================== */
+
+.portal-nav-sections{
+  display:grid!important;
+  gap:18px!important;
+}
+
+.portal-nav-section{
+  display:grid;
+  gap:5px;
+  padding:0!important;
+}
+
+.portal-nav-section>span{
+  color:var(--gold);
+  font-size:.66rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  padding:0 11px 5px;
+}
+
+.portal-nav-active{
+  background:rgba(255,255,255,.12)!important;
+  color:#fff!important;
+}
+
+.advanced-filter-form{
+  display:grid;
+  grid-template-columns:2fr repeat(4,1fr) auto;
+  gap:9px;
+  margin-bottom:22px;
+}
+
+.advanced-filter-form input,
+.advanced-filter-form select{
+  min-width:0;
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:10px;
+  padding:10px 11px;
+}
+
+.table-action-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+}
+
+.status-valid{background:#ddf6e6!important;color:#196132!important}
+.status-invalid{background:#fde3e3!important;color:#8d2424!important}
+.status-imported{background:#e5edff!important;color:#294c9a!important}
+.status-skipped{background:#eee!important;color:#555!important}
+.status-sent{background:#ddf6e6!important;color:#196132!important}
+.status-failed{background:#fde3e3!important;color:#8d2424!important}
+
+.student-print-page{
+  background:#e9e9e9;
+  min-height:100vh;
+  padding:24px;
+}
+
+.print-toolbar{
+  max-width:900px;
+  margin:0 auto 14px;
+}
+
+.print-note{
+  border:0;
+  border-radius:999px;
+  background:var(--deep);
+  color:#fff;
+  padding:9px 14px;
+}
+
+.student-print-sheet{
+  width:min(900px,100%);
+  margin:auto;
+  background:#fff;
+  padding:46px;
+  box-shadow:0 15px 50px rgba(0,0,0,.12);
+}
+
+.student-print-sheet>header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding-bottom:20px;
+  border-bottom:3px solid var(--gold);
+}
+
+.student-print-sheet>header span{
+  color:var(--green);
+  font-weight:700;
+}
+
+.student-print-sheet>header h1{
+  margin:4px 0 0;
+  color:var(--deep);
+  font-family:Amiri,'Noto Nastaliq Urdu',serif;
+}
+
+.student-print-sheet>header>strong{
+  color:var(--gold);
+  font-size:1.4rem;
+}
+
+.student-print-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px 26px;
+  margin:28px 0;
+}
+
+.student-print-grid>div{
+  display:grid;
+  border-bottom:1px solid var(--line);
+  padding-bottom:8px;
+}
+
+.student-print-grid span{
+  color:var(--muted);
+  font-size:.75rem;
+}
+
+.student-print-sheet section{
+  padding:18px 0;
+}
+
+.student-print-sheet h2{
+  color:var(--deep);
+  font-family:Amiri,'Noto Nastaliq Urdu',serif;
+}
+
+.student-print-sheet table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.student-print-sheet th,
+.student-print-sheet td{
+  padding:9px;
+  border:1px solid var(--line);
+  text-align:left;
+  font-size:.8rem;
+}
+
+.student-print-sheet th{
+  background:var(--soft);
+  color:var(--deep);
+}
+
+@media(max-width:1150px){
+  .advanced-filter-form{
+    grid-template-columns:repeat(3,1fr);
+  }
+}
+
+@media(max-width:700px){
+  .advanced-filter-form{
+    grid-template-columns:1fr;
+  }
+
+  .student-print-grid{
+    grid-template-columns:1fr;
+  }
+
+  .student-print-sheet{
+    padding:24px;
+  }
+}
+
+@media print{
+  body{
+    background:#fff!important;
+  }
+
+  .print-toolbar{
+    display:none!important;
+  }
+
+  .student-print-page{
+    padding:0;
+    background:#fff;
+  }
+
+  .student-print-sheet{
+    width:100%;
+    box-shadow:none;
+    padding:20px;
+  }
+}
+
+/* ==========================================================
+   PHASE 9 — LIVE IMPORT, EMAIL AUTOMATION, QR ID, ACTION CENTER
+   ========================================================== */
+
+.queue-process-box{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin:0 0 20px;
+  flex-wrap:wrap;
+}
+
+.queue-process-box small{
+  color:var(--muted);
+}
+
+.action-center-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+}
+
+.action-center-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:24px;
+  display:grid;
+  gap:6px;
+  box-shadow:0 10px 30px -28px rgba(6,46,36,.5);
+  transition:.2s;
+}
+
+.action-center-card:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--shadow);
+}
+
+.action-center-card strong{
+  color:var(--gold);
+  font-size:2rem;
+  line-height:1;
+}
+
+.action-center-card span{
+  color:var(--deep);
+  font-weight:700;
+}
+
+.action-center-card small{
+  color:var(--muted);
+}
+
+@media(max-width:900px){
+  .action-center-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:600px){
+  .action-center-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+/* ==========================================================
+   PHASE 10 — PRODUCTION HARDENING
+   ========================================================== */
+
+.duplicate-scan-box{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.duplicate-scan-box small{
+  color:var(--muted);
+}
+
+.verification-page{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:28px;
+  background:
+    radial-gradient(circle at 20% 20%,rgba(198,149,47,.16),transparent 30%),
+    radial-gradient(circle at 80% 80%,rgba(11,79,63,.12),transparent 35%),
+    var(--cream);
+}
+
+.verification-card{
+  width:min(560px,100%);
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:26px;
+  padding:38px;
+  box-shadow:var(--shadow);
+  text-align:center;
+}
+
+.verification-card h1{
+  font-family:Amiri,'Noto Nastaliq Urdu',serif;
+  color:var(--deep);
+  font-size:2.4rem;
+  margin:10px 0 6px;
+}
+
+.verification-card>p{
+  color:var(--muted);
+}
+
+.verification-icon{
+  width:72px;
+  height:72px;
+  margin:14px auto;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#ddf6e6;
+  color:#196132;
+  font-size:2rem;
+  font-weight:800;
+}
+
+.verification-invalid{
+  background:#fde3e3;
+  color:#8d2424;
+}
+
+.verification-card dl{
+  margin:26px 0 0;
+  text-align:left;
+  border-top:1px solid var(--line);
+}
+
+.verification-card dl>div{
+  display:grid;
+  grid-template-columns:140px 1fr;
+  gap:12px;
+  padding:11px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.verification-card dt{
+  color:var(--muted);
+}
+
+.verification-card dd{
+  margin:0;
+  color:var(--deep);
+  font-weight:700;
+}
+
+.status-reuse{background:#e5edff!important;color:#294c9a!important}
+.status-create_new{background:#ddf6e6!important;color:#196132!important}
+.status-skip{background:#eee!important;color:#555!important}
+
+@media(max-width:600px){
+  .verification-card{padding:28px 20px}
+  .verification-card dl>div{grid-template-columns:1fr;gap:2px}
+}
