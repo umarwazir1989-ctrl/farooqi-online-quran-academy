@@ -10,24 +10,35 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
   if (!locales.includes(rawLocale as Locale)) notFound();
   const locale = rawLocale as Locale;
   const t = siteData[locale];
+  const isUrdu = locale === "ur";
 
   return (
     <InternalPage locale={locale} title={t.contactTitle} intro={t.contactIntro} pagePath="/contact">
-      
-        <section>
-          <div className="wrap contact-info-grid">
-            <article className="info-card"><h3>WhatsApp</h3><p><a href="https://wa.me/923336519527">0333-6519527</a></p></article>
-            <article className="info-card"><h3>{locale === "ur" ? "فون" : "Phone"}</h3><p><a href="tel:+923344323994">0334-4323994</a></p></article>
-            <article className="info-card"><h3>Email</h3><p><a href="mailto:umarwazir1989@gmail.com">umarwazir1989@gmail.com</a></p></article>
-          </div>
-          <div className="wrap content-panel">
-            <h2>{locale === "ur" ? "داخلہ یا Trial؟" : "Admission or Trial?"}</h2>
-            <p>{locale === "ur"
-              ? "اگر آپ نئے طالب علم کے لیے داخلہ چاہتے ہیں تو پہلے مفت trial class بک کریں۔"
-              : "For a new learner, begin by booking a free trial class."}</p>
-            <Link className="btn" href={`/${locale}/free-trial`}>{t.trial}</Link>
-          </div>
-        </section>
+      <section>
+        <div className="wrap contact-info-grid">
+          <article className="info-card">
+            <h3>{isUrdu ? "واٹس ایپ" : "WhatsApp"}</h3>
+            <p><a href="https://wa.me/923336519527">0333-6519527</a></p>
+          </article>
+          <article className="info-card">
+            <h3>{isUrdu ? "فون" : "Phone"}</h3>
+            <p><a href="tel:+923344323994">0334-4323994</a></p>
+          </article>
+          <article className="info-card">
+            <h3>{isUrdu ? "ای میل" : "Email"}</h3>
+            <p><a href="mailto:umarwazir1989@gmail.com">umarwazir1989@gmail.com</a></p>
+          </article>
+        </div>
+        <div className="wrap content-panel">
+          <h2>{isUrdu ? "داخلہ یا مفت ٹرائل کلاس؟" : "Admission or Trial?"}</h2>
+          <p>
+            {isUrdu
+              ? "اگر آپ نئے طالب علم کے لیے داخلہ چاہتے ہیں تو پہلے مفت ٹرائل کلاس بک کریں۔"
+              : "For a new learner, begin by booking a free trial class."}
+          </p>
+          <Link className="btn" href={`/${locale}/free-trial`}>{t.trial}</Link>
+        </div>
+      </section>
     </InternalPage>
   );
 }

@@ -1,0 +1,44 @@
+
+/* PHASE 11M — FINAL POLISH / ACCESSIBILITY / MOBILE */
+.dashboard-sidebar nav a:focus-visible,
+.quran-review-actions button:focus-visible,
+.quran-assignment-actions button:focus-visible,
+.qaida-control-actions button:focus-visible{
+  outline:3px solid var(--gold);
+  outline-offset:2px;
+}
+
+button:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+.quran-inline-message,
+.qaida-review-message{
+  overflow-wrap:anywhere;
+}
+
+.dashboard-panel,
+.quran-review-card,
+.qaida-review-card,
+.teacher-quran-assignment-list article{
+  min-width:0;
+}
+
+@media(max-width:600px){
+  .dashboard-main{
+    overflow-x:hidden;
+  }
+
+  .quran-review-actions button,
+  .qaida-review-actions button,
+  .qaida-control-actions button,
+  .quran-assignment-actions button{
+    min-height:42px;
+  }
+
+  .quran-learning-ayah,
+  .quran-live-text{
+    overflow-wrap:anywhere;
+  }
+}

@@ -114,8 +114,6 @@ export async function updateTeacherProfile(input: {
     .update({
       full_name: input.fullName,
       email: input.email || null,
-      phone: input.phone || null,
-      country: input.country || null,
       timezone: input.timezone || null,
       max_students: input.maxStudents || null,
       status: input.status,
@@ -277,12 +275,16 @@ export async function listBatchDuplicateReviews(batchId: string) {
 }
 
 export async function getVerificationByCode(code: string) {
+  const cleanCode = code.trim();
+  if (!cleanCode) return null;
+
   const sb = getSupabaseAdmin();
 
   const { data, error } = await sb
     .from("student_public_verification")
     .select("*")
-    .eq("verification_code", code)
+    .or(`verification_code.eq.${cleanCode},student_code.eq.${cleanCode}`)
+    .limit(1)
     .maybeSingle();
 
   if (error) throw error;
@@ -299,7 +301,6 @@ export async function queueAutomaticEventEmail(input: {
 }) {
   if (!input.recipientEmail) return null;
 
-  // The queue record is created server-side.
   return queueEmail({
     adminUserId: "",
     recipientEmail: input.recipientEmail,

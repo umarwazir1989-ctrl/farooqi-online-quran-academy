@@ -1,10 +1,26 @@
 -- ==========================================================
--- Farooqi Online Quran Academy — Phase 10
--- Production hardening + duplicate review + verification
+-- Farooqi Online Quran Academy — Phase 10 (Upgraded)
+-- Production hardening + schema alignment + duplicate review + verification
 -- Run AFTER Phase 9.
 -- ==========================================================
 
 create extension if not exists pgcrypto;
+
+-- ----------------------------------------------------------
+-- Schema Alignment Fixes (Teachers contact fields & Student archive status)
+-- ----------------------------------------------------------
+
+alter table public.teachers
+  add column if not exists email text,
+  add column if not exists phone text,
+  add column if not exists country text;
+
+alter table public.students
+  drop constraint if exists students_status_check;
+
+alter table public.students
+  add constraint students_status_check
+  check (status in ('trial','active','paused','completed','left','inactive'));
 
 -- ----------------------------------------------------------
 -- Public verification tokens
@@ -62,27 +78,61 @@ create index if not exists parents_status_idx
 on public.parents(status);
 
 -- ----------------------------------------------------------
--- Verification view
+-- Verification view & Updated Student Admin Search View
 -- ----------------------------------------------------------
 
 create or replace view public.student_public_verification as
 select
-  v.verification_code,
-  v.status as verification_status,
+  coalesce(v.verification_code, s.student_code) as verification_code,
+  coalesce(v.status, 'active') as verification_status,
   s.id as student_id,
   s.student_code,
   s.full_name,
   s.status as student_status,
   c.name_en as course_name,
   t.full_name as teacher_name
-from public.student_verification_tokens v
-join public.students s on s.id = v.student_id
+from public.students s
+left join public.student_verification_tokens v
+  on v.student_id = s.id
+ and v.status = 'active'
 left join public.enrollments e
   on e.student_id = s.id
  and e.status = 'active'
 left join public.courses c on c.id = e.course_id
 left join public.teachers t on t.id = e.teacher_id
-where v.status = 'active';
+where s.status in ('active','completed','trial');
+
+drop view if exists public.student_admin_search;
+
+create view public.student_admin_search as
+select
+  s.id,
+  s.student_code,
+  v.verification_code,
+  s.full_name,
+  s.email,
+  coalesce(s.whatsapp, p.phone) as phone,
+  s.whatsapp,
+  s.country,
+  s.timezone,
+  s.status,
+  p.full_name as parent_name,
+  p.email as parent_email,
+  p.phone as parent_phone,
+  c.name_en as course_name,
+  t.full_name as teacher_name,
+  e.id as enrollment_id,
+  e.status as enrollment_status
+from public.students s
+left join public.parents p on p.id = s.parent_id
+left join public.student_verification_tokens v
+  on v.student_id = s.id
+ and v.status = 'active'
+left join public.enrollments e
+  on e.student_id = s.id
+ and e.status = 'active'
+left join public.courses c on c.id = e.course_id
+left join public.teachers t on t.id = e.teacher_id;
 
 -- ----------------------------------------------------------
 -- RLS hardening
@@ -91,23 +141,15 @@ where v.status = 'active';
 alter table public.student_verification_tokens enable row level security;
 alter table public.import_duplicate_reviews enable row level security;
 
--- Remove insecure self-profile role update policy if still present.
 drop policy if exists "Users can update own basic profile"
 on public.profiles;
 
--- Users may only read their own profile through anon/authenticated client.
 drop policy if exists "Users can read own profile" on public.profiles;
 create policy "Users can read own profile"
 on public.profiles
 for select
 to authenticated
 using (auth.uid() = id);
-
--- Do NOT allow client-side profile role/status updates.
--- Role/status changes remain server-only via service-role API.
-
--- Public verification view is read through a trusted server route.
--- No direct public table policy is added here.
 
 -- ----------------------------------------------------------
 -- Generate verification tokens for current active students

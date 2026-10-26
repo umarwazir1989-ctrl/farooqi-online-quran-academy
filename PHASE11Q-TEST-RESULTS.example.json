@@ -1,0 +1,26 @@
+{
+  "project": "Farooqi Quran Portal",
+  "phase": "11Q",
+  "results": [
+    {
+      "role": "Student",
+      "area": "Qaida recording",
+      "status": "pass",
+      "url": "/portal/student/qaida",
+      "error": "",
+      "expected": "Recording uploads successfully",
+      "actual": "Recording uploads successfully",
+      "notes": ""
+    },
+    {
+      "role": "Teacher",
+      "area": "Quran review",
+      "status": "warn",
+      "url": "/portal/teacher/quran-review",
+      "error": "Replace with exact real error if any",
+      "expected": "Teacher can review assigned student's attempt",
+      "actual": "Replace with observed result",
+      "notes": "Use exact text from browser/server logs"
+    }
+  ]
+}

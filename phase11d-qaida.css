@@ -1,0 +1,21 @@
+
+/* PHASE 11D — STUDENT RECORDING + TEACHER REVIEW */
+.qaida-attempt-recorder{margin-top:20px;padding:18px;border-radius:18px;background:#f7faf8;border:1px solid #dce8e1}
+.qaida-attempt-recorder>strong{display:block;margin-bottom:10px;color:#075b45}
+.qaida-recorder-actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px}
+.qaida-recorder-actions button{border:0;border-radius:13px;padding:10px 15px;background:#075b45;color:#fff;cursor:pointer;font:inherit}
+.qaida-recorder-actions button.danger{background:#8a2f2f}.qaida-recorder-actions button.gold{background:#aa7f25}
+.qaida-attempt-recorder p{margin:10px 0 0;line-height:1.8}
+.qaida-review-stack{display:grid;gap:14px}.qaida-review-message{padding:12px 15px;border-radius:14px;background:#fff7dd}
+.qaida-review-card{background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:20px;padding:18px}
+.qaida-review-meta{display:grid;grid-template-columns:1fr 1fr auto;gap:16px;align-items:center}
+.qaida-review-meta strong,.qaida-review-meta span{display:block}.qaida-review-meta>div>span{font-size:.82rem;opacity:.72;margin-top:4px}
+.qaida-review-card audio{width:100%;margin-top:14px}
+.qaida-status{padding:7px 10px;border-radius:999px;font-size:.76rem;font-weight:700}
+.qaida-status-pending{background:#eee;color:#555}.qaida-status-correct{background:#ddf5e7;color:#176438}
+.qaida-status-repeat{background:#fff0ca;color:#815d09}.qaida-status-makhraj_issue{background:#f8dddd;color:#842d2d}
+.qaida-review-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.qaida-review-actions button{border:0;border-radius:12px;padding:9px 13px;cursor:pointer;font:inherit;color:#fff}
+.qaida-review-actions .correct{background:#176438}.qaida-review-actions .repeat{background:#a57816}.qaida-review-actions .makhraj{background:#842d2d}
+.qaida-existing-feedback{padding:10px 12px;border-radius:12px;background:#f7f7f2;line-height:1.8}
+@media(max-width:700px){.qaida-review-meta{grid-template-columns:1fr}.qaida-review-meta>.qaida-status{justify-self:start}}

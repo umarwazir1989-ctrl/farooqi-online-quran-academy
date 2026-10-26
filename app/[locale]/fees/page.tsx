@@ -8,42 +8,63 @@ const locales = ["ur", "en"] as const;
 const prices = [
   {
     nameEn: "Essential",
-    nameUr: "بنیادی",
+    nameUr: "بنیادی پلان",
     classes: "8",
     daysEn: "2 days / week",
     daysUr: "ہفتے میں 2 دن",
-    duration: "30 min",
+    durationEn: "30 min",
+    durationUr: "30 منٹ",
     gbp: "£29",
     usd: "$39",
-    cad: "C$55",
+    cadEn: "C$55",
+    cadUr: "$55",
     eur: "€35",
-    aud: "A$60",
+    audEn: "A$60",
+    audUr: "$60",
+    aedEn: "AED 135",
+    aedUr: "135 درہم",
+    pkrEn: "Rs 4,500",
+    pkrUr: "4,500 روپے",
   },
   {
-    nameEn: "Progress",
-    nameUr: "مقبول",
+    nameEn: "Popular",
+    nameUr: "مقبول پلان",
     classes: "12",
     daysEn: "3 days / week",
     daysUr: "ہفتے میں 3 دن",
-    duration: "30 min",
+    durationEn: "30 min",
+    durationUr: "30 منٹ",
     gbp: "£39",
     usd: "$55",
-    cad: "C$75",
+    cadEn: "C$75",
+    cadUr: "$75",
     eur: "€49",
-    aud: "A$85",
+    audEn: "A$85",
+    audUr: "$85",
+    aedEn: "AED 195",
+    aedUr: "195 درہم",
+    pkrEn: "Rs 6,500",
+    pkrUr: "6,500 روپے",
   },
   {
-    nameEn: "Intensive",
-    nameUr: "خصوصی",
+    nameEn: "Intensive / Hifz",
+    nameUr: "خصوصی / حفظ پلان",
     classes: "20",
     daysEn: "5 days / week",
     daysUr: "ہفتے میں 5 دن",
-    duration: "30 min",
+    durationEn: "30 min",
+    durationUr: "30 منٹ",
     gbp: "£59",
     usd: "$79",
-    cad: "C$105",
+    cadEn: "C$105",
+    cadUr: "$105",
     eur: "€75",
-    aud: "A$120",
+    audEn: "A$120",
+    audUr: "$120",
+    aedEn: "AED 290",
+    aedUr: "290 درہم",
+    pkrEn: "Rs 10,500",
+    pkrUr: "10,500 روپے",
   },
 ];
 
@@ -65,8 +86,8 @@ export default async function Page({
       title={t.feesTitle}
       intro={
         ur
-          ? "30 منٹ کی انفرادی live classes کے لیے واضح ماہانہ فیس۔ ہر نئے طالب علم کے لیے پہلے مفت Trial دستیاب ہے۔"
-          : "Clear monthly pricing for 30-minute private live classes. Every new learner can begin with a free trial."
+          ? "30 منٹ کی انفرادی آن لائن لائیو کلاسز کے لیے واضح ماہانہ فیس شیڈول۔ ہر نئے طالب علم کے لیے پہلے مفت ٹرائل دستیاب ہے، اور بہن بھائیوں کے لیے 10% تا 20% فیملی ڈسکاؤنٹ ہے۔"
+          : "Clear monthly pricing for 30-minute private 1-to-1 live classes. Every new learner begins with a free trial, with 10%–20% sibling discounts available."
       }
       pagePath="/fees"
     >
@@ -78,11 +99,13 @@ export default async function Page({
                 <tr>
                   <th>{ur ? "پلان" : "Plan"}</th>
                   <th>{ur ? "کلاسز" : "Classes"}</th>
-                  <th>UK</th>
-                  <th>USA</th>
-                  <th>Canada</th>
-                  <th>Europe</th>
-                  <th>Australia</th>
+                  <th>{ur ? "برطانیہ" : "UK"}</th>
+                  <th>{ur ? "امریکہ" : "USA"}</th>
+                  <th>{ur ? "کینیڈا" : "Canada"}</th>
+                  <th>{ur ? "یورپ" : "Europe"}</th>
+                  <th>{ur ? "آسٹریلیا" : "Australia"}</th>
+                  <th>{ur ? "متحدہ عرب امارات" : "UAE / Gulf"}</th>
+                  <th>{ur ? "پاکستان" : "Pakistan"}</th>
                 </tr>
               </thead>
               <tbody>
@@ -90,14 +113,16 @@ export default async function Page({
                   <tr className={i === 1 ? "recommended-row" : ""} key={p.nameEn}>
                     <td>
                       <strong>{ur ? p.nameUr : p.nameEn}</strong>
-                      <small>{ur ? p.daysUr : p.daysEn} · {p.duration}</small>
+                      <small>{ur ? `${p.daysUr} · ${p.durationUr}` : `${p.daysEn} · ${p.durationEn}`}</small>
                     </td>
                     <td>{p.classes} / {ur ? "ماہ" : "month"}</td>
                     <td>{p.gbp}</td>
                     <td>{p.usd}</td>
-                    <td>{p.cad}</td>
+                    <td>{ur ? p.cadUr : p.cadEn}</td>
                     <td>{p.eur}</td>
-                    <td>{p.aud}</td>
+                    <td>{ur ? p.audUr : p.audEn}</td>
+                    <td>{ur ? p.aedUr : p.aedEn}</td>
+                    <td>{ur ? p.pkrUr : p.pkrEn}</td>
                   </tr>
                 ))}
               </tbody>
@@ -105,20 +130,25 @@ export default async function Page({
           </div>
 
           <div className="fee-benefits">
-            <article><strong>1-to-1</strong><span>{ur ? "انفرادی کلاس" : "Private class"}</span></article>
-            <article><strong>30 min</strong><span>{ur ? "فی کلاس" : "per class"}</span></article>
-            <article><strong>Free</strong><span>{ur ? "پہلا Trial" : "first trial"}</span></article>
-            <article><strong>10%</strong><span>{ur ? "دوسرے sibling پر رعایت" : "second sibling discount"}</span></article>
+            <article><strong>{ur ? "انفرادی" : "1-to-1"}</strong><span>{ur ? "انفرادی لائیو کلاس" : "Private live class"}</span></article>
+            <article><strong>{ur ? "30–60 منٹ" : "30–60m"}</strong><span>{ur ? "حسبِ ضرورت دورانیہ" : "Flexible duration"}</span></article>
+            <article><strong>{ur ? "مفت" : "Free"}</strong><span>{ur ? "پہلا ٹرائل اور تعلیمی جائزہ" : "First trial & assessment"}</span></article>
+            <article><strong>10–20%</strong><span>{ur ? "بہن بھائیوں پر فیملی رعایت" : "Family sibling discount"}</span></article>
           </div>
 
           <div className="content-panel notice-panel">
-            <h2>{ur ? "خصوصی کورسز" : "Specialised Programs"}</h2>
+            <h2>{ur ? "خصوصی کورسز اور فیملی پیکجز" : "Specialised Programs & Family Packages"}</h2>
             <p>
               {ur
-                ? "حفظ، اعلیٰ تجوید/قراءات، 45 یا 60 منٹ کی کلاسز اور خصوصی حدیث/سیرت پروگرام کے لیے فیس طالب علم کی ضرورت کے مطابق طے ہوگی۔"
-                : "Hifz, advanced Tajweed/Qira'at, 45- or 60-minute lessons, and specialised Hadith/Seerah programs are quoted according to the learner's requirements."}
+                ? "حفظ القرآن، اعلیٰ تجوید و قراءات، 45 یا 60 منٹ کی کلاسز اور خصوصی حدیث و سیرت پروگرام کے لیے فیس طالب علم کی ضرورت کے مطابق طے کی جاتی ہے۔ ہوم پیج پر موجود انٹرایکٹو فیس کیلکولیٹر سے آپ فوری حساب بھی لگا سکتے ہیں۔"
+                : "Hifz, advanced Tajweed/Qira'at, 45- or 60-minute lessons, and specialised Hadith/Seerah programs are customized to the learner's requirements. You can also use the interactive Fee Calculator on our home page."}
             </p>
-            <Link className="btn" href={`/${locale}/free-trial`}>{t.trial}</Link>
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginTop: "16px" }}>
+              <Link className="btn" href={`/${locale}/free-trial`}>{t.trial}</Link>
+              <Link className="btn btn-outline" href={`/${locale}#pricing`}>
+                {ur ? "انٹرایکٹو فیس کیلکولیٹر" : "Interactive Fee Calculator"}
+              </Link>
+            </div>
           </div>
         </div>
       </section>

@@ -44,7 +44,7 @@ export default function TrialApplicationForm({ locale }: { locale: Locale }) {
 
       const number = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923336519527";
       const text = isUrdu
-        ? `السلام علیکم، میں نے فاروقی آن لائن قرآن اکیڈمی کی ویب سائٹ پر Trial درخواست جمع کر دی ہے۔\nApplication ID: ${result.id}`
+        ? `السلام علیکم، میں نے فاروقی آن لائن قرآن اکیڈمی کی ویب سائٹ پر مفت ٹرائل کلاس کی درخواست جمع کر دی ہے۔\nدرخواست نمبر: ${result.id}`
         : `Assalamu Alaikum, I have submitted a free trial request on Farooqi Online Quran Academy.\nApplication ID: ${result.id}`;
 
       setStatus(
@@ -91,11 +91,11 @@ export default function TrialApplicationForm({ locale }: { locale: Locale }) {
 
       <div className="form-row">
         <label>
-          WhatsApp *
+          {isUrdu ? "واٹس ایپ نمبر *" : "WhatsApp *"}
           <input name="whatsapp" inputMode="tel" required />
         </label>
         <label>
-          Email
+          {isUrdu ? "ای میل" : "Email"}
           <input name="email" type="email" />
         </label>
       </div>
@@ -117,7 +117,7 @@ export default function TrialApplicationForm({ locale }: { locale: Locale }) {
           <input name="age" type="number" min="3" max="100" />
         </label>
         <label>
-          {isUrdu ? "طالب علم" : "Student gender"}
+          {isUrdu ? "طالب علم کی جنس" : "Student gender"}
           <select name="gender" defaultValue="">
             <option value="">{isUrdu ? "منتخب کریں" : "Select"}</option>
             <option value="male">{isUrdu ? "مرد / لڑکا" : "Male"}</option>
@@ -152,9 +152,9 @@ export default function TrialApplicationForm({ locale }: { locale: Locale }) {
           {isUrdu ? "کلاس کی زبان" : "Class language"}
           <select name="preferred_language" defaultValue="">
             <option value="">{isUrdu ? "منتخب کریں" : "Select"}</option>
-            <option value="Urdu">Urdu</option>
-            <option value="English">English</option>
-            <option value="Arabic">Arabic</option>
+            <option value="Urdu">{isUrdu ? "اردو" : "Urdu"}</option>
+            <option value="English">{isUrdu ? "انگلش" : "English"}</option>
+            <option value="Arabic">{isUrdu ? "عربی" : "Arabic"}</option>
           </select>
         </label>
       </div>

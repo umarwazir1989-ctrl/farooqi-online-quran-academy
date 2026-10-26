@@ -186,7 +186,7 @@ export async function archiveEntity(input: {
   const sb = getSupabaseAdmin();
 
   const map: Record<string, { table: string; statusColumn: string; active: string; archived: string }> = {
-    student: { table:"students", statusColumn:"status", active:"active", archived:"inactive" },
+    student: { table:"students", statusColumn:"status", active:"active", archived:"paused" },
     teacher: { table:"teachers", statusColumn:"status", active:"active", archived:"inactive" },
     parent: { table:"parents", statusColumn:"status", active:"active", archived:"inactive" },
     trial: { table:"trial_applications", statusColumn:"status", active:"new", archived:"closed" },
@@ -265,17 +265,17 @@ export async function adminSearch(q: string) {
   if (!term) return { students:[], teachers:[], parents:[], trials:[] };
 
   const [students, teachers, parents, trials] = await Promise.all([
-    sb.from("students").select("id,full_name,email,phone,student_code,status").or(
-      `full_name.ilike.%${term}%,email.ilike.%${term}%,phone.ilike.%${term}%,student_code.ilike.%${term}%`
+    sb.from("students").select("id,full_name,email,whatsapp,student_code,status").or(
+      `full_name.ilike.%${term}%,email.ilike.%${term}%,whatsapp.ilike.%${term}%,student_code.ilike.%${term}%`
     ).limit(30),
-    sb.from("teachers").select("id,full_name,email,phone,teacher_code,status").or(
-      `full_name.ilike.%${term}%,email.ilike.%${term}%,phone.ilike.%${term}%,teacher_code.ilike.%${term}%`
+    sb.from("teachers").select("id,full_name,email,teacher_code,status").or(
+      `full_name.ilike.%${term}%,email.ilike.%${term}%,teacher_code.ilike.%${term}%`
     ).limit(30),
     sb.from("parents").select("id,full_name,email,phone,status").or(
       `full_name.ilike.%${term}%,email.ilike.%${term}%,phone.ilike.%${term}%`
     ).limit(30),
-    sb.from("trial_applications").select("id,student_name,parent_name,email,phone,status").or(
-      `student_name.ilike.%${term}%,parent_name.ilike.%${term}%,email.ilike.%${term}%,phone.ilike.%${term}%`
+    sb.from("trial_applications").select("id,student_name,parent_name,email,whatsapp,status").or(
+      `student_name.ilike.%${term}%,parent_name.ilike.%${term}%,email.ilike.%${term}%,whatsapp.ilike.%${term}%`
     ).limit(30),
   ]);
 
@@ -284,9 +284,9 @@ export async function adminSearch(q: string) {
   }
 
   return {
-    students: students.data || [],
-    teachers: teachers.data || [],
+    students: (students.data || []).map((s: any) => ({ ...s, phone: s.whatsapp || "" })),
+    teachers: (teachers.data || []).map((t: any) => ({ ...t, phone: t.phone || "" })),
     parents: parents.data || [],
-    trials: trials.data || [],
+    trials: (trials.data || []).map((tr: any) => ({ ...tr, phone: tr.whatsapp || "" })),
   };
 }

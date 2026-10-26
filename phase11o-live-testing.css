@@ -1,0 +1,12 @@
+
+/* PHASE 11O — LIVE LAUNCH TESTING */
+.launch-diagnostics{display:grid;gap:16px}
+.launch-diagnostics-head{display:flex;justify-content:space-between;gap:16px;align-items:center}
+.launch-diagnostics-head button{border:0;border-radius:10px;padding:9px 13px;background:var(--green);color:#fff;cursor:pointer}
+.launch-diagnostics-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.launch-diagnostics-grid article{min-width:0;padding:13px;border:1px solid var(--line);border-radius:13px;background:#faf9f5}
+.launch-diagnostics-grid strong,.launch-diagnostics-grid span{display:block;overflow-wrap:anywhere}
+.launch-diagnostics-grid span{color:var(--muted);font-size:.8rem;margin-top:4px}
+.diag-pass{border-inline-start:4px solid #287a4d!important}
+.diag-fail{border-inline-start:4px solid #a13a3a!important}
+@media(max-width:700px){.launch-diagnostics-grid{grid-template-columns:1fr}.launch-diagnostics-head{align-items:flex-start;display:grid}}

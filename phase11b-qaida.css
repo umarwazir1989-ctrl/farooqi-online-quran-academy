@@ -1,0 +1,26 @@
+
+/* PHASE 11B — QAIDA CURRICULUM */
+.qaida-index-intro{padding:22px;border-radius:20px;background:linear-gradient(135deg,rgba(3,84,63,.08),rgba(192,147,57,.10));margin-bottom:18px}
+.qaida-index-intro h2{margin:0 0 8px}.qaida-index-intro p{margin:0;line-height:1.9}
+.qaida-lesson-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.qaida-lesson-tile{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:20px;padding:18px;transition:.16s ease}
+.qaida-lesson-tile:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,0,0,.08);border-color:#0b664f}
+.qaida-lesson-tile>span{display:inline-flex;width:42px;height:42px;align-items:center;justify-content:center;border-radius:13px;background:#0b664f;color:#fff;font-weight:700}
+.qaida-lesson-tile h3{margin:12px 0 7px}.qaida-lesson-tile p{margin:0;line-height:1.8;font-size:.9rem}
+.qaida-lesson-player{display:grid;gap:18px}.qaida-lesson-head{padding:20px;border-radius:20px;background:#f7faf8}
+.qaida-lesson-head>span{color:#b1842b;font-weight:700}.qaida-lesson-head h2{margin:6px 0}.qaida-lesson-head p{margin:0;line-height:1.9}
+.qaida-card-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.qaida-study-card{min-height:150px;border:2px solid transparent;border-radius:20px;background:#fff9ec;padding:14px;cursor:pointer}
+.qaida-study-card.active{border-color:#0b664f;background:#eef8f4}
+.qaida-study-card strong{display:block;font-family:"Amiri","Noto Naskh Arabic",serif;font-size:3rem;line-height:1.3;color:#0b664f}
+.qaida-study-card small{display:block;line-height:1.7}
+.qaida-focus-card{text-align:center;padding:24px;border-radius:22px;background:#fff;border:1px solid rgba(0,0,0,.08)}
+.qaida-focus-text{font-family:"Amiri","Noto Naskh Arabic",serif;font-size:clamp(4rem,10vw,7rem);color:#0b664f;line-height:1.3}
+.qaida-focus-card p{line-height:1.9}.qaida-focus-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.qaida-focus-actions button{border:0;border-radius:14px;padding:11px 17px;background:#0b664f;color:#fff;cursor:pointer;font:inherit}
+.qaida-focus-actions button+button{background:#b1842b}
+.qaida-focus-message{margin-top:16px;padding:12px 15px;border-radius:14px;background:#f7f7f2;line-height:1.8}
+.qaida-audio-credit{padding:16px 18px;border-radius:16px;background:#f7faf8;border-inline-start:4px solid #b1842b;font-size:.88rem}
+.qaida-audio-credit p{margin:4px 0;line-height:1.7}
+@media(max-width:900px){.qaida-lesson-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.qaida-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.qaida-lesson-grid,.qaida-card-grid{grid-template-columns:1fr}}

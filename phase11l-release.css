@@ -1,0 +1,14 @@
+/* PHASE 11L — RELEASE CANDIDATE / SYSTEM HEALTH */
+.admin-quran-health-head{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.admin-quran-health-head button{border:0;border-radius:10px;padding:8px 12px;background:var(--green);color:#fff;cursor:pointer}
+.admin-quran-health-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+.admin-quran-health-grid article{padding:14px;border:1px solid var(--line);border-radius:13px;background:#faf9f5}
+.admin-quran-health-grid strong,.admin-quran-health-grid span{display:block}
+.health-pass{border-inline-start:4px solid #287a4d!important}
+.health-warn{border-inline-start:4px solid #b1842b!important}
+.health-fail{border-inline-start:4px solid #a13a3a!important}
+.admin-quran-counts{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.admin-quran-counts span{padding:8px 10px;border-radius:10px;background:#f4f6f4}
+.admin-quran-counts b{color:var(--green)}
+@media(max-width:900px){.admin-quran-health-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.admin-quran-health-grid{grid-template-columns:1fr}.admin-quran-health-head{align-items:flex-start}}

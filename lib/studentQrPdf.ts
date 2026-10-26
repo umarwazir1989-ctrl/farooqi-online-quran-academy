@@ -12,7 +12,8 @@ export async function buildQrStudentIdCard(student: any, siteUrl: string) {
   const regular = await pdf.embedFont(StandardFonts.Helvetica);
   const bold = await pdf.embedFont(StandardFonts.HelveticaBold);
 
-  const qrUrl = `${siteUrl}/portal/login`;
+  const verifyCode = clean(student.verification_code || student.student_code) || "verify";
+  const qrUrl = `${siteUrl.replace(/\/$/, "")}/verify/${encodeURIComponent(verifyCode)}`;
   const qrDataUrl = await QRCode.toDataURL(qrUrl, {
     margin: 1,
     width: 220,
@@ -34,7 +35,7 @@ export async function buildQrStudentIdCard(student: any, siteUrl: string) {
     x: 16, y: 180, size: 10.5, font: bold, color: rgb(1, 1, 1)
   });
 
-  page.drawText("STUDENT ID", {
+  page.drawText("VERIFIED STUDENT ID CARD", {
     x: 16, y: 163, size: 8, font: regular, color: gold
   });
 
@@ -62,8 +63,8 @@ export async function buildQrStudentIdCard(student: any, siteUrl: string) {
     x: 238, y: 54, width: 68, height: 68
   });
 
-  page.drawText("Scan for Academy Portal", {
-    x: 228, y: 40, size: 6.5, font: regular, color: muted
+  page.drawText("Scan to Verify ID", {
+    x: 242, y: 40, size: 6.5, font: regular, color: muted
   });
 
   page.drawText("Quran • Tajweed • Islamic Studies", {

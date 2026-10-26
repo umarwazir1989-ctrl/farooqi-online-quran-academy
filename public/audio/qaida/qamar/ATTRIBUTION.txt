@@ -1,0 +1,24 @@
+QAIDA AUDIO ATTRIBUTION
+
+Source:
+"Noorani Qaida / Al Qaida Al Nooraniya" by Qamar Apps.
+
+Reciter:
+Mufti Mohammed Ghiyas Mohiuddin
+Madrasa Arabia Hifzul Quraan, India.
+
+License:
+Creative Commons Attribution-ShareAlike 4.0 International
+CC BY-SA 4.0
+https://creativecommons.org/licenses/by-sa/4.0/
+
+Official source page:
+https://qamarapps.com/al-qaida-al-nooraniya/
+
+Secondary confirmation:
+HifzPal / ClearStack states that its bundled Qaida drill recordings
+come from Qamar Apps under CC BY-SA 4.0 and remain under the same license.
+
+IMPORTANT:
+Any copied/adapted audio remains CC BY-SA 4.0.
+Keep this attribution with distributed builds.

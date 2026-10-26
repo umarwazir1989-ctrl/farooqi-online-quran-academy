@@ -1,0 +1,16 @@
+
+/* PHASE 11N — FINAL LAUNCH AUDIT */
+.admin-launch-audit{display:grid;gap:14px}
+.admin-launch-audit-head{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.admin-launch-audit-actions{display:flex;gap:8px;flex-wrap:wrap}
+.admin-launch-audit-actions button{border:0;border-radius:10px;padding:8px 12px;cursor:pointer;color:#fff}
+.admin-launch-audit-actions button:nth-child(1){background:#287a4d}
+.admin-launch-audit-actions button:nth-child(2){background:#b1842b}
+.admin-launch-audit-actions button:nth-child(3){background:#a13a3a}
+.admin-launch-audit-list{display:grid;gap:8px}
+.admin-launch-audit-list article{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:11px;border:1px solid var(--line);border-radius:12px;background:#faf9f5}
+.launch-result{padding:5px 8px;border-radius:999px;font-size:.75rem;text-transform:uppercase}
+.launch-pass{background:#ddf6e6;color:#196132}
+.launch-warn{background:#fff0cc;color:#765000}
+.launch-fail{background:#fde3e3;color:#8d2424}
+@media(max-width:650px){.admin-launch-audit-head{display:grid}.admin-launch-audit-list article{grid-template-columns:1fr auto}.admin-launch-audit-list time{grid-column:1/-1}}
