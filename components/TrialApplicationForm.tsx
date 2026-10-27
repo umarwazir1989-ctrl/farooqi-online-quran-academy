@@ -36,15 +36,15 @@ export default function TrialApplicationForm({ locale }: { locale: Locale }) {
         body: JSON.stringify(payload),
       });
 
-      const text = await response.text().catch(() => "");
-      const result = text ? JSON.parse(text) : {};
+      const rawText = await response.text().catch(() => "");
+      const result = rawText ? JSON.parse(rawText) : {};
 
       if (!response.ok || !result.ok) {
         throw new Error(result.error || "Submission failed");
       }
 
       const number = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923336519527";
-      const text = isUrdu
+      const waMessage = isUrdu
         ? `السلام علیکم، میں نے فاروقی آن لائن قرآن اکیڈمی کی ویب سائٹ پر مفت ٹرائل کلاس کی درخواست جمع کر دی ہے۔\nدرخواست نمبر: ${result.id}`
         : `Assalamu Alaikum, I have submitted a free trial request on Farooqi Online Quran Academy.\nApplication ID: ${result.id}`;
 
@@ -57,7 +57,7 @@ export default function TrialApplicationForm({ locale }: { locale: Locale }) {
       e.currentTarget.reset();
 
       window.open(
-        `https://wa.me/${number}?text=${encodeURIComponent(text)}`,
+        `https://wa.me/${number}?text=${encodeURIComponent(waMessage)}`,
         "_blank",
         "noopener,noreferrer"
       );
