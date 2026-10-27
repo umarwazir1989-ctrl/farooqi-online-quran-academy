@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import InternalPage from "@/components/InternalPage";
 import { siteData, type Locale } from "@/lib/siteData";
 

@@ -343,6 +343,39 @@ export const siteData = {
       "فاروقی آن لائن قرآن اکیڈمی لاہور (پاکستان) سے دنیا بھر کے بچوں، خواتین اور بڑوں کے لیے مستند و سند یافتہ اساتذہ کے ساتھ انفرادی 1-to-1 کلاسز فراہم کرتی ہے۔",
     
     // Original 5 Certified Teachers explicitly provided by user
+        aboutPoints: [
+      ["50+ طلبہ", "مختلف عمروں اور سطحوں کے طلبہ باقاعدگی سے زیرِ تعلیم ہیں۔"],
+      ["5 مستند اساتذہ", "مرد و خواتین اساتذہ کے ساتھ انفرادی تدریس۔"],
+      ["انفرادی کلاسز", "ہر طالب علم کو الگ توجہ اور ذاتی تعلیمی منصوبہ۔"],
+      ["عالمی اوقات", "دنیا کے مختلف ممالک کے مطابق لچکدار اوقات۔"]
+    ],
+    trialTitle: "مفت ٹرائل کلاس",
+    trialIntro: "داخلے سے پہلے ایک مفت ٹرائل کلاس کے ذریعے طالب علم کی سطح اور مناسب وقت طے کیا جاتا ہے۔",
+    trialSteps: [
+      "طالب علم کی بنیادی معلومات جمع کریں",
+      "موجودہ سطح اور مطلوبہ کورس کا جائزہ",
+      "موزوں استاد اور وقت کا انتخاب",
+      "مفت ٹرائل کلاس کا انعقاد",
+      "موزوں کورس کا مشورہ اور باقاعدہ داخلہ"
+    ],
+    feesTitle: "فیس پلان",
+    feesIntro: "فیس طالب علم کے ملک، ہفتہ وار کلاسز اور دورانیے کے مطابق مقرر کی جاتی ہے۔",
+    contactTitle: "رابطہ کریں",
+    contactIntro: "داخلہ، مفت ٹرائل کلاس، کورس یا فیس کے بارے میں معلومات کے لیے براہِ راست رابطہ کریں۔",
+    coursesList: [
+      ["نورانی قاعدہ (بنیادی)", "تجویدی حروف اور حرکات کی بنیادی شناخت"],
+      ["ناظرہ قرآن مع تجوید", "درست مخارج اور رواں تلاوت"],
+      ["حفظ القرآن الکریم", "سبق، سبقی، منزل اور پختہ یادداشت"],
+      ["تجوید القرآن (عملی و نظری)", "مخارج، صفات اور تجویدی قواعد کی گہرائی"],
+      ["ترجمہ و تفسیر قرآن", "آسان فہم اور عملی رہنمائی"],
+      ["اسلامی بنیادی تربیت و مسنون دعائیں", "نماز، عقائد، طہارت اور روزمرہ کی دعائیں"],
+      ["منتخب احادیثِ نبویہ", "اخلاق و اعمال کی اصلاح"],
+      ["سیرت النبی ﷺ و تاریخِ اسلام", "پیارے نبی ﷺ کی حیات طیبہ کا جامع مطالعہ"],
+      ["بنیادی فقہ و احکامِ شریعت", "طہارت، نماز، روزے اور روزمرہ مسائل"],
+      ["عربی زبان و تکلم", "روزمرہ بول چال اور قرآنی تعبیرات"],
+      ["قرآنی عربی گرامر (نحو و صرف)", "قرآنی تراکیب اور اعراب کی تفہیم"],
+      ["تعارف قراءاتِ سبعہ و عشرہ", "متواتر قراءات کی تاریخ اور ائمہ کے اصول"]
+    ],
     teachersList: [
       {
         name: "قاری محمد عمر فاروقی",
@@ -654,6 +687,39 @@ export const siteData = {
     intro:
       "Farooqi Online Quran Academy (Lahore, Pakistan) provides private one-to-one online Quran education and Islamic studies worldwide with certified scholars and female tutors.",
 
+        aboutPoints: [
+      ["50+ Students", "Students of all ages and levels currently enrolled worldwide."],
+      ["5 Certified Scholars", "Qualified male and female scholars with Sanad in Qira'at."],
+      ["1-to-1 Private Classes", "Focused individual attention and personalized learning plans."],
+      ["Flexible Global Schedules", "Convenient timings aligned with UK, USA, Gulf & Pakistan."]
+    ],
+    trialTitle: "Free Trial Class",
+    trialIntro: "Experience our live interactive teaching with a complimentary evaluation session before formal enrollment.",
+    trialSteps: [
+      "Submit student details and learning background",
+      "Level assessment and course recommendation",
+      "Schedule matching with preferred teacher",
+      "Live 1-to-1 free trial session",
+      "Feedback, teacher evaluation and formal admission"
+    ],
+    feesTitle: "Tuition & Fee Plans",
+    feesIntro: "Affordable monthly fee packages customized by country, weekly class frequency and lesson duration.",
+    contactTitle: "Contact Us",
+    contactIntro: "Get in touch directly via WhatsApp, phone or email for admissions, fee inquiries, or trial scheduling.",
+    coursesList: [
+      ["Noorani Qaida (Foundations)", "Letter articulation, phonetics and basic reading"],
+      ["Nazra Quran with Tajweed", "Fluent recitation with correct Makharīj"],
+      ["Hifz-ul-Quran (Memorization)", "Daily lesson, revision (Sabqi & Manzil) and retention"],
+      ["Advanced Tajweed Rules", "In-depth study of Sifat, Makharīj and Tuhfat-ul-Atfal"],
+      ["Quran Translation & Tafseer", "Word-by-word meaning, context and contemporary lessons"],
+      ["Islamic Essentials & Daily Duas", "Salah, purification, beliefs and morning/evening Adhkar"],
+      ["Selected Hadith Study", "Character building, ethics and Prophetic wisdom"],
+      ["Seerat-un-Nabi & Islamic History", "Comprehensive study of the life of the Prophet ﷺ"],
+      ["Basic Fiqh & Daily Rulings", "Purification, prayer, fasting and essential rulings"],
+      ["Conversational Spoken Arabic", "Everyday Quranic and standard Arabic dialogues"],
+      ["Quranic Arabic Grammar (Nahw & Sarf)", "Grammatical parsing and sentence structures"],
+      ["Introduction to 7 & 10 Qira'at", "Canonical recitations and comparative readings"]
+    ],
     teachersList: [
       {
         name: "Qari Muhammad Umar Farooqi",
