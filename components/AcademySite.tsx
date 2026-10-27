@@ -3,403 +3,268 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import {
+  siteData,
+  QURAN_SURAHS,
+  NOORANI_QAIDA_LESSONS,
+  type Locale,
+  type CourseDetail,
+} from "@/lib/siteData";
 
-type Locale = "ur" | "en";
+type QariReciterId = "husary_muallim" | "afasy" | "basit" | "sudais" | "minshawi_muallim";
 
-type QariId = "afasy" | "husary" | "sudais";
-
-const QARI_LIST: {
-  id: QariId;
+interface QariReciter {
+  id: QariReciterId;
   nameUr: string;
   nameEn: string;
-  folder: string;
-}[] = [
+  serverUrl: string;
+  isTeacherMode: boolean;
+  descUr: string;
+  descEn: string;
+}
+
+const RECITERS: QariReciter[] = [
+  {
+    id: "husary_muallim",
+    nameUr: "شیخ محمود خلیل الحصری (معلم - تدریس کا انداز)",
+    nameEn: "Sheikh Al-Husary (Educational / Teacher Mode)",
+    serverUrl: "https://server13.mp3quran.net/husr_moal",
+    isTeacherMode: true,
+    descUr: "تدریس کا روایتی انداز: استاد آیت تلاوت کر کے ٹھہرتے ہیں تاکہ طلبہ دہرائیں",
+    descEn: "Traditional teaching style: measured recitation with pauses for student repetition",
+  },
   {
     id: "afasy",
     nameUr: "شیخ مشاری راشد العفاسی",
     nameEn: "Sheikh Mishary Rashid Alafasy",
-    folder: "Alafasy_128kbps",
+    serverUrl: "https://server8.mp3quran.net/afs",
+    isTeacherMode: false,
+    descUr: "خوش الحان اور دلنشین ترتیل",
+    descEn: "Renowned soulful and melodious Murattal recitation",
   },
   {
-    id: "husary",
-    nameUr: "شیخ محمود خلیل الحصری (معلمِ تجوید)",
-    nameEn: "Sheikh Mahmoud Khalil Al-Husary",
-    folder: "Husary_128kbps",
+    id: "basit",
+    nameUr: "شیخ عبد الباسط عبد الصمد (مرتل)",
+    nameEn: "Sheikh Abdul Basit (Murattal)",
+    serverUrl: "https://server7.mp3quran.net/basit",
+    isTeacherMode: false,
+    descUr: "مصر کے سنہرے دور کی بے مثل تجوید و قراءت",
+    descEn: "Timeless Egyptian master of crisp, measured Tajweed",
   },
   {
     id: "sudais",
-    nameUr: "شیخ عبدالرحمٰن السدیس (امامِ کعبہ)",
+    nameUr: "شیخ عبد الرحمٰن السدیس (امامِ کعبہ)",
     nameEn: "Sheikh Abdur-Rahman As-Sudais",
-    folder: "Abdurrahmaan_As-Sudais_192kbps",
+    serverUrl: "https://server11.mp3quran.net/sds",
+    isTeacherMode: false,
+    descUr: "مسجدِ حرام، مکہ مکرمہ کی پر اثر تلاوت",
+    descEn: "Revered recitation from the Grand Mosque in Makkah",
+  },
+  {
+    id: "minshawi_muallim",
+    nameUr: "شیخ محمد صدیق المنشاوی (معلم / تدریس)",
+    nameEn: "Sheikh Al-Minshawi (Teacher Mode)",
+    serverUrl: "https://server10.mp3quran.net/minsh_moal",
+    isTeacherMode: true,
+    descUr: "تدریسی انداز مع تکرارِ طلبہ",
+    descEn: "Educational recitation with student choir repetition",
   },
 ];
 
-const TAJWEED_SAMPLES = [
-  {
-    surahEn: "Surah Al-Muzzammil (73:4)",
-    surahUr: "سورۃ المزمل (آیت 4)",
-    audioFiles: ["073004.mp3"],
-    arabicHtml: `وَرَتِّلِ الْقُرْآنَ <span class="tj-madd" title="Madd Asli (2 Harakaat)">تَرْتِي</span><span class="tj-tanween" title="Madd Iwad (Stop on Tanween)">لًا</span>`,
-    translationEn: "And recite the Quran with measured, clear recitation.",
-    translationUr: "اور قرآنِ مجید کو خوب ٹھہر ٹھہر کر (واضح تجوید کے ساتھ) پڑھیے۔",
-    ruleEn: "Focus: Raa Tafkheem/Tarqeeq, Lam Qamariyyah & Madd Iwad on stopping.",
-    ruleUr: "تجویدی نکتہ: راء کی تفخیم و ترقیق، لامِ قمریہ اور وقف پر مدِّ عوض۔",
-  },
-  {
-    surahEn: "Surah Al-Qamar (54:17)",
-    surahUr: "سورۃ القمر (آیت 17)",
-    audioFiles: ["054017.mp3"],
-    arabicHtml: `وَلَقَ<span class="tj-qalqalah" title="Qalqalah Sugra">دْ</span> يَسَّرْنَا الْقُرْآنَ لِلذِّكْرِ فَهَلْ مِ<span class="tj-idgham" title="Idgham bi-Ghunnah">ن مُّ</span>دَّكِرٍ`,
-    translationEn: "And We have certainly made the Quran easy for remembrance, so is there any who will remember?",
-    translationUr: "اور بے شک ہم نے قرآن کو نصیحت اور یاد کرنے کے لیے آسان کر دیا ہے، تو کیا ہے کوئی نصیحت حاصل کرنے والا؟",
-    ruleEn: "Focus: Qalqalah on Daal and Idgham bi-Ghunnah on Noon Saakin followed by Meem.",
-    ruleUr: "تجویدی نکتہ: دال ساکن پر قلقلہ صغریٰ اور نون ساکن کے بعد میم پر ادغام مع الغنہ۔",
-  },
-  {
-    surahEn: "Surah Al-Ikhlas (112:1–2)",
-    surahUr: "سورۃ الاخلاص (آیات 1–2)",
-    audioFiles: ["112001.mp3", "112002.mp3"],
-    arabicHtml: `قُلْ هُوَ اللَّهُ أَحَ<span class="tj-qalqalah" title="Qalqalah Kubra">دٌ</span> ۝ اللَّهُ الصَّمَ<span class="tj-qalqalah" title="Qalqalah Kubra">دُ</span>`,
-    translationEn: "Say, He is Allah, [who is] One. Allah, the Eternal Refuge.",
-    translationUr: "کہہ دیجیے کہ وہ اللہ ایک ہے۔ اللہ بے نیاز ہے۔",
-    ruleEn: "Focus: Heavy Lam in Lafz-ul-Jalalah and Qalqalah Kubra when stopping on Daal.",
-    ruleUr: "تجویدی نکتہ: لفظِ اللہ کے لام کو پُر پڑھنا اور وقف کی صورت میں دال پر قلقلہ کبریٰ۔",
-  },
-];
-
-const CURRENCY_RATES: Record<string, { symbol: string; labelEn: string; labelUr: string; basePerClass30: number }> = {
-  GBP: { symbol: "£", labelEn: "UK (GBP £)", labelUr: "برطانیہ — پاؤنڈ (£)", basePerClass30: 3.4 },
-  USD: { symbol: "$", labelEn: "USA (USD $)", labelUr: "امریکہ — ڈالر ($)", basePerClass30: 4.6 },
-  EUR: { symbol: "€", labelEn: "Europe (EUR €)", labelUr: "یورپ — یورو (€)", basePerClass30: 4.1 },
-  CAD: { symbol: "C$", labelEn: "Canada (CAD C$)", labelUr: "کینیڈا — کینیڈین ڈالر ($)", basePerClass30: 6.2 },
-  AUD: { symbol: "A$", labelEn: "Australia (AUD A$)", labelUr: "آسٹریلیا — آسٹریلوی ڈالر ($)", basePerClass30: 7.0 },
-  AED: { symbol: "AED ", labelEn: "UAE / Gulf (AED)", labelUr: "متحدہ عرب امارات — درہم", basePerClass30: 16.5 },
-  PKR: { symbol: "Rs ", labelEn: "Pakistan (PKR ₨)", labelUr: "پاکستان — پاکستانی روپیہ", basePerClass30: 550 },
+const CURRENCIES: Record<
+  string,
+  { symbol: string; labelEn: string; labelUr: string; basePerClass: number }
+> = {
+  GBP: { symbol: "£", labelEn: "UK (GBP £)", labelUr: "برطانیہ — پاؤنڈ (£)", basePerClass: 3.25 },
+  USD: { symbol: "$", labelEn: "USA (USD $)", labelUr: "امریکہ — ڈالر ($)", basePerClass: 4.5 },
+  EUR: { symbol: "€", labelEn: "Europe (EUR €)", labelUr: "یورپ — یورو (€)", basePerClass: 4.1 },
+  CAD: { symbol: "C$", labelEn: "Canada (CAD C$)", labelUr: "کینیڈا — کینیڈین ڈالر ($)", basePerClass: 6.2 },
+  AUD: { symbol: "A$", labelEn: "Australia (AUD A$)", labelUr: "آسٹریلیا — ڈالر ($)", basePerClass: 7.0 },
+  AED: { symbol: "AED ", labelEn: "UAE / Gulf (AED)", labelUr: "متحدہ عرب امارات — درہم", basePerClass: 16.5 },
+  PKR: { symbol: "Rs ", labelEn: "Pakistan (PKR ₨)", labelUr: "پاکستان — روپیہ (Rs)", basePerClass: 540 },
 };
 
-const content = {
-  ur: {
-    dir: "rtl",
-    language: "اردو",
-    other: "English",
-    localePath: "/en",
-    nav: ["کورسز", "تجوید اسٹوڈیو", "اساتذہ", "فیس کیلکولیٹر", "تصدیق", "رابطہ"],
-    ids: ["courses", "tajweed-preview", "teachers", "pricing", "faq", "contact"],
-    badge: "دنیا بھر کے طلبہ کے لیے پریمیم آن لائن قرآن اکیڈمی",
-    titleA: "قرآنِ مجید سیکھیے",
-    titleB: "تجوید، محبت اور اعتماد کے ساتھ",
-    lead:
-      "بچوں، خواتین اور بڑوں کے لیے مستند مرد و خواتین اساتذہ کے ساتھ انفرادی آن لائن کلاسز۔ محفوظ ماحول، ڈیجیٹل پورٹل ٹریکنگ اور آپ کے مقامی وقت کے مطابق قرآن سیکھنے کا جدید نظام۔",
-    trial: "مفت ٹرائل کلاس بک کریں",
-    whatsapp: "واٹس ایپ پر رابطہ",
-    portal: "پورٹل ڈیش بورڈ",
-    stats: [
-      ["50+", "زیرِ تعلیم طلبہ"],
-      ["5+", "مستند قراء و معلمات"],
-      ["انفرادی", "براہِ راست لائیو کلاسز"],
-      ["100%", "والدین پورٹل و ماہانہ رپورٹ"],
-    ],
-    coursesTitle: "ہر عمر اور ہر سطح کے لیے جامع قرآنی نصاب",
-    coursesSub:
-      "ابتدائی نورانی قاعدہ سے ناظرہ، حفظ، تجوید، ترجمہ و تفسیر، عربی اور بنیادی اسلامی تعلیمات تک مرحلہ وار نصاب۔",
-    courses: [
-      ["نورانی قاعدہ", "حروف، حرکات، جوڑ، مخارج اور درست تلفظ کی مضبوط بنیاد۔", "ابتدائی طلبہ اور بچوں کے لیے"],
-      ["ناظرہ قرآن مع تجوید", "مخارج اور بنیادی تجوید کے ساتھ روانی سے قرآنِ مجید کی تلاوت۔", "قاعدہ مکمل کرنے والوں کے لیے"],
-      ["تجوید و قراءات کورس", "قواعدِ تجوید، صفاتِ حروف، عملی مشق اور انفرادی تلاوت کی اصلاح۔", "تلاوت خوبصورت بنانے کے لیے"],
-      ["حفظ القرآن الکریم", "منظم سبق، سبقی، منزل اور مسلسل نگرانی کے ساتھ پختہ حفظ۔", "بچوں اور بڑوں کے لیے"],
-      ["ترجمہ و تفسیر القرآن", "منتخب سورتوں اور پورے قرآن کا آسان ترجمہ، مفہوم اور عملی تشریح۔", "فہمِ قرآن کے خواہش مندوں کے لیے"],
-      ["نماز، سیرت و اسلامیات", "نماز، مسنون دعائیں، سیرت النبی ﷺ، عقیدہ اور روزمرہ اسلامی آداب۔", "بچوں اور خاندانوں کے لیے"],
-    ],
-    whyTitle: "والدین فاروقی اکیڈمی کو کیوں ترجیح دیتے ہیں؟",
-    why: [
-      ["مستند قراء و معلمات", "اجازہ یافتہ اور تجربہ کار مرد و خواتین اساتذہ، جو ہر طالب علم کی نفسیات اور رفتار کے مطابق پڑھاتے ہیں۔"],
-      ["مکمل محفوظ ماحول", "انفرادی کلاس، خواتین و بچیوں کے لیے الگ معلمات اور والدین کے لیے براہِ راست نگرانی کی سہولت۔"],
-      ["عالمی ٹائم زون سہولت", "پاکستان، برطانیہ، یورپ، امریکہ، کینیڈا، آسٹریلیا اور خلیجی ممالک کے مطابق لچکدار اوقات۔"],
-      ["ڈیجیٹل پورٹل و ماہانہ رپورٹ", "ہر کلاس کا سبق، حاضری، ہوم ورک اور ماہانہ رپورٹ کارڈ آن لائن پورٹل میں دستیاب۔"],
-      ["عملی تجوید و مخارج", "صرف پڑھانا نہیں بلکہ ہر آیت میں مخارج، غنہ، مد اور قلقلہ کی فوری عملی مشق۔"],
-      ["3 دن مفت ٹرائل و اسسمنٹ", "داخلے سے پہلے استاد، طریقۂ تدریس اور کلاس سسٹم کا اطمینان بخش تجربہ۔"],
-    ],
-    processTitle: "داخلے کا سادہ 4 مرحلہ وار طریقۂ کار",
-    steps: [
-      ["آن لائن درخواست", "مختصر فارم یا واٹس ایپ کے ذریعے طالب علم کی بنیادی معلومات اور پسندیدہ وقت بھیجیں۔"],
-      ["تعلیمی سطح کا جائزہ", "طالب علم کی عمر، موجودہ قرآنی سطح، مقصد اور موزوں اوقات کا جائزہ لیا جاتا ہے۔"],
-      ["مفت ٹرائل کلاس", "مناسب مرد استاد یا خاتون معلمہ کے ساتھ عملی ٹرائل کلاس اور ابتدائی تعلیمی جائزہ۔"],
-      ["باقاعدہ کلاس و پورٹل", "موزوں وقت، کورس اور ذاتی پورٹل اکاؤنٹ کے ساتھ باقاعدہ کلاسز کا آغاز۔"],
-    ],
-    teachersTitle: "ہمارے مستند اساتذہ اور معلمات",
-    teachers: [
-      ["قاری محمد فاروقی", "حافظ و قاری (10+ سال تجربہ)", "حفظ، تجوید، قراءات اور ناظرہ قرآن کے ماہر استاد۔ اردو، انگلش اور عربی۔"],
-      ["عالمہ و قاریہ عائشہ", "فاضلہ و ماہرِ تجوید (7+ سال تجربہ)", "خواتین، بچیوں اور کم عمر بچوں کے لیے نورانی قاعدہ، تجوید اور ترجمہ۔"],
-      ["قاری عبد الرحمٰن", "متخصص فی التجوید والحفظ", "سبق، سبقی، منزل اور مضبوط قرآنی دہرائی کے لیے ماہر استاد۔"],
-      ["معلمہ حفصہ صدیقی", "ایم اے اسلامک اسٹڈیز و قاریہ", "بچوں کی اسلامی تربیت، مسنون دعائیں، سیرت النبی ﷺ اور قاعدہ۔"],
-    ],
-    teachersBadge: "مستند اور تربیت یافتہ اساتذہ",
-    pricingTitle: "لچکدار فیس پلان اور انٹرایکٹو فیس کیلکولیٹر",
-    plans: [
-      ["بنیادی پلان", "ہفتے میں 2 دن (8 کلاسز / ماہ)", ["30 منٹ انفرادی لائیو کلاس", "نورانی قاعدہ / ناظرہ و اسلامیات", "ماہانہ ڈیجیٹل تعلیمی رپورٹ"]],
-      ["مقبول پلان", "ہفتے میں 3 دن (12 کلاسز / ماہ)", ["30 منٹ انفرادی لائیو کلاس", "مخارج و تجوید کی خصوصی اصلاح", "والدین پورٹل رسائی اور ماہانہ تعلیمی رپورٹ"]],
-      ["خصوصی و حفظ پلان", "ہفتے میں 5 دن (20 کلاسز / ماہ)", ["حفظِ قرآن یا تیز رفتار کورس", "روزانہ سبق، سبقی اور منزل ٹریکنگ", "ترجیحی اوقات، سرٹیفکیٹ اور کیو آر شناختی کارڈ"]],
-    ],
-    priceNote:
-      "فیس ملک، کلاس کے دورانیے اور ہفتہ وار کلاسز کے مطابق مقرر کی جاتی ہے۔ ایک ہی خاندان کے دوسرے اور تیسرے بچے پر 10% تا 20% خصوصی رعایت دستیاب ہے۔",
-    testimonialsTitle: "دنیا بھر سے والدین اور طلبہ کے تاثرات",
-    testimonials: [
-      ["طاہر محمود (مانچسٹر، برطانیہ)", "میرے دونوں بچے پچھلے ایک سال سے فاروقی اکیڈمی میں پڑھ رہے ہیں۔ قاری صاحب کا تجوید سکھانے کا انداز اور ماہانہ پورٹل رپورٹنگ واقعی قابلِ ستائش ہے۔"],
-      ["سدرہ خان (ہیوسٹن، امریکہ)", "بحیثیتِ خاتون مجھے اپنی بچیوں کے لیے ایک باپردہ اور ماہر معلمہ کی تلاش تھی۔ معلمہ عائشہ نے بہت محبت اور صبر سے بچیوں کا قاعدہ مکمل کروایا۔"],
-      ["عمران صدیقی (دبئی، یو اے ای)", "میری جاب کے اوقات بدلتے رہتے ہیں، لیکن اکیڈمی کے لچکدار شیڈول اور ری شیڈول سسٹم کی وجہ سے میرا ترجمہ و تجوید کورس بغیر تعطل کے جاری ہے۔"],
-    ],
-    faqTitle: "اکثر پوچھے گئے سوالات",
-    faqs: [
-      ["کلاسز کس سافٹ ویئر پر ہوتی ہیں؟", "تمام کلاسز زوم، گوگل میٹ، مائیکروسافٹ ٹیمز یا واٹس ایپ کے ذریعے طالب علم کی سہولت کے مطابق انفرادی طور پر لی جاتی ہیں، جہاں اسکرین شیئرنگ سے قرآنِ مجید کی آیات واضح نظر آتی ہیں۔"],
-      ["کیا خواتین اور بچیوں کے لیے الگ خواتین معلمات موجود ہیں؟", "جی ہاں! الحمدللہ ہمارے پاس مستند، تجربہ کار اور شائستہ خواتین معلمات موجود ہیں جو صرف خواتین، بچیوں اور کم عمر بچوں کو پڑھاتی ہیں۔"],
-      ["اگر کسی دن کلاس چھوٹ جائے تو کیا متبادل کلاس ملتی ہے؟", "جی ہاں، پیشگی اطلاع دینے پر آن لائن پورٹل کے ذریعے کلاس کا وقت تبدیل یا متبادل کلاس طے کی جاتی ہے۔"],
-      ["فیس کی ادائیگی کیسے کی جاتی ہے؟", "مفت ٹرائل کلاسز سے مطمئن ہونے کے بعد آپ ماہانہ فیس بینک ٹرانسفر، وائز، ریمیٹلی، ویسٹرن یونین یا پاکستان میں جیز کیش اور ایزی پیسہ کے ذریعے ادا کر سکتے ہیں۔"],
-    ],
-    contactTitle: "آج ہی مفت ٹرائل کلاس بک کریں",
-    contactSub:
-      "مختصر فارم پُر کریں۔ آپ کی درخواست ہمارے ڈیٹا بیس میں محفوظ ہوگی اور واٹس ایپ پر بھی تیار شدہ پیغام کھل جائے گا۔",
-    labels: {
-      name: "طالب علم کا نام *",
-      phone: "واٹس ایپ نمبر (مع کنٹری کوڈ) *",
-      country: "ملک / شہر *",
-      age: "عمر",
-      course: "مطلوبہ کورس *",
-      message: "پسندیدہ وقت یا اضافی تفصیل",
-      submit: "مفت ٹرائل درخواست بھیجیں",
-      select: "کورس منتخب کریں",
-    },
-    success: "الحمدللہ! آپ کی درخواست محفوظ ہوگئی ہے۔ واٹس ایپ کھل رہا ہے۔",
-    footer:
-      "فاروقی آن لائن قرآن اکیڈمی — بچوں، خواتین اور بڑوں کے لیے تجوید کے ساتھ معیاری آن لائن قرآن تعلیم۔",
-    verseTranslation: "اور قرآن کو خوب ٹھہر ٹھہر کر پڑھیں۔ (سورۃ المزمل: 4)",
-    miniList: [
-      "انفرادی براہِ راست لائیو کلاسز",
-      "مستند مرد و خواتین اساتذہ",
-      "مفت تعلیمی جائزہ اور ٹرائل کلاس",
-      "آن لائن پورٹل اور ماہانہ تعلیمی رپورٹ",
-    ],
-    freeTrialLabel: "مفت ٹرائل داخلہ",
-    sectionLabel: "فاروقی قرآن اکیڈمی",
-    topbar: "لاہور، پاکستان · دنیا بھر کے لیے آن لائن قرآن کلاسز",
-  },
-  en: {
-    dir: "ltr",
-    language: "English",
-    other: "اردو",
-    localePath: "/ur",
-    nav: ["Courses", "Tajweed Studio", "Teachers", "Fee Calculator", "Verify ID", "Contact"],
-    ids: ["courses", "tajweed-preview", "teachers", "pricing", "faq", "contact"],
-    badge: "Premium online Quran education for learners worldwide",
-    titleA: "Learn the Holy Quran",
-    titleB: "with Tajweed, Care & Confidence",
-    lead:
-      "Private 1-to-1 online Quran classes for children, women and adults with certified male and female tutors. Safe environment, smart parent portal tracking and flexible scheduling around your local timezone.",
-    trial: "Book a Free Trial",
-    whatsapp: "Chat on WhatsApp",
-    portal: "Portal Login",
-    stats: [
-      ["50+", "Active students"],
-      ["5+", "Certified Qaris & Ustadhas"],
-      ["1-to-1", "Private live classes"],
-      ["100%", "Parent portal & PDF reports"],
-    ],
-    coursesTitle: "Comprehensive Quran & Islamic courses for every level",
-    coursesSub:
-      "A structured learning path from Noorani Qaida and Quran reading to Hifz, Tajweed, translation, Arabic and essential Islamic studies.",
-    courses: [
-      ["Noorani Qaida", "Build a rock-solid foundation in Arabic letters, vowels, joining and articulation points.", "For beginners & children"],
-      ["Quran Reading with Tajweed", "Develop fluent recitation with correct makharij and applied Tajweed rules.", "After completing Qaida"],
-      ["Tajweed & Qira'at Mastery", "Master Tajweed rules, sifaat and beauty of recitation with personal correction.", "For improving recitation"],
-      ["Quran Memorization (Hifz)", "Structured Sabaq, Sabqi and Manzil retention plan with continuous supervision.", "For children & adults"],
-      ["Translation & Tafsir", "Understand the divine message through clear translation and practical commentary.", "For deeper understanding"],
-      ["Salah, Seerah & Islamic Studies", "Prayer, daily Sunnah duas, Prophetic Seerah, Aqeedah and Islamic manners.", "For kids & families"],
-    ],
-    whyTitle: "Why families worldwide trust Farooqi Academy",
-    why: [
-      ["Certified Male & Female Tutors", "Ijazah-holding and experienced male and female teachers who adapt to each student's pace."],
-      ["Safe & Private 1-to-1 Classes", "Dedicated individual attention, female tutors for sisters/girls, and full parent visibility."],
-      ["Global Timezone Scheduling", "Convenient timings tailored for UK, USA, Canada, Europe, Australia, UAE/Gulf and Pakistan."],
-      ["Smart Portal & PDF Reports", "Track daily Sabaq, attendance, homework and downloadable monthly PDF report cards."],
-      ["Practical Tajweed Focus", "Every session emphasizes accurate makharij, Ghunnah, Madd and Qalqalah in real time."],
-      ["Free Trial & Assessment", "Experience our teaching methodology, tutor match and class system before paying a cent."],
-    ],
-    processTitle: "How enrollment works in 4 simple steps",
-    steps: [
-      ["Submit Request", "Share the learner's details and preferred timings via our form or WhatsApp."],
-      ["Level Assessment", "We review age, current Quran level, goals and match the ideal male or female tutor."],
-      ["Free Trial Class", "Attend a live 1-to-1 trial lesson with interactive screen-sharing and level evaluation."],
-      ["Start & Track Progress", "Begin regular classes with full access to your Student & Parent Portal."],
-    ],
-    teachersTitle: "Meet our qualified teachers & Ustadhas",
-    teachers: [
-      ["Qari Muhammad Farooqi", "Head Qari & Hafiz (10+ Yrs Exp)", "Specialist in Hifz-ul-Quran, Advanced Tajweed & Qira'at. Speaks English, Urdu & Arabic."],
-      ["Ustadha Aisha Siddiqua", "Alimah & Tajweed Specialist (7+ Yrs)", "Dedicated female tutor for sisters, girls and young children in Qaida, Tajweed & Tafsir."],
-      ["Qari Abdur Rahman", "Hifz & Makharij Specialist", "Expert in structured Sabaq, Sabqi and Manzil retention for youth and adults."],
-      ["Ustadha Hafsa Noor", "M.A. Islamic Studies & Qariyah", "Specializes in kids' Noorani Qaida, Salah, Duas and Prophetic Seerah."],
-    ],
-    teachersBadge: "Certified Male & Female Tutors",
-    pricingTitle: "Transparent fee plans & interactive calculator",
-    plans: [
-      ["Essential Plan", "2 days / week (8 classes / mo)", ["30-min 1-to-1 live class", "Qaida, Reading or Islamic Studies", "Monthly Portal Progress Report"]],
-      ["Popular Plan", "3 days / week (12 classes / mo)", ["30-min 1-to-1 live class", "Applied Tajweed & Makharij correction", "Parent Portal + Monthly PDF Report"]],
-      ["Intensive / Hifz Plan", "5 days / week (20 classes / mo)", ["Hifz or accelerated Quran track", "Daily Sabaq, Sabqi & Manzil tracking", "Priority scheduling + Verified QR ID"]],
-    ],
-    priceNote:
-      "Fees are tailored by region, class duration and weekly frequency. Enjoy an automatic 10% to 20% family discount when enrolling 2 or more siblings.",
-    testimonialsTitle: "What parents & students say worldwide",
-    testimonials: [
-      ["Tahir Mahmood (Manchester, UK)", "Both my children have been studying with Farooqi Academy for over a year. Their Tajweed improvement and the monthly PDF reports on the Parent Portal are outstanding."],
-      ["Sidra Khan (Houston, USA)", "As a mother, finding a patient, qualified female teacher for my daughters was my top priority. Ustadha Aisha made Noorani Qaida joyful and effortless."],
-      ["Imran Siddiqui (Dubai, UAE)", "My work schedule shifts often, and the academy's flexible timing and portal reschedule system have allowed me to continue my Tajweed and Tafsir seamlessly."],
-    ],
-    faqTitle: "Frequently Asked Questions",
-    faqs: [
-      ["How are the online classes conducted?", "Classes are conducted live 1-to-1 via Zoom, Google Meet, Microsoft Teams or WhatsApp with high-definition Quran screen sharing and audio."],
-      ["Do you have female teachers for sisters and young girls?", "Yes! We have dedicated, certified and experienced female tutors (Ustadhas) exclusively for women, girls and young children."],
-      ["What happens if a student misses a class?", "With prior notice, teachers or parents can request a make-up or rescheduled slot directly through the Academy Portal."],
-      ["How do we pay the monthly tuition fee?", "After completing your free trial class, you can pay securely via Bank Transfer, Wise, Remitly, Western Union or local Pakistan banking."],
-    ],
-    contactTitle: "Book your free trial class today",
-    contactSub:
-      "Complete the short form below. Your application is saved to our admissions portal and opens a ready-to-send WhatsApp confirmation.",
-    labels: {
-      name: "Student name *",
-      phone: "WhatsApp number (with country code) *",
-      country: "Country / City *",
-      age: "Student age",
-      course: "Preferred course *",
-      message: "Preferred days/time or notes",
-      submit: "Submit Free Trial Request",
-      select: "Select a course",
-    },
-    success: "Alhamdulillah! Your request has been saved. Opening WhatsApp…",
-    footer:
-      "Farooqi Online Quran Academy — premium 1-to-1 online Quran learning with Tajweed for children, women and adults worldwide.",
-    verseTranslation: "And recite the Quran with measured recitation. (Surah Al-Muzzammil: 4)",
-    miniList: [
-      "Private 1-to-1 live classes",
-      "Certified male & female tutors",
-      "Free assessment & trial lesson",
-      "Smart Portal & monthly PDF reports",
-    ],
-    freeTrialLabel: "Free Trial Admission",
-    sectionLabel: "Farooqi Quran Academy",
-    topbar: "Lahore, Pakistan · Worldwide Online Quran Classes",
-  },
-} as const;
-
 export default function AcademySite({ locale }: { locale: Locale }) {
-  const t = content[locale];
-  const isUrdu = locale === "ur";
   const router = useRouter();
+  const t = siteData[locale];
+  const isUrdu = locale === "ur";
 
-  const [open, setOpen] = useState(false);
-  const [status, setStatus] = useState("");
-  const [busy, setBusy] = useState(false);
+  // Mobile menu
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Interactive Tajweed & World-Renowned Qari Audio state
-  const [sampleIdx, setSampleIdx] = useState(0);
-  const [selectedQari, setSelectedQari] = useState<QariId>("afasy");
-  const [playingAudio, setPlayingAudio] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  // Noorani Qaida State
+  const [activeQaidaLessonId, setActiveQaidaLessonId] = useState(1);
+  const [playingQaidaItem, setPlayingQaidaItem] = useState<string | null>(null);
 
-  // Interactive Fee Calculator state
-  const [currency, setCurrency] = useState<string>("GBP");
-  const [daysPerWeek, setDaysPerWeek] = useState<number>(3);
-  const [durationMin, setDurationMin] = useState<number>(30);
-  const [studentsCount, setStudentsCount] = useState<number>(1);
+  // Full Quran Player State
+  const [selectedReciterId, setSelectedReciterId] = useState<QariReciterId>("husary_muallim");
+  const [selectedSurahNumber, setSelectedSurahNumber] = useState<number>(1);
+  const [surahSearchQuery, setSurahSearchQuery] = useState("");
+  const [isPlayingQuran, setIsPlayingQuran] = useState(false);
+  const [quranAudioDuration, setQuranAudioDuration] = useState(0);
+  const [quranAudioCurrentTime, setQuranAudioCurrentTime] = useState(0);
+  const quranAudioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Interactive FAQ & Student Verification state
-  const [openFaq, setOpenFaq] = useState<number>(0);
+  // Courses Track Filter & Course Outline Modal
+  const [courseFilter, setCourseFilter] = useState<"all" | "quran" | "islamic" | "advanced">("all");
+  const [selectedCourseForOutline, setSelectedCourseForOutline] = useState<CourseDetail | null>(null);
+
+  // Fee Calculator State
+  const [calcCurrency, setCalcCurrency] = useState("GBP");
+  const [calcDays, setCalcDays] = useState(3);
+  const [calcDuration, setCalcDuration] = useState(30);
+  const [calcStudents, setCalcStudents] = useState(1);
+
+  // Verify ID Input
   const [verifyCode, setVerifyCode] = useState("");
 
-  // Fee Calculation logic
-  const currInfo = CURRENCY_RATES[currency] || CURRENCY_RATES.GBP;
-  const classesPerMonth = daysPerWeek * 4;
-  const durationMultiplier = durationMin === 30 ? 1 : durationMin === 45 ? 1.4 : 1.75;
-  const rawPerStudent = currInfo.basePerClass30 * classesPerMonth * durationMultiplier;
-  const discountRate = studentsCount === 1 ? 0 : studentsCount === 2 ? 0.1 : studentsCount === 3 ? 0.15 : 0.2;
-  const totalMonthly = Math.round(rawPerStudent * studentsCount * (1 - discountRate));
-  const savedMonthly = Math.round(rawPerStudent * studentsCount * discountRate);
+  // Contact / Trial Form State
+  const [formBusy, setFormBusy] = useState(false);
+  const [formStatus, setFormStatus] = useState("");
 
-  function stopCurrentAudio() {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-      audioRef.current = null;
-    }
-    if (typeof window !== "undefined" && "speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
-    }
-    setPlayingAudio(false);
+  // Active Reciter & Surah Objects
+  const activeReciter = RECITERS.find((r) => r.id === selectedReciterId) || RECITERS[0];
+  const activeSurah = QURAN_SURAHS.find((s) => s.number === selectedSurahNumber) || QURAN_SURAHS[0];
+
+  // Active Noorani Qaida Lesson
+  const activeQaidaLesson =
+    NOORANI_QAIDA_LESSONS.find((l) => l.id === activeQaidaLessonId) || NOORANI_QAIDA_LESSONS[0];
+
+  // Fee Calculator calculation
+  const currInfo = CURRENCIES[calcCurrency] || CURRENCIES.GBP;
+  const classesPerMonth = calcDays * 4;
+  const durMultiplier = calcDuration === 30 ? 1 : calcDuration === 45 ? 1.4 : 1.75;
+  const rawPerStudent = currInfo.basePerClass * classesPerMonth * durMultiplier;
+  const discountRate =
+    calcStudents === 1 ? 0 : calcStudents === 2 ? 0.1 : calcStudents === 3 ? 0.15 : 0.2;
+  const totalMonthlyFee = Math.round(rawPerStudent * calcStudents * (1 - discountRate));
+  const monthlySavings = Math.round(rawPerStudent * calcStudents * discountRate);
+
+  // Filtered Courses
+  const filteredCourses = t.coursesDetailed.filter(
+    (c) => courseFilter === "all" || c.track === courseFilter
+  );
+
+  // Filtered Surahs for Search
+  const filteredSurahs = QURAN_SURAHS.filter((s) => {
+    if (!surahSearchQuery) return true;
+    const q = surahSearchQuery.toLowerCase().trim();
+    return (
+      s.number.toString().includes(q) ||
+      s.nameAr.includes(q) ||
+      s.nameUr.includes(q) ||
+      s.nameEn.toLowerCase().includes(q)
+    );
+  });
+
+  // Handle Quran Audio Playback
+  useEffect(() => {
+    return () => {
+      if (quranAudioRef.current) {
+        quranAudioRef.current.pause();
+        quranAudioRef.current = null;
+      }
+    };
+  }, []);
+
+  function getSurahAudioUrl(reciter: QariReciter, surahNum: number): string {
+    const padded = String(surahNum).padStart(3, "0");
+    return `${reciter.serverUrl}/${padded}.mp3`;
   }
 
-  function playRecitationSample(customSampleIndex?: number) {
-    if (typeof window === "undefined") return;
+  function togglePlayQuran(surahNum?: number) {
+    const targetSurahNum = surahNum !== undefined ? surahNum : selectedSurahNumber;
+    if (surahNum !== undefined && surahNum !== selectedSurahNumber) {
+      setSelectedSurahNumber(surahNum);
+    }
 
-    if (playingAudio && customSampleIndex === undefined) {
-      stopCurrentAudio();
+    if (isPlayingQuran && surahNum === undefined) {
+      if (quranAudioRef.current) {
+        quranAudioRef.current.pause();
+      }
+      setIsPlayingQuran(false);
       return;
     }
 
-    stopCurrentAudio();
-    const targetIdx = customSampleIndex !== undefined ? customSampleIndex : sampleIdx;
-    const sample = TAJWEED_SAMPLES[targetIdx];
-    const qariObj = QARI_LIST.find((q) => q.id === selectedQari) || QARI_LIST[0];
-    const urls = sample.audioFiles.map(
-      (file) => `https://everyayah.com/data/${qariObj.folder}/${file}`
-    );
+    const audioUrl = getSurahAudioUrl(activeReciter, targetSurahNum);
 
-    setPlayingAudio(true);
-    let currentTrackIndex = 0;
+    if (quranAudioRef.current) {
+      quranAudioRef.current.pause();
+    }
 
-    const playNextTrack = () => {
-      if (currentTrackIndex >= urls.length) {
-        setPlayingAudio(false);
-        audioRef.current = null;
-        return;
-      }
+    const audio = new Audio(audioUrl);
+    quranAudioRef.current = audio;
 
-      const audio = new Audio(urls[currentTrackIndex]);
-      audioRef.current = audio;
-
-      audio.onended = () => {
-        currentTrackIndex += 1;
-        playNextTrack();
-      };
-
-      audio.onerror = () => {
-        // Fallback if offline
-        try {
-          if ("speechSynthesis" in window) {
-            const plainArabic = sample.arabicHtml.replace(/<[^>]+>/g, "");
-            const utter = new SpeechSynthesisUtterance(plainArabic);
-            utter.lang = "ar-SA";
-            utter.rate = 0.78;
-            utter.onend = () => setPlayingAudio(false);
-            utter.onerror = () => setPlayingAudio(false);
-            window.speechSynthesis.speak(utter);
-            return;
-          }
-        } catch {
-          // ignore
-        }
-        setPlayingAudio(false);
-      };
-
-      audio.play().catch(() => {
-        audio.onerror?.(new Event("error"));
-      });
+    audio.ontimeupdate = () => {
+      setQuranAudioCurrentTime(audio.currentTime);
+      setQuranAudioDuration(audio.duration || 0);
     };
 
-    playNextTrack();
+    audio.onended = () => {
+      if (targetSurahNum < 114) {
+        togglePlayQuran(targetSurahNum + 1);
+      } else {
+        setIsPlayingQuran(false);
+      }
+    };
+
+    audio.onerror = () => {
+      setIsPlayingQuran(false);
+    };
+
+    audio.play().then(() => {
+      setIsPlayingQuran(true);
+    }).catch(() => {
+      setIsPlayingQuran(false);
+    });
   }
 
-  async function submit(e: FormEvent<HTMLFormElement>) {
+  function handleSeekQuran(e: React.ChangeEvent<HTMLInputElement>) {
+    const seekTime = Number(e.target.value);
+    if (quranAudioRef.current) {
+      quranAudioRef.current.currentTime = seekTime;
+      setQuranAudioCurrentTime(seekTime);
+    }
+  }
+
+  function playQaidaSound(letterArabic: string, letterName: string) {
+    setPlayingQaidaItem(letterArabic);
+
+    // Use Web Speech API with Arabic locale if available for instant offline pronunciation
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(letterArabic);
+      utter.lang = "ar-SA";
+      utter.rate = 0.8;
+      utter.onend = () => setPlayingQaidaItem(null);
+      utter.onerror = () => setPlayingQaidaItem(null);
+      window.speechSynthesis.speak(utter);
+    } else {
+      setTimeout(() => setPlayingQaidaItem(null), 1200);
+    }
+  }
+
+  function formatTime(seconds: number): string {
+    if (isNaN(seconds) || seconds <= 0) return "0:00";
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+  }
+
+  // Handle Verify Form
+  function handleVerifySubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setBusy(true);
-    setStatus("");
+    const clean = verifyCode.trim();
+    if (!clean) return;
+    router.push(`/verify/${encodeURIComponent(clean)}`);
+  }
+
+  // Handle Admissions Form Submission
+  async function handleTrialSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setFormBusy(true);
+    setFormStatus("");
 
     const form = new FormData(e.currentTarget);
     const payload: Record<string, unknown> = Object.fromEntries(form.entries());
@@ -416,122 +281,137 @@ export default function AcademySite({ locale }: { locale: Locale }) {
       const data = text ? JSON.parse(text) : null;
       if (data?.id) appId = String(data.id);
     } catch {
-      // Continue to WhatsApp fallback
+      // Continue to WhatsApp
     }
 
-    const number = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923336519527";
+    const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "923336519527";
     const lines = [
-      isUrdu ? "السلام علیکم! نئی مفت ٹرائل درخواست:" : "Assalamu Alaikum! New Free Trial Request:",
+      isUrdu
+        ? "السلام علیکم! فاروقی آن لائن قرآن اکیڈمی مفت ٹرائل درخواست:"
+        : "Assalamu Alaikum! Farooqi Online Quran Academy Free Trial Request:",
       appId ? `Application ID: ${appId}` : "",
-      `Student: ${payload.name || ""}`,
+      `Student Name: ${payload.name || ""}`,
       `WhatsApp: ${payload.phone || ""}`,
       `Country/City: ${payload.country || ""}`,
-      `Age: ${payload.age || "—"}`,
-      `Course: ${payload.course || ""}`,
-      `Notes: ${payload.message || "—"}`,
+      `Preferred Course: ${payload.course || ""}`,
+      `Preferred Time: ${payload.timeSlot || ""}`,
+      payload.message ? `Notes: ${payload.message}` : "",
     ]
       .filter(Boolean)
       .join("\n");
 
-    setStatus(t.success);
-    setBusy(false);
+    setFormStatus(
+      isUrdu
+        ? "الحمدللہ! آپ کی درخواست جمع ہو گئی ہے۔ واٹس ایپ کھولی جا رہی ہے۔"
+        : "Alhamdulillah! Your request has been saved. Opening WhatsApp confirmation."
+    );
+    setFormBusy(false);
 
     window.open(
-      `https://wa.me/${number}?text=${encodeURIComponent(lines)}`,
+      `https://wa.me/${waNumber}?text=${encodeURIComponent(lines)}`,
       "_blank",
       "noopener,noreferrer"
     );
   }
 
-  function handleVerifySubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const cleaned = verifyCode.trim();
-    if (!cleaned) return;
-    router.push(`/verify/${encodeURIComponent(cleaned)}`);
-  }
-
-  const currentSample = TAJWEED_SAMPLES[sampleIdx];
-  const activeQariObj = QARI_LIST.find((q) => q.id === selectedQari) || QARI_LIST[0];
-
   return (
     <div dir={t.dir} lang={locale} className={isUrdu ? "urdu" : "english"}>
-      <a className="skip-link" href="#main">
-        {isUrdu ? "اصل مواد پر جائیں" : "Skip to content"}
+      {/* Accessibility Skip Link */}
+      <a className="skip-link" href="#main-content">
+        {isUrdu ? "اصل مواد پر جائیں" : "Skip to main content"}
       </a>
 
+      {/* TOP ANNOUNCEMENT BAR */}
       <div className="topbar">
         <div className="wrap topbar-inner">
           <span className="topbar-tagline">
             <i className="topbar-dot" aria-hidden="true" />
-            {t.topbar}
+            {isUrdu
+              ? "لاہور، پاکستان · دنیا بھر کے لیے مستند و معیاری آن لائن قرآن کلاسز"
+              : "Lahore, Pakistan · Worldwide Certified 1-to-1 Online Quran Classes"}
           </span>
           <div className="topbar-contacts">
-            <a href="tel:+923336519527">☎ 0333-6519527</a>
-            <a href="tel:+923344323994">☎ 0334-4323994</a>
+            <a href="tel:+923336519527" className="ltr-num">☎ 0333-6519527</a>
+            <a href="tel:+923344323994" className="ltr-num">☎ 0334-4323994</a>
             <a href="mailto:umarwazir1989@gmail.com">✉ umarwazir1989@gmail.com</a>
           </div>
         </div>
       </div>
 
+      {/* CLEAN, UNCLUTTERED LUXURY HEADER */}
       <header>
         <div className="wrap nav">
           <Link href={`/${locale}`} className="brand">
             <div className="brand-logo-frame">
               <Image
                 src="/logo.jpg"
-                alt="Farooqi Online Quran Academy logo"
+                alt="Farooqi Online Quran Academy"
                 width={50}
                 height={50}
                 priority
               />
             </div>
             <span>
-              <strong>
-                {isUrdu
-                  ? "فاروقی آن لائن قرآن اکیڈمی"
-                  : "Farooqi Online Quran Academy"}
-              </strong>
+              <strong>{isUrdu ? "فاروقی آن لائن قرآن اکیڈمی" : "Farooqi Online Quran Academy"}</strong>
               <small>{isUrdu ? "لاہور · پاکستان" : "Lahore · Pakistan"}</small>
             </span>
           </Link>
 
-          <nav className={open ? "nav-links open" : "nav-links"} aria-label="Primary navigation">
-            {t.nav.map((item, i) => (
-              <a
-                key={item}
-                href={`#${t.ids[i]}`}
-                onClick={() => setOpen(false)}
-              >
-                {item}
-              </a>
-            ))}
-            <Link className="nav-pill-link" href={`/${locale}/courses`} onClick={() => setOpen(false)}>
-              {isUrdu ? "12 کورسز" : "12 Courses"}
+          {/* STREAMLINED NAVIGATION LINKS (NO CLUTTER) */}
+          <nav
+            className={mobileMenuOpen ? "nav-links open" : "nav-links"}
+            aria-label="Main Navigation"
+          >
+            <a href={`/${locale}`} onClick={() => setMobileMenuOpen(false)}>
+              {isUrdu ? "ہوم" : "Home"}
+            </a>
+            <a href="#courses-section" onClick={() => setMobileMenuOpen(false)}>
+              {isUrdu ? "کورسز و نصاب" : "Courses & Outlines"}
+            </a>
+            <a href="#qaida-section" onClick={() => setMobileMenuOpen(false)}>
+              {isUrdu ? "نورانی قاعدہ" : "Noorani Qaida"}
+            </a>
+            <a href="#quran-player-section" onClick={() => setMobileMenuOpen(false)}>
+              {isUrdu ? "تلاوتِ قرآن" : "Quran Player"}
+            </a>
+            <a href="#teachers-section" onClick={() => setMobileMenuOpen(false)}>
+              {isUrdu ? "اساتذہ" : "Teachers"}
+            </a>
+            <a href="#pricing-section" onClick={() => setMobileMenuOpen(false)}>
+              {isUrdu ? "فیس کیلکولیٹر" : "Tuition & Fees"}
+            </a>
+            <Link
+              className="portal-mobile"
+              href="/portal"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {isUrdu ? "پورٹل لاگ اِن" : "Portal Login"}
             </Link>
-            <Link className="portal-mobile" href="/portal" onClick={() => setOpen(false)}>
-              {t.portal}
-            </Link>
-            <Link className="language-mobile" href={t.localePath} onClick={() => setOpen(false)}>
+            <Link
+              className="language-mobile"
+              href={t.otherPath}
+              onClick={() => setMobileMenuOpen(false)}
+            >
               {t.other}
             </Link>
           </nav>
 
+          {/* ACTION BUTTONS (CLEAN & MINIMAL) */}
           <div className="nav-actions">
             <Link className="portal-link" href="/portal">
-              {t.portal}
+              {isUrdu ? "پورٹل لاگ اِن" : "Portal Login"}
             </Link>
-            <Link className="language" href={t.localePath}>
+            <Link className="language" href={t.otherPath}>
               {t.other}
             </Link>
-            <Link className="btn btn-gold btn-small" href={`/${locale}/free-trial`}>
-              {t.trial}
-            </Link>
+            <a className="btn btn-gold btn-small" href="#admissions-section">
+              {isUrdu ? "مفت ٹرائل کلاس" : "Book Free Trial"}
+            </a>
             <button
               className="menu"
-              onClick={() => setOpen(!open)}
-              aria-expanded={open}
-              aria-label="Toggle navigation"
               type="button"
+              aria-label="Toggle Menu"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               <span />
               <span />
@@ -541,324 +421,697 @@ export default function AcademySite({ locale }: { locale: Locale }) {
         </div>
       </header>
 
-      <main id="main">
-        {/* HERO SECTION */}
+      {/* MAIN BODY CONTENT */}
+      <main id="main-content">
+        {/* ========================================================
+            HERO SECTION (SPACIOUS, UNCLUTTERED & ELEGANT)
+            ======================================================== */}
         <section className="hero">
           <div className="wrap hero-grid">
-            <div className="hero-content">
+            <div>
               <span className="eyebrow">
-                <b className="eyebrow-star" aria-hidden="true">✦</b> {t.badge}
+                <span className="eyebrow-star">✦</span>
+                {isUrdu
+                  ? "عالمی سطح پر آن لائن قرآن و تجوید کی معیاری تعلیم"
+                  : "Premier Online Quran & Tajweed Academy for Worldwide Learners"}
               </span>
+
               <h1>
-                {t.titleA}
-                <em>{t.titleB}</em>
+                {isUrdu ? "قرآنِ مجید سیکھیے" : "Learn the Holy Quran"}
+                <em>{isUrdu ? "تجوید، محبت اور روانی کے ساتھ" : "with Tajweed, Care & Confidence"}</em>
               </h1>
-              <p className="lead">{t.lead}</p>
+
+              <p className="lead">
+                {isUrdu
+                  ? "بچوں، خواتین اور بڑوں کے لیے مستند و سند یافتہ اساتذہ اور معلمات کے ساتھ انفرادی (1-to-1) آن لائن کلاسز۔ آپ کے پسندیدہ وقت، سمارٹ پورٹل ٹریکنگ اور مکمل محفوظ ماحول میں۔"
+                  : "Private one-to-one online Quran classes for children, women and adults with certified male scholars and female tutors. Safe environment, smart Parent Portal and flexible scheduling across your local timezone."}
+              </p>
 
               <div className="hero-actions">
-                <Link className="btn" href={`/${locale}/free-trial`}>
-                  {t.trial}
-                </Link>
-                <a className="btn btn-gold" href="#pricing">
-                  {isUrdu ? "فیس کیلکولیٹر دیکھیں" : "Calculate Monthly Fee"}
+                <a className="btn btn-gold" href="#admissions-section">
+                  {isUrdu ? "مفت ٹرائل کلاس بک کریں" : "Book a Free Trial Class"}
                 </a>
                 <a
                   className="btn btn-outline"
-                  href="https://wa.me/923336519527"
+                  href="https://wa.me/923336519527?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%DB%8C%DA%A9%D9%85!%20%D9%81%D8%A7%D8%B1%D9%88%D9%82%DB%8C%20%D8%A2%D9%86%20%D9%84%D8%A7%D8%A6%D9%86%20%D9%82%D8%B1%D8%A2%D9%86%20%D8%A7%DA%A9%DB%8C%DA%88%D9%85%DB%8C%20%D9%85%DB%8C%DA%BA%20%D8%AF%D8%A7%D8%AE%D9%84%DB%92%20%DA%A9%DB%92%20%D8%A8%D8%A7%D8%B1%DB%92%20%D9%85%DB%8C%DA%BA%20%D9%85%D8%B9%D9%84%D9%88%D9%85%D8%A7%D8%AA%20%DA%86%D8%A7%DB%81%DB%8C%DB%92%DB%94"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  {t.whatsapp}
+                  {isUrdu ? "واٹس ایپ رابطہ: 0333-6519527" : "WhatsApp: +92 333-6519527"}
                 </a>
               </div>
 
+              {/* CLEAN METRICS (SPACIOUS & LEGIBLE) */}
               <div className="stats">
-                {t.stats.map(([n, l]) => (
-                  <div key={l} className="stat-box">
-                    <strong>{n}</strong>
-                    <span>{l}</span>
-                  </div>
-                ))}
+                <div className="stat-box">
+                  <strong>50+</strong>
+                  <span>{isUrdu ? "زیرِ تعلیم طلبہ" : "Active Students"}</span>
+                </div>
+                <div className="stat-box">
+                  <strong>5</strong>
+                  <span>{isUrdu ? "مستند اساتذہ و معلمات" : "Certified Scholars"}</span>
+                </div>
+                <div className="stat-box">
+                  <strong>1-to-1</strong>
+                  <span>{isUrdu ? "انفرادی لائیو کلاسز" : "Private Sessions"}</span>
+                </div>
+                <div className="stat-box">
+                  <strong>100%</strong>
+                  <span>{isUrdu ? "والدین پورٹل و رپورٹس" : "Portal Tracking"}</span>
+                </div>
               </div>
             </div>
 
-            <div className="hero-card">
-              <div className="hero-card-topbar">
-                <span className="hero-surah-pill">
-                  {isUrdu ? "سورۃ المزمل · آیت 4" : "Surah Al-Muzzammil · 73:4"}
-                </span>
-                <span className="hero-live-pill">
-                  <i className="live-dot" aria-hidden="true" />
-                  {isUrdu ? "انفرادی لائیو کلاسز" : "1-to-1 Live Sessions"}
-                </span>
+            {/* HERO RIGHT: ELEGANT FLOATING SHOWCASE CARD */}
+            <div>
+              <div className="hero-card">
+                <div className="hero-card-topbar">
+                  <span className="hero-surah-pill">
+                    {isUrdu ? "سورۃ المزمل: آیت ۴" : "Surah Al-Muzzammil: 4"}
+                  </span>
+                  <span className="hero-live-pill">
+                    <i className="live-dot" />
+                    {isUrdu ? "انفرادی آن لائن کلاس" : "1-to-1 Live Class"}
+                  </span>
+                </div>
+
+                <div className="hero-verse-frame">
+                  <div className="hero-card-badge">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+                  <div className="arabic">وَرَتِّلِ الْقُرْآنَ تَرْتِيلًا</div>
+                  <p className="hero-verse-translation">
+                    {isUrdu
+                      ? "”اور قرآنِ مجید کو خوب ٹھہر ٹھہر کر (واضح تجوید کے ساتھ) پڑھیے۔“"
+                      : "“And recite the Holy Quran with measured, clear recitation.”"}
+                  </p>
+
+                  <button
+                    type="button"
+                    className="hero-audio-btn"
+                    onClick={() => togglePlayQuran(1)}
+                  >
+                    {isPlayingQuran && selectedSurahNumber === 1
+                      ? isUrdu
+                        ? "⏸ تلاوت روکیں"
+                        : "⏸ Pause Recitation"
+                      : isUrdu
+                      ? "🔊 تلاوت سنیں (شیخ محمود خلیل الحصری - تدریسی انداز)"
+                      : "🔊 Listen to Recitation (Sheikh Al-Husary - Teaching Mode)"}
+                  </button>
+                </div>
+
+                <div className="mini-list">
+                  <span className="mini-list-item">
+                    <i className="mini-check">✓</i>
+                    {isUrdu ? "مرد و خواتین کے لیے الگ اساتذہ" : "Male & Female Certified Tutors"}
+                  </span>
+                  <span className="mini-list-item">
+                    <i className="mini-check">✓</i>
+                    {isUrdu ? "بچوں کے لیے خصوصی توجہ و صبر" : "Patient Care for Kids & Sisters"}
+                  </span>
+                  <span className="mini-list-item">
+                    <i className="mini-check">✓</i>
+                    {isUrdu ? "مفت جائزہ اور ٹرائل کلاس" : "Free Assessment & Trial Class"}
+                  </span>
+                  <span className="mini-list-item">
+                    <i className="mini-check">✓</i>
+                    {isUrdu ? "ماہانہ پی ڈی ایف تعلیمی رپورٹ" : "Monthly Progress PDF Reports"}
+                  </span>
+                </div>
+
+                <div className="hero-card-links">
+                  <a href="#qaida-section">
+                    {isUrdu ? "← نورانی قاعدہ مع آڈیو کا مشاہدہ کریں" : "Explore Noorani Qaida with Audio →"}
+                  </a>
+                  <a href="#teachers-section">
+                    {isUrdu ? "← اساتذہ کی اسناد دیکھیں" : "View Teacher Credentials →"}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================
+            COMPLETE NOORANI QAIDA WITH AUDIO MODULE
+            ======================================================== */}
+        <section id="qaida-section" className="soft">
+          <div className="wrap">
+            <div className="section-head">
+              <span className="eyebrow">
+                <span className="eyebrow-star">✦</span>
+                {isUrdu ? "مکمل نورانی قاعدہ مع آڈیو و مخارج" : "Complete Noorani Qaida with Audio"}
+              </span>
+              <h2>
+                {isUrdu
+                  ? "نورانی قاعدہ کی تختیاں، تلفظ اور صوتی رہنمائی"
+                  : "Interactive Noorani Qaida Lessons with Audio Pronunciation"}
+              </h2>
+              <p>
+                {isUrdu
+                  ? "کسی بھی حرف یا لفظ پر کلک کریں تاکہ اس کا درست تلفظ اور مخرج سن سکیں۔ بچے اور ابتدائی طلبہ یہاں سے براہِ راست مشق کر سکتے ہیں:"
+                  : "Click any Arabic letter or word box below to listen to its authentic pronunciation and articulation rules. Designed for interactive learning:"}
+              </p>
+            </div>
+
+            <div className="qaida-studio">
+              {/* QAIDA LESSONS TABS */}
+              <div className="qaida-lessons-nav" role="tablist">
+                {NOORANI_QAIDA_LESSONS.map((lesson) => (
+                  <button
+                    key={lesson.id}
+                    type="button"
+                    className={`qaida-lesson-tab ${
+                      activeQaidaLessonId === lesson.id ? "active" : ""
+                    }`}
+                    onClick={() => setActiveQaidaLessonId(lesson.id)}
+                  >
+                    {isUrdu ? lesson.titleUr : lesson.titleEn}
+                  </button>
+                ))}
               </div>
 
-              <div className="hero-verse-frame">
-                <div className="hero-card-badge">
-                  بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+              {/* ACTIVE LESSON HEADER */}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: "12px",
+                  borderBottom: "1px solid var(--line)",
+                  paddingBottom: "14px",
+                  marginBottom: "16px",
+                }}
+              >
+                <div>
+                  <h3 style={{ margin: "0 0 4px", color: "var(--deep)", fontSize: "1.35rem" }}>
+                    {isUrdu ? activeQaidaLesson.titleUr : activeQaidaLesson.titleEn}
+                  </h3>
+                  <p style={{ margin: 0, color: "var(--muted)", fontSize: "0.88rem" }}>
+                    {isUrdu ? activeQaidaLesson.descUr : activeQaidaLesson.descEn}
+                  </p>
                 </div>
-                <div className="arabic">وَرَتِّلِ الْقُرْآنَ تَرْتِيلًا</div>
-                <p className="hero-verse-translation">{t.verseTranslation}</p>
-                <button
-                  type="button"
-                  className="hero-audio-btn"
-                  onClick={() => {
-                    setSampleIdx(0);
-                    playRecitationSample(0);
+                <div style={{ color: "var(--green)", fontSize: "0.84rem", fontWeight: 700 }}>
+                  {isUrdu
+                    ? "🔊 آواز سننے کے لیے کسی بھی خانے پر کلک کریں"
+                    : "🔊 Click any letter/word to play audio"}
+                </div>
+              </div>
+
+              {/* LETTERS / WORDS INTERACTIVE TILES */}
+              <div className="qaida-grid">
+                {activeQaidaLesson.letters.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className={`qaida-tile ${playingQaidaItem === item.ar ? "playing" : ""}`}
+                    onClick={() => playQaidaSound(item.ar, item.name)}
+                    title={item.note}
+                  >
+                    <div className="qaida-letter">{item.ar}</div>
+                    <small>{item.name}</small>
+                  </div>
+                ))}
+              </div>
+
+              {/* LESSON HINT & TRIAL TRIGGER */}
+              <div className="qaida-hint-box">
+                <div>
+                  <strong>{isUrdu ? "استاد کے ساتھ باقاعدہ مشق:" : "Live Teacher Guidance:"}</strong>{" "}
+                  <span>
+                    {isUrdu
+                      ? "ہماری لائیو انفرادی کلاسز میں استاد اسکرین شیئرنگ پر طالب علم کے تلفظ اور سانس کی درستگی کی نگرانی کرتے ہیں۔"
+                      : "In our live one-to-one classes, tutors guide every student patiently through mouth positioning and breathing."}
+                  </span>
+                </div>
+                <a className="btn btn-small btn-gold" href="#admissions-section">
+                  {isUrdu ? "نورانی قاعدہ کی کلاس لیں" : "Start Noorani Qaida Class"}
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================
+            FULL QURAN RECITATION PLAYER WITH TEACHER/MUALLIM MODE
+            ======================================================== */}
+        <section id="quran-player-section">
+          <div className="wrap">
+            <div className="section-head">
+              <span className="eyebrow">
+                <span className="eyebrow-star">✦</span>
+                {isUrdu ? "مکمل ۱۱۴ سورتیں اور تدریسی انداز" : "Complete 114 Surahs & Educational Mode"}
+              </span>
+              <h2>
+                {isUrdu
+                  ? "مکمل قرآنِ مجید کی تلاوت (معلم اور تدریس کے انداز میں)"
+                  : "Complete Holy Quran Audio with Teaching & Repetition Mode"}
+              </h2>
+              <p>
+                {isUrdu
+                  ? "عالمی شہرت یافتہ قراء کی آوازوں میں قرآن مجید کی تمام ۱۱۴ سورتیں سنیں۔ شیخ محمود خلیل الحصری کا معلم و تدریسی انداز خاص طور پر طلبہ کے حفظ اور دہرائی کے لیے بہترین ہے:"
+                  : "Stream all 114 Surahs by world-renowned reciters. Sheikh Al-Husary's Muallim style is specifically formatted for students to listen, pause, and repeat:"}
+              </p>
+            </div>
+
+            <div className="quran-player-wrapper">
+              {/* RECITER SELECTION PILLS */}
+              <div style={{ marginBottom: "22px" }}>
+                <span
+                  style={{
+                    display: "block",
+                    fontSize: "0.82rem",
+                    color: "var(--gold-light)",
+                    fontWeight: 700,
+                    marginBottom: "10px",
                   }}
                 >
-                  {playingAudio && sampleIdx === 0
-                    ? isUrdu
-                      ? "⏸ تلاوت روکیں (شیخ مشاری العفاسی)"
-                      : "⏸ Pause Recitation (Sheikh Alafasy)"
-                    : isUrdu
-                    ? "🔊 دلنشین تلاوت سنیں (شیخ مشاری العفاسی)"
-                    : "🔊 Listen to Soulful Recitation (Sheikh Alafasy)"}
-                </button>
-              </div>
-
-              <div className="mini-list">
-                {t.miniList.map((item) => (
-                  <div key={item} className="mini-list-item">
-                    <span className="mini-check" aria-hidden="true">✓</span>
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="hero-card-links">
-                <Link href={`/${locale}/courses`}>
-                  {isUrdu ? "مکمل نصاب (12 کورسز) ←" : "Explore All 12 Courses →"}
-                </Link>
-                <Link href={`/${locale}/fees`}>
-                  {isUrdu ? "مکمل فیس شیڈول ←" : "Full Tuition Schedule →"}
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* COURSES SECTION */}
-        <section id="courses">
-          <div className="wrap">
-            <SectionHead
-              label={t.sectionLabel}
-              title={t.coursesTitle}
-              text={t.coursesSub}
-            />
-            <div className="cards">
-              {t.courses.map(([name, desc, badge], i) => (
-                <article className="card" key={name}>
-                  <div className="card-top-meta">
-                    <span className="number">0{i + 1}</span>
-                    <span className="course-audience-pill">{badge}</span>
-                  </div>
-                  <h3>{name}</h3>
-                  <p>{desc}</p>
-                  <div className="card-footer-row">
-                    <Link className="text-link" href={`/${locale}/free-trial`}>
-                      {isUrdu ? "اس کورس کا مفت ٹرائل لیں ←" : "Start Free Trial →"}
-                    </Link>
-                  </div>
-                </article>
-              ))}
-            </div>
-            <div className="section-cta-bar">
-              <div>
-                <strong>
-                  {isUrdu ? "مکمل 12 کورسز کا نصاب اور تفصیل" : "Complete Catalog of 12 Specialized Tracks"}
-                </strong>
-                <p>
-                  {isUrdu
-                    ? "قرآن، حدیث، سیرت النبی ﷺ، فقہ اور عربی سمیت تمام 12 کورسز کی تفصیل دیکھیے۔"
-                    : "Explore detailed syllabi for Quran, Hadith, Prophetic Seerah, Fiqh and Arabic."}
-                </p>
-              </div>
-              <Link className="btn btn-gold" href={`/${locale}/courses`}>
-                {isUrdu ? "تمام 12 کورسز دیکھیں" : "View All 12 Courses"}
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* INTERACTIVE TAJWEED & WORLD-RENOWNED QARI RECITATION STUDIO */}
-        <section id="tajweed-preview" className="soft">
-          <div className="wrap">
-            <SectionHead
-              label={isUrdu ? "عملی تجوید و عالمی قراء کی تلاوت" : "Interactive Tajweed & Recitation Studio"}
-              title={
-                isUrdu
-                  ? "عالمی شہرت یافتہ قراء کی دلنشین آواز اور رنگین قواعدِ تجوید"
-                  : "Soulful Recitation by World-Renowned Qaris & Color-Coded Tajweed"
-              }
-              text={
-                isUrdu
-                  ? "اپنے پسندیدہ قاری (شیخ مشاری العفاسی، شیخ محمود خلیل الحصری یا شیخ عبدالرحمٰن السدیس) کا انتخاب کریں اور رنگین تجویدی قواعد کے ساتھ دل کو چھو لینے والی تلاوت سنیں۔"
-                  : "Select your preferred world-renowned Qari (Sheikh Mishary Alafasy, Sheikh Al-Husary or Sheikh As-Sudais) and experience crystal-clear recitation with visual Tajweed rules."
-              }
-            />
-
-            <div className="tajweed-showcase">
-              {/* Qari Selector Bar */}
-              <div className="qari-selector-bar">
-                <span className="qari-selector-label">
-                  🎙️ {isUrdu ? "قاری منتخب کریں:" : "Select Reciter (Qari):"}
+                  {isUrdu ? "قاری کا انتخاب کریں:" : "Select Reciter:"}
                 </span>
-                <div className="qari-pills">
-                  {QARI_LIST.map((q) => (
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                  {RECITERS.map((reciter) => (
                     <button
-                      key={q.id}
+                      key={reciter.id}
                       type="button"
-                      className={selectedQari === q.id ? "qari-pill active" : "qari-pill"}
+                      className={`qari-pill ${selectedReciterId === reciter.id ? "active" : ""}`}
                       onClick={() => {
-                        stopCurrentAudio();
-                        setSelectedQari(q.id);
+                        setSelectedReciterId(reciter.id);
+                        if (isPlayingQuran) {
+                          togglePlayQuran(selectedSurahNumber);
+                        }
                       }}
                     >
-                      {isUrdu ? q.nameUr : q.nameEn}
+                      {reciter.isTeacherMode && "🎓 "}
+                      {isUrdu ? reciter.nameUr : reciter.nameEn}
                     </button>
                   ))}
                 </div>
+                <small style={{ display: "block", color: "rgba(255,255,255,0.7)", marginTop: "8px", fontSize: "0.78rem" }}>
+                  ℹ️ {isUrdu ? activeReciter.descUr : activeReciter.descEn}
+                </small>
               </div>
 
-              <div className="tajweed-tabs">
-                {TAJWEED_SAMPLES.map((s, idx) => (
+              {/* CURRENT PLAYING BAR */}
+              <div className="quran-controls-bar">
+                <div className="quran-now-playing">
+                  <div className="quran-surah-icon">{activeSurah.number}</div>
+                  <div>
+                    <strong>
+                      {activeSurah.number}. {activeSurah.nameAr} — {activeSurah.nameEn}
+                    </strong>
+                    <span>
+                      {isUrdu ? activeSurah.nameUr : activeSurah.nameEn} · {activeSurah.ayahs}{" "}
+                      {isUrdu ? "آیات" : "Verses"} · {activeSurah.type}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="quran-player-actions">
                   <button
-                    key={s.surahEn}
                     type="button"
-                    className={sampleIdx === idx ? "tj-tab active" : "tj-tab"}
+                    className="quran-btn-nav"
+                    title={isUrdu ? "پچھلی سورت" : "Previous Surah"}
                     onClick={() => {
-                      stopCurrentAudio();
-                      setSampleIdx(idx);
+                      if (selectedSurahNumber > 1) {
+                        togglePlayQuran(selectedSurahNumber - 1);
+                      }
+                    }}
+                    disabled={selectedSurahNumber <= 1}
+                  >
+                    ⏮
+                  </button>
+                  <button
+                    type="button"
+                    className="quran-btn-play"
+                    onClick={() => togglePlayQuran()}
+                    title={isPlayingQuran ? "Pause" : "Play"}
+                  >
+                    {isPlayingQuran ? "⏸" : "▶"}
+                  </button>
+                  <button
+                    type="button"
+                    className="quran-btn-nav"
+                    title={isUrdu ? "اگلی سورت" : "Next Surah"}
+                    onClick={() => {
+                      if (selectedSurahNumber < 114) {
+                        togglePlayQuran(selectedSurahNumber + 1);
+                      }
+                    }}
+                    disabled={selectedSurahNumber >= 114}
+                  >
+                    ⏭
+                  </button>
+                </div>
+              </div>
+
+              {/* AUDIO TIMELINE SCRUBBER */}
+              {isPlayingQuran && (
+                <div style={{ marginBottom: "20px" }}>
+                  <input
+                    type="range"
+                    min={0}
+                    max={quranAudioDuration || 100}
+                    value={quranAudioCurrentTime}
+                    onChange={handleSeekQuran}
+                    style={{ width: "100%", accentColor: "var(--gold)" }}
+                  />
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      fontSize: "0.76rem",
+                      color: "rgba(255,255,255,0.7)",
+                      marginTop: "4px",
                     }}
                   >
-                    {isUrdu ? s.surahUr : s.surahEn}
-                  </button>
+                    <span>{formatTime(quranAudioCurrentTime)}</span>
+                    <span>{formatTime(quranAudioDuration)}</span>
+                  </div>
+                </div>
+              )}
+
+              {/* SURAH SEARCH & 114 SURAHS DIRECTORY */}
+              <div>
+                <input
+                  type="text"
+                  placeholder={
+                    isUrdu
+                      ? "سورت تلاش کریں (نمبر، نام یا انگریزی، مثلاً 36 یا یس یا Yasin)..."
+                      : "Search Surah by number, Arabic or English name (e.g. 36, Ya-Sin, Mulk)..."
+                  }
+                  value={surahSearchQuery}
+                  onChange={(e) => setSurahSearchQuery(e.target.value)}
+                  className="quran-surah-search"
+                />
+
+                <div className="quran-surahs-grid">
+                  {filteredSurahs.map((surah) => (
+                    <div
+                      key={surah.number}
+                      className={`quran-surah-item ${
+                        selectedSurahNumber === surah.number ? "active" : ""
+                      }`}
+                      onClick={() => togglePlayQuran(surah.number)}
+                    >
+                      <span className="quran-surah-num">{surah.number}</span>
+                      <div className="quran-surah-names">
+                        <strong>{surah.nameAr}</strong>
+                        <small>{surah.nameEn}</small>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================
+            12 COURSES & COMPREHENSIVE OUTLINES
+            ======================================================== */}
+        <section id="courses-section" className="soft">
+          <div className="wrap">
+            <div className="section-head">
+              <span className="eyebrow">
+                <span className="eyebrow-star">✦</span>
+                {isUrdu ? "۱۲ جامع تعلیمی کورسز" : "Complete 12 Course Programs"}
+              </span>
+              <h2>{isUrdu ? "مکمل تعلیمی نصاب اور کورس آؤٹ لائنز" : "Structured Syllabi & Comprehensive Outlines"}</h2>
+              <p>
+                {isUrdu
+                  ? "ہر کورس انفرادی کلاسز، مرحلہ وار نصاب اور مستند اساتذہ کے ساتھ پڑھایا جاتا ہے۔ کسی بھی کورس کی تفصیلی آؤٹ لائن دیکھنے کے لیے بٹن دبائیں:"
+                  : "Every course offers private 1-to-1 live sessions, progressive modules and certified scholars. Click any course to view its comprehensive syllabus:"}
+              </p>
+            </div>
+
+            {/* TRACK FILTER PILLS */}
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "26px" }}>
+              <button
+                type="button"
+                className={`qari-pill ${courseFilter === "all" ? "active" : ""}`}
+                onClick={() => setCourseFilter("all")}
+              >
+                {isUrdu ? "تمام کورسز (۱۲)" : "All Programs (12)"}
+              </button>
+              <button
+                type="button"
+                className={`qari-pill ${courseFilter === "quran" ? "active" : ""}`}
+                onClick={() => setCourseFilter("quran")}
+              >
+                {isUrdu ? "قرآن ٹریک (۵)" : "Quran Track (5)"}
+              </button>
+              <button
+                type="button"
+                className={`qari-pill ${courseFilter === "islamic" ? "active" : ""}`}
+                onClick={() => setCourseFilter("islamic")}
+              >
+                {isUrdu ? "اسلامک اسٹڈیز (۵)" : "Islamic Studies (5)"}
+              </button>
+              <button
+                type="button"
+                className={`qari-pill ${courseFilter === "advanced" ? "active" : ""}`}
+                onClick={() => setCourseFilter("advanced")}
+              >
+                {isUrdu ? "عربی و قراءات (۲)" : "Arabic & Qira'at (2)"}
+              </button>
+            </div>
+
+            {/* COURSES GRID */}
+            <div className="cards">
+              {filteredCourses.map((course) => (
+                <article className="card" key={course.code}>
+                  <div>
+                    <div className="card-top-meta">
+                      <span className="number">#{course.code}</span>
+                      <span className="course-audience-pill">{course.audience}</span>
+                    </div>
+                    <h3>{course.name}</h3>
+                    <p>{course.shortDesc}</p>
+                    <div style={{ color: "var(--green)", fontWeight: 700, fontSize: "0.82rem", marginBottom: "12px" }}>
+                      ⏱ {course.duration} ({course.sessions})
+                    </div>
+                  </div>
+
+                  <div className="card-footer-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <button
+                      type="button"
+                      className="text-link"
+                      onClick={() => setSelectedCourseForOutline(course)}
+                    >
+                      {isUrdu ? "نصاب و آؤٹ لائن دیکھیں ←" : "View Course Outline →"}
+                    </button>
+                    <a className="btn btn-small btn-gold" href="#admissions-section">
+                      {isUrdu ? "مفت ٹرائل لیں" : "Free Trial"}
+                    </a>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================
+            COURSE OUTLINE MODAL (OPENED ON CLICK)
+            ======================================================== */}
+        {selectedCourseForOutline && (
+          <div
+            className="outline-modal-backdrop"
+            onClick={() => setSelectedCourseForOutline(null)}
+          >
+            <div
+              className="outline-modal"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                type="button"
+                className="outline-modal-close"
+                onClick={() => setSelectedCourseForOutline(null)}
+                aria-label="Close"
+              >
+                ×
+              </button>
+
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px" }}>
+                <span className="number">#{selectedCourseForOutline.code}</span>
+                <span className="course-audience-pill">{selectedCourseForOutline.audience}</span>
+              </div>
+
+              <h2 style={{ fontSize: "1.9rem", color: "var(--deep)", margin: "4px 0 8px" }}>
+                {selectedCourseForOutline.name}
+              </h2>
+              <p style={{ color: "var(--muted)", margin: "0 0 16px" }}>
+                {selectedCourseForOutline.shortDesc}
+              </p>
+
+              <div
+                style={{
+                  display: "flex",
+                  gap: "20px",
+                  background: "var(--cream)",
+                  padding: "12px 18px",
+                  borderRadius: "14px",
+                  fontSize: "0.86rem",
+                  marginBottom: "20px",
+                  flexWrap: "wrap",
+                }}
+              >
+                <span>
+                  <strong>{isUrdu ? "مدت:" : "Duration:"}</strong> {selectedCourseForOutline.duration}
+                </span>
+                <span>
+                  <strong>{isUrdu ? "سیشنز:" : "Sessions:"}</strong> {selectedCourseForOutline.sessions}
+                </span>
+                <span>
+                  <strong>{isUrdu ? "پیشگی شرط:" : "Prerequisite:"}</strong> {selectedCourseForOutline.prerequisites}
+                </span>
+              </div>
+
+              <h3 style={{ fontSize: "1.25rem", color: "var(--deep)", marginBottom: "14px" }}>
+                {isUrdu ? "تفصیلی مرحلہ وار نصاب (Detailed Modules):" : "Detailed Course Modules:"}
+              </h3>
+
+              <div style={{ display: "grid", gap: "10px", marginBottom: "22px" }}>
+                {selectedCourseForOutline.modules.map((mod, i) => (
+                  <div key={i} className="outline-module-card">
+                    <h4>{mod.title}</h4>
+                    <ul>
+                      {mod.topics.map((t, ti) => (
+                        <li key={ti}>{t}</li>
+                      ))}
+                    </ul>
+                  </div>
                 ))}
               </div>
 
-              <div className="tajweed-display">
-                <div
-                  className="tajweed-verse"
-                  dangerouslySetInnerHTML={{ __html: currentSample.arabicHtml }}
-                />
-                <p className="tajweed-translation">
-                  {isUrdu ? currentSample.translationUr : currentSample.translationEn}
-                </p>
-                <div className="tajweed-rule-box">
-                  <strong>{isUrdu ? currentSample.ruleUr : currentSample.ruleEn}</strong>
-                </div>
+              <div
+                style={{
+                  background: "rgba(11, 79, 63, 0.06)",
+                  border: "1px solid rgba(11, 79, 63, 0.2)",
+                  padding: "18px",
+                  borderRadius: "16px",
+                  marginBottom: "22px",
+                }}
+              >
+                <strong style={{ display: "block", color: "var(--deep)", marginBottom: "8px" }}>
+                  {isUrdu ? "کامیابی کے بعد کیا حاصل ہوگا؟ (Learning Outcomes):" : "Learning Outcomes:"}
+                </strong>
+                <ul style={{ margin: 0, paddingInlineStart: "20px", color: "var(--muted)", fontSize: "0.88rem" }}>
+                  {selectedCourseForOutline.outcomes.map((out, oi) => (
+                    <li key={oi}>{out}</li>
+                  ))}
+                </ul>
+              </div>
 
-                <div className="tajweed-legend-row">
-                  <div className="tj-legend-items">
-                    <span><i className="dot-qalqalah" /> {isUrdu ? "قلقلہ (آواز کی گونج)" : "Qalqalah (Echo)"}</span>
-                    <span><i className="dot-idgham" /> {isUrdu ? "ادغام و غنہ (ناک میں آواز)" : "Idgham & Ghunnah"}</span>
-                    <span><i className="dot-madd" /> {isUrdu ? "مد (آواز کو کھینچنا)" : "Madd (Elongation)"}</span>
-                  </div>
-                  <button
-                    type="button"
-                    className="btn btn-gold btn-small"
-                    onClick={() => playRecitationSample()}
-                  >
-                    {playingAudio
-                      ? isUrdu
-                        ? `⏸ تلاوت روکیں (${activeQariObj.nameUr})`
-                        : `⏸ Stop Recitation (${activeQariObj.nameEn})`
-                      : isUrdu
-                      ? `🔊 تلاوت سنیں — ${activeQariObj.nameUr}`
-                      : `🔊 Listen — ${activeQariObj.nameEn}`}
-                  </button>
-                </div>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
+                <a
+                  className="btn btn-gold"
+                  href="#admissions-section"
+                  onClick={() => setSelectedCourseForOutline(null)}
+                >
+                  {isUrdu ? "اس کورس کے لیے مفت ٹرائل بک کریں" : "Enroll with a Free Trial"}
+                </a>
+                <a
+                  className="text-link"
+                  href={`https://wa.me/923336519527?text=${encodeURIComponent(
+                    isUrdu
+                      ? `السلام علیکم! میں کورس "${selectedCourseForOutline.name}" کے نصاب کے بارے میں بات کرنا چاہتا ہوں۔`
+                      : `Assalamu Alaikum! I would like to discuss the syllabus for "${selectedCourseForOutline.name}".`
+                  )}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {isUrdu ? "واٹس ایپ مشورہ →" : "Consult on WhatsApp →"}
+                </a>
               </div>
             </div>
           </div>
-        </section>
+        )}
 
-        {/* WHY CHOOSE US */}
-        <section id="features" className="dark">
+        {/* ========================================================
+            ORIGINAL 5 CERTIFIED TEACHERS (AUTHENTIC FACULTY)
+            ======================================================== */}
+        <section id="teachers-section">
           <div className="wrap">
-            <SectionHead
-              label={t.sectionLabel}
-              title={t.whyTitle}
-              text=""
-              light
-            />
-            <div className="feature-grid">
-              {t.why.map(([a, b]) => (
-                <article key={a}>
-                  <span className="feature-icon">✦</span>
-                  <h3>{a}</h3>
-                  <p>{b}</p>
+            <div className="section-head">
+              <span className="eyebrow">
+                <span className="eyebrow-star">✦</span>
+                {isUrdu ? "سند یافتہ اور مستند اساتذہ" : "Faculty of Certified Scholars"}
+              </span>
+              <h2>{isUrdu ? "ہمارے مستند قراء اور معلمات" : "Meet Our Certified Scholars & Ustadhas"}</h2>
+              <p>
+                {isUrdu
+                  ? "فاروقی اکیڈمی کے تمام اساتذہ وفاق المدارس العربیہ سے فاضل درس نظامی اور قراءات سبعہ و عشرہ کی مستند اسناد کے حامل ہیں۔ خواتین اور بچیوں کے لیے الگ مستند معلمات دستیاب ہیں:"
+                  : "All tutors at Farooqi Academy hold formal Dars-e-Nizami and Qira'at certifications. Dedicated female scholars teach sisters and young girls in complete privacy:"}
+              </p>
+            </div>
+
+            <div className="cards" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
+              {t.teachersList.map((teacher) => (
+                <article className="card" key={teacher.name} style={{ textAlign: "start" }}>
+                  <div>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+                      <span className="verified-tag">✓ {isUrdu ? "مستند فاضل" : "Verified Scholar"}</span>
+                      <small style={{ color: "var(--gold)", fontWeight: 700 }}>{teacher.experience}</small>
+                    </div>
+                    <h3 style={{ margin: "4px 0 6px" }}>{teacher.name}</h3>
+                    <div className="teacher-qualification">{teacher.qualification}</div>
+                    <p style={{ fontWeight: 600, color: "var(--green)", fontSize: "0.85rem", marginBottom: "8px" }}>
+                      {teacher.role}
+                    </p>
+                    <p style={{ fontSize: "0.88rem", color: "var(--muted)", marginBottom: "12px" }}>
+                      {teacher.bio}
+                    </p>
+                    <div>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+                        {teacher.specialties.map((spec) => (
+                          <span key={spec} className="teacher-specialty-pill">
+                            {spec}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="card-footer-row" style={{ marginTop: "16px" }}>
+                    <a className="text-link" href="#admissions-section">
+                      {isUrdu ? "استاد کے ساتھ کلاس لیں ←" : "Request This Tutor →"}
+                    </a>
+                  </div>
                 </article>
               ))}
             </div>
           </div>
         </section>
 
-        {/* HOW IT WORKS */}
-        <section id="process">
+        {/* ========================================================
+            TRANSPARENT FEE PLANS & INTERACTIVE CALCULATOR
+            ======================================================== */}
+        <section id="pricing-section" className="soft">
           <div className="wrap">
-            <SectionHead
-              label={t.sectionLabel}
-              title={t.processTitle}
-              text=""
-            />
-            <div className="steps">
-              {t.steps.map(([a, b], i) => (
-                <article key={a} className="step-card">
-                  <strong>0{i + 1}</strong>
-                  <h3>{a}</h3>
-                  <p>{b}</p>
-                </article>
-              ))}
+            <div className="section-head">
+              <span className="eyebrow">
+                <span className="eyebrow-star">✦</span>
+                {isUrdu ? "شفاف فیس اور فیملی رعایت" : "Transparent Tuition & Sibling Discounts"}
+              </span>
+              <h2>{isUrdu ? "ماہانہ فیس کیلکولیٹر اور فیملی ڈسکاؤنٹ" : "Interactive Fee Calculator & Family Discount"}</h2>
+              <p>
+                {isUrdu
+                  ? "اپنا ملک، ہفتہ وار کلاسز اور بچوں کی تعداد منتخب کر کے فوری فیس معلوم کریں۔ ایک سے زائد بچوں پر ۱۰٪ تا ۲۰٪ خودکار رعایت:"
+                  : "Select your country, weekly frequency and number of children to calculate exact tuition with automatic 10% to 20% sibling discounts:"}
+              </p>
             </div>
-          </div>
-        </section>
 
-        {/* TEACHERS SECTION */}
-        <section id="teachers" className="soft">
-          <div className="wrap">
-            <SectionHead
-              label={t.teachersBadge}
-              title={t.teachersTitle}
-              text=""
-            />
-            <div className="teacher-grid">
-              {t.teachers.map(([name, role, bio]) => (
-                <article key={name} className="teacher-profile-card">
-                  <div className="avatar">◈</div>
-                  <h3>{name}</h3>
-                  <span className="teacher-role-tag">{role}</span>
-                  <p>{bio}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* PRICING & INTERACTIVE FEE CALCULATOR */}
-        <section id="pricing">
-          <div className="wrap">
-            <SectionHead
-              label={t.sectionLabel}
-              title={t.pricingTitle}
-              text={t.priceNote}
-            />
-
-            {/* Interactive Fee Calculator */}
+            {/* INTERACTIVE CALCULATOR CARD */}
             <div className="fee-calculator-card">
               <div className="calc-controls">
-                <h3>
-                  {isUrdu
-                    ? "اپنی ماہانہ فیس اور فیملی ڈسکاؤنٹ کا حساب لگائیں"
-                    : "Interactive Monthly Tuition & Family Discount Calculator"}
-                </h3>
-
+                <h3>{isUrdu ? "فیس کا درست تخمینہ لگائیں" : "Calculate Your Monthly Plan"}</h3>
                 <div className="calc-grid">
                   <label>
-                    {isUrdu ? "ملک / کرنسی منتخب کریں" : "Select Country / Currency"}
-                    <select value={currency} onChange={(e) => setCurrency(e.target.value)}>
-                      {Object.entries(CURRENCY_RATES).map(([code, info]) => (
+                    {isUrdu ? "ملک / کرنسی:" : "Country / Currency:"}
+                    <select
+                      value={calcCurrency}
+                      onChange={(e) => setCalcCurrency(e.target.value)}
+                    >
+                      {Object.entries(CURRENCIES).map(([code, info]) => (
                         <option key={code} value={code}>
                           {isUrdu ? info.labelUr : info.labelEn}
                         </option>
@@ -867,295 +1120,272 @@ export default function AcademySite({ locale }: { locale: Locale }) {
                   </label>
 
                   <label>
-                    {isUrdu ? "ہفتہ وار کلاسز" : "Classes per Week"}
+                    {isUrdu ? "ہفتہ وار کلاسز:" : "Classes per Week:"}
                     <select
-                      value={daysPerWeek}
-                      onChange={(e) => setDaysPerWeek(Number(e.target.value))}
+                      value={calcDays}
+                      onChange={(e) => setCalcDays(Number(e.target.value))}
                     >
-                      <option value={2}>{isUrdu ? "ہفتے میں 2 دن (8 کلاسز/ماہ)" : "2 Days / Week (8 classes/mo)"}</option>
-                      <option value={3}>{isUrdu ? "ہفتے میں 3 دن (12 کلاسز/ماہ)" : "3 Days / Week (12 classes/mo)"}</option>
-                      <option value={5}>{isUrdu ? "ہفتے میں 5 دن (20 کلاسز/ماہ)" : "5 Days / Week (20 classes/mo)"}</option>
-                      <option value={6}>{isUrdu ? "ہفتے میں 6 دن (24 کلاسز/ماہ)" : "6 Days / Week (24 classes/mo)"}</option>
+                      <option value={2}>{isUrdu ? "ہفتے میں 2 دن (8 کلاسز ماہانہ)" : "2 Days / Week (8 classes/mo)"}</option>
+                      <option value={3}>{isUrdu ? "ہفتے میں 3 دن (12 کلاسز ماہانہ)" : "3 Days / Week (12 classes/mo)"}</option>
+                      <option value={5}>{isUrdu ? "ہفتے میں 5 دن (20 کلاسز ماہانہ)" : "5 Days / Week (20 classes/mo)"}</option>
+                      <option value={6}>{isUrdu ? "ہفتے میں 6 دن (24 کلاسز ماہانہ)" : "6 Days / Week (24 classes/mo)"}</option>
                     </select>
                   </label>
 
                   <label>
-                    {isUrdu ? "کلاس کا دورانیہ" : "Class Duration"}
+                    {isUrdu ? "کلاس کا دورانیہ:" : "Session Duration:"}
                     <select
-                      value={durationMin}
-                      onChange={(e) => setDurationMin(Number(e.target.value))}
+                      value={calcDuration}
+                      onChange={(e) => setCalcDuration(Number(e.target.value))}
                     >
                       <option value={30}>{isUrdu ? "30 منٹ (معیاری انفرادی کلاس)" : "30 Minutes (Standard 1-to-1)"}</option>
-                      <option value={45}>{isUrdu ? "45 منٹ (تفصیلی کلاس)" : "45 Minutes (Extended 1-to-1)"}</option>
-                      <option value={60}>{isUrdu ? "60 منٹ (حفظ / ایڈوانسڈ)" : "60 Minutes (Hifz / Intensive)"}</option>
+                      <option value={45}>{isUrdu ? "45 منٹ (تفصیلی انفرادی کلاس)" : "45 Minutes (Extended 1-to-1)"}</option>
+                      <option value={60}>{isUrdu ? "60 منٹ (حفظ و خصوصی سیشن)" : "60 Minutes (Hifz / Intensive)"}</option>
                     </select>
                   </label>
 
                   <label>
-                    {isUrdu ? "طلبہ کی تعداد (فیملی ڈسکاؤنٹ)" : "Number of Students (Family Discount)"}
+                    {isUrdu ? "طلبہ کی تعداد (فیملی ڈسکاؤنٹ):" : "Number of Students:"}
                     <select
-                      value={studentsCount}
-                      onChange={(e) => setStudentsCount(Number(e.target.value))}
+                      value={calcStudents}
+                      onChange={(e) => setCalcStudents(Number(e.target.value))}
                     >
-                      <option value={1}>{isUrdu ? "1 طالب علم" : "1 Student"}</option>
-                      <option value={2}>{isUrdu ? "2 بہن بھائی (10% رعایت)" : "2 Siblings (10% Family Discount)"}</option>
-                      <option value={3}>{isUrdu ? "3 بہن بھائی (15% رعایت)" : "3 Siblings (15% Family Discount)"}</option>
-                      <option value={4}>{isUrdu ? "4 بہن بھائی (20% رعایت)" : "4 Siblings (20% Family Discount)"}</option>
+                      <option value={1}>{isUrdu ? "1 طالب علم (معیاری فیس)" : "1 Student (Standard Tuition)"}</option>
+                      <option value={2}>{isUrdu ? "2 بہن بھائی (10% رعایت)" : "2 Siblings (10% Discount)"}</option>
+                      <option value={3}>{isUrdu ? "3 بہن بھائی (15% رعایت)" : "3 Siblings (15% Discount)"}</option>
+                      <option value={4}>{isUrdu ? "4 بہن بھائی (20% رعایت)" : "4 Siblings (20% Discount)"}</option>
                     </select>
                   </label>
                 </div>
               </div>
 
+              {/* CALC RESULT DISPLAY */}
               <div className="calc-summary">
-                <span className="calc-badge">
-                  {isUrdu ? "تخمینی ماہانہ فیس" : "Estimated Monthly Tuition"}
-                </span>
+                <span className="calc-badge">{isUrdu ? "ماہانہ فیس" : "Monthly Tuition"}</span>
                 <div className="calc-price">
-                  {currInfo.symbol}
-                  {totalMonthly.toLocaleString()}
-                  <small> / {isUrdu ? "ماہ" : "month"}</small>
+                  <span className="ltr-num">{currInfo.symbol}{totalMonthlyFee.toLocaleString()}</span>
+                  <small> / {isUrdu ? "ماہ" : "mo"}</small>
                 </div>
                 <p className="calc-detail">
-                  {isUrdu
-                    ? `${classesPerMonth * studentsCount} انفرادی کلاسز فی ماہ · ${durationMin} منٹ فی کلاس`
-                    : `${classesPerMonth * studentsCount} private classes/month · ${durationMin} mins each`}
+                  {classesPerMonth * calcStudents} {isUrdu ? "انفرادی کلاسز فی ماہ" : "classes per month"} · {calcDuration} {isUrdu ? "منٹ فی کلاس" : "mins each"}
                 </p>
-                {savedMonthly > 0 && (
+                {monthlySavings > 0 && (
                   <div className="calc-savings">
-                    {isUrdu
-                      ? `🎉 فیملی ڈسکاؤنٹ کی مد میں ماہانہ بچت: ${currInfo.symbol}${savedMonthly.toLocaleString()}`
-                      : `🎉 Family Discount Applied: You save ${currInfo.symbol}${savedMonthly.toLocaleString()}/mo`}
+                    🎉 {isUrdu ? `فیملی بچت: ${currInfo.symbol}${monthlySavings} ماہانہ` : `You save ${currInfo.symbol}${monthlySavings}/mo`}
                   </div>
                 )}
-                <Link className="btn btn-gold" href={`/${locale}/free-trial`}>
-                  {t.trial}
-                </Link>
+                <a className="btn btn-gold" href="#admissions-section">
+                  {isUrdu ? "اس پلان پر ٹرائل لیں" : "Enroll With This Plan"}
+                </a>
               </div>
             </div>
-
-            <div className="plans">
-              {t.plans.map(([a, b, c], i) => (
-                <article
-                  className={i === 1 ? "plan featured" : "plan"}
-                  key={a}
-                >
-                  <span className="plan-tag">{b}</span>
-                  <h3>{a}</h3>
-                  <ul>
-                    {c.map((x) => (
-                      <li key={x}>✓ {x}</li>
-                    ))}
-                  </ul>
-                  <Link
-                    className={i === 1 ? "btn btn-gold" : "btn btn-outline"}
-                    href={`/${locale}/free-trial`}
-                  >
-                    {t.trial}
-                  </Link>
-                </article>
-              ))}
-            </div>
           </div>
         </section>
 
-        {/* PARENT TESTIMONIALS */}
-        <section className="soft">
-          <div className="wrap">
-            <SectionHead
-              label={isUrdu ? "والدین کا اعتماد" : "Parent Reviews"}
-              title={t.testimonialsTitle}
-              text=""
-            />
-            <div className="cards">
-              {t.testimonials.map(([author, quote]) => (
-                <article className="card testimonial-card" key={author}>
-                  <div className="stars">★★★★★</div>
-                  <p>“{quote}”</p>
-                  <strong>— {author}</strong>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* FAQ & STUDENT CERTIFICATE VERIFICATION */}
-        <section id="faq">
+        {/* ========================================================
+            STUDENT VERIFICATION & FAQ SECTION
+            ======================================================== */}
+        <section>
           <div className="wrap faq-verify-grid">
+            {/* FAQ ACCORDION */}
             <div>
-              <SectionHead
-                label={isUrdu ? "رہنمائی" : "FAQ"}
-                title={t.faqTitle}
-                text=""
-              />
+              <div className="section-head" style={{ marginBottom: "26px" }}>
+                <span className="eyebrow">
+                  <span className="eyebrow-star">✦</span>
+                  {isUrdu ? "اکثر پوچھے گئے سوالات" : "Common Questions"}
+                </span>
+                <h2>{isUrdu ? "عام سوالات کے تسلی بخش جوابات" : "Frequently Asked Questions"}</h2>
+              </div>
+
               <div className="faq-list">
-                {t.faqs.map(([q, a], idx) => (
-                  <div
-                    key={q}
-                    className={openFaq === idx ? "faq-item open" : "faq-item"}
-                  >
-                    <button
-                      type="button"
-                      className="faq-question"
-                      onClick={() => setOpenFaq(openFaq === idx ? -1 : idx)}
-                    >
-                      <span>{q}</span>
-                      <b>{openFaq === idx ? "−" : "+"}</b>
-                    </button>
-                    {openFaq === idx && <p className="faq-answer">{a}</p>}
+                <div className="faq-item">
+                  <div className="faq-question">
+                    <span>{isUrdu ? "کلاسز کس سافٹ ویئر پر اور کیسے لی جاتی ہیں؟" : "How are the one-to-one online classes conducted?"}</span>
                   </div>
-                ))}
+                  <p className="faq-answer">
+                    {isUrdu
+                      ? "تمام کلاسز زوم، گوگل میٹ یا واٹس ایپ کے ذریعے انفرادی طور پر لی جاتی ہیں، جہاں استاد اسکرین شیئرنگ پر قرآنِ مجید کے صفحات واضح دکھا کر پڑھاتے ہیں۔"
+                      : "Classes are conducted live 1-to-1 via Zoom, Google Meet or WhatsApp with high-definition Quran screen sharing and teacher interaction."}
+                  </p>
+                </div>
+
+                <div className="faq-item">
+                  <div className="faq-question">
+                    <span>{isUrdu ? "کیا خواتین اور بچیوں کے لیے الگ خواتین معلمات موجود ہیں؟" : "Do you have female tutors for sisters and young girls?"}</span>
+                  </div>
+                  <p className="faq-answer">
+                    {isUrdu
+                      ? "جی ہاں! الحمدللہ ہمارے پاس فاضلہ درس نظامی اور تجوید یافتہ مستند خواتین معلمات ہیں جو صرف خواتین اور بچیوں کو پڑھاتی ہیں۔"
+                      : "Yes! We have qualified, certified female scholars (Ustadhas) exclusively for women, girls and young children."}
+                  </p>
+                </div>
+
+                <div className="faq-item">
+                  <div className="faq-question">
+                    <span>{isUrdu ? "اگر کسی دن کلاس چھوٹ جائے تو کیا متبادل ملتا ہے؟" : "What happens if a student misses a scheduled class?"}</span>
+                  </div>
+                  <p className="faq-answer">
+                    {isUrdu
+                      ? "جی ہاں، پیشگی اطلاع کی صورت میں اکیڈمی پورٹل کے ذریعے کلاس کو ری شیڈول کیا جا سکتا ہے۔"
+                      : "With advance notice, parents and teachers can reschedule classes directly through the Academy Portal without losing sessions."}
+                  </p>
+                </div>
               </div>
             </div>
 
-            <aside className="verify-widget-card">
-              <span className="eyebrow">
-                {isUrdu ? "تصدیقی نظام" : "Instant Verification"}
-              </span>
-              <h3>
-                {isUrdu
-                  ? "طالب علم کا کارڈ یا سرٹیفکیٹ تصدیق کریں"
-                  : "Verify Student ID Card or Certificate"}
-              </h3>
-              <p>
-                {isUrdu
-                  ? "طالب علم کے کارڈ یا سرٹیفکیٹ پر درج کوڈ (مثلاً FQV-... یا FQA-...) درج کر کے ریکارڈ کی آن لائن تصدیق کریں۔"
-                  : "Enter the verification code or Student ID printed on an academy certificate or QR ID card."}
-              </p>
-              <form onSubmit={handleVerifySubmit} className="verify-widget-form">
-                <input
-                  value={verifyCode}
-                  onChange={(e) => setVerifyCode(e.target.value)}
-                  placeholder={isUrdu ? "کوڈ درج کریں (مثلاً FQA-1042)" : "Enter code (e.g. FQA-1042)"}
-                  required
-                />
-                <button type="submit" className="btn btn-gold">
-                  {isUrdu ? "تصدیق کریں" : "Verify Now"}
-                </button>
-              </form>
-            </aside>
+            {/* VERIFY WIDGET */}
+            <div>
+              <div className="verify-widget-card">
+                <span className="verified-tag">🛡️ {isUrdu ? "آن لائن تصدیق" : "Instant Verification"}</span>
+                <h3>{isUrdu ? "طالب علم کارڈ تصدیق کریں" : "Verify Student ID / Certificate"}</h3>
+                <p>
+                  {isUrdu
+                    ? "طالب علم کے شناختی کارڈ یا سند پر درج کوڈ لکھیں (مثلاً FQA-1042):"
+                    : "Enter the student ID code from any official card or certificate (e.g. FQA-1042):"}
+                </p>
+
+                <form onSubmit={handleVerifySubmit} className="verify-widget-form">
+                  <input
+                    type="text"
+                    value={verifyCode}
+                    onChange={(e) => setVerifyCode(e.target.value)}
+                    placeholder="e.g. FQA-1042 or FQV-8891"
+                    className="ltr-num"
+                    required
+                  />
+                  <button type="submit" className="btn btn-gold">
+                    {isUrdu ? "تصدیق کیجیے" : "Verify Credential"}
+                  </button>
+                </form>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* CONTACT & QUICK TRIAL FORM */}
-        <section id="contact">
-          <div className="wrap contact">
-            <div>
-              <span className="eyebrow">{t.freeTrialLabel}</span>
-              <h2>{t.contactTitle}</h2>
-              <p>{t.contactSub}</p>
-              <div className="contact-lines">
-                <a href="tel:+923336519527">{isUrdu ? "☎ 0333-6519527 (واٹس ایپ اور کال)" : "☎ 0333-6519527 (WhatsApp & Call)"}</a>
-                <a href="tel:+923344323994">☎ 0334-4323994</a>
-                <a href="mailto:umarwazir1989@gmail.com">✉ umarwazir1989@gmail.com</a>
+        {/* ========================================================
+            ADMISSIONS & FREE TRIAL SECTION
+            ======================================================== */}
+        <section id="admissions-section">
+          <div className="wrap">
+            <div className="contact">
+              <div>
+                <span className="eyebrow" style={{ background: "rgba(255,255,255,0.15)", color: "#fff" }}>
+                  <span className="eyebrow-star">✦</span>
+                  {isUrdu ? "مفت تعلیمی جائزہ و ٹرائل کلاس" : "Complimentary Assessment & Free Trial"}
+                </span>
+
+                <h2>{isUrdu ? "آج ہی مفت ٹرائل کلاس بک کریں" : "Book Your Free Trial Class Today"}</h2>
+                <p>
+                  {isUrdu
+                    ? "مختصر فارم پُر کریں۔ ہماری تعلیمی ٹیم آپ سے رابطہ کر کے مناسب وقت پر ایک مفت ٹرائل سیشن کا اہتمام کرے گی۔"
+                    : "Fill in the short form below. Our academic advisor will contact you to schedule a convenient free trial session."}
+                </p>
+
+                <div className="contact-lines">
+                  <a href="tel:+923336519527" className="ltr-num">☎ 0333-6519527 / 0334-4323994</a>
+                  <a href="mailto:umarwazir1989@gmail.com">✉ umarwazir1989@gmail.com</a>
+                  <span>📍 {isUrdu ? "لاہور، پنجاب، پاکستان" : "Lahore, Punjab, Pakistan"}</span>
+                </div>
               </div>
+
+              {/* TRIAL FORM */}
+              <form onSubmit={handleTrialSubmit}>
+                <div className="form-row">
+                  <label>
+                    {isUrdu ? "طالب علم کا نام *" : "Student Name *"}
+                    <input type="text" name="name" required placeholder={isUrdu ? "محمد ریان" : "e.g. Rayyan Khan"} />
+                  </label>
+                  <label>
+                    {isUrdu ? "واٹس ایپ نمبر *" : "WhatsApp Number *"}
+                    <input type="tel" name="phone" required placeholder="+44 7700 900000" className="ltr-num" />
+                  </label>
+                </div>
+
+                <div className="form-row">
+                  <label>
+                    {isUrdu ? "ملک اور شہر *" : "Country & City *"}
+                    <input type="text" name="country" required placeholder={isUrdu ? "لندن / مانچسٹر / ہیوسٹن" : "UK / USA / Pakistan"} />
+                  </label>
+                  <label>
+                    {isUrdu ? "مطلوبہ کورس *" : "Course *"}
+                    <select name="course" required>
+                      <option value="Noorani Qaida">{isUrdu ? "نورانی قاعدہ" : "Noorani Qaida"}</option>
+                      <option value="Nazra Quran with Tajweed">{isUrdu ? "ناظرہ قرآن مع تجوید" : "Nazra Quran with Tajweed"}</option>
+                      <option value="Tajweed Mastery">{isUrdu ? "تجوید و قراءات کورس" : "Tajweed Mastery"}</option>
+                      <option value="Hifz-ul-Quran">{isUrdu ? "حفظ القرآن الکریم" : "Hifz-ul-Quran"}</option>
+                      <option value="Tafsir & Translation">{isUrdu ? "ترجمہ و تفسیر القرآن" : "Tafsir & Translation"}</option>
+                      <option value="Salah & Islamic Studies">{isUrdu ? "نماز، سیرت و اسلامیات" : "Salah & Islamic Studies"}</option>
+                    </select>
+                  </label>
+                </div>
+
+                <label>
+                  {isUrdu ? "استاد کی ترجیح اور پسندیدہ وقت:" : "Tutor Preference & Timing:"}
+                  <input
+                    type="text"
+                    name="timeSlot"
+                    placeholder={isUrdu ? "مرد استاد یا خاتون معلمہ / شام ۶ بجے" : "Male/Female tutor / e.g. 6 PM UK Time"}
+                  />
+                </label>
+
+                <button type="submit" className="btn btn-gold" disabled={formBusy}>
+                  {formBusy
+                    ? isUrdu
+                      ? "درخواست بھیجی جا رہی ہے..."
+                      : "Submitting..."
+                    : isUrdu
+                    ? "✓ مفت ٹرائل درخواست بھیجیں"
+                    : "✓ Submit Free Trial Application"}
+                </button>
+
+                {formStatus && <p className="form-status">{formStatus}</p>}
+              </form>
             </div>
-
-            <form onSubmit={submit}>
-              <label>
-                {t.labels.name}
-                <input name="name" required />
-              </label>
-
-              <div className="form-row">
-                <label>
-                  {t.labels.phone}
-                  <input name="phone" inputMode="tel" required />
-                </label>
-                <label>
-                  {t.labels.country}
-                  <input name="country" required />
-                </label>
-              </div>
-
-              <div className="form-row">
-                <label>
-                  {t.labels.age}
-                  <input name="age" inputMode="numeric" />
-                </label>
-                <label>
-                  {t.labels.course}
-                  <select name="course" required defaultValue="">
-                    <option value="" disabled>
-                      {t.labels.select}
-                    </option>
-                    {t.courses.map(([x]) => (
-                      <option key={x} value={x}>{x}</option>
-                    ))}
-                  </select>
-                </label>
-              </div>
-
-              <label>
-                {t.labels.message}
-                <textarea name="message" rows={3} />
-              </label>
-
-              <button className="btn btn-gold" type="submit" disabled={busy}>
-                {busy
-                  ? isUrdu ? "محفوظ ہو رہا ہے…" : "Saving…"
-                  : t.labels.submit}
-              </button>
-              <p className="form-status" aria-live="polite">
-                {status}
-              </p>
-            </form>
           </div>
         </section>
       </main>
 
+      {/* FOOTER */}
       <footer>
         <div className="wrap footer">
           <div className="brand">
-            <div className="brand-logo-frame">
-              <Image src="/logo.jpg" alt="" width={46} height={46} />
-            </div>
+            <Image src="/logo.jpg" alt="Farooqi Academy" width={42} height={42} />
             <span>
-              <strong>
-                {isUrdu
-                  ? "فاروقی آن لائن قرآن اکیڈمی"
-                  : "Farooqi Online Quran Academy"}
-              </strong>
+              <strong>{isUrdu ? "فاروقی آن لائن قرآن اکیڈمی" : "Farooqi Online Quran Academy"}</strong>
               <small>{isUrdu ? "لاہور · پاکستان" : "Lahore · Pakistan"}</small>
             </span>
           </div>
-          <p>{t.footer}</p>
-          <p>{isUrdu ? `© ${new Date().getFullYear()} فاروقی آن لائن قرآن اکیڈمی · جملہ حقوق محفوظ ہیں` : `© ${new Date().getFullYear()} Farooqi Online Quran Academy`}</p>
+          <p>
+            {isUrdu
+              ? "تجوید، محبت اور اعتماد کے ساتھ دنیا بھر میں بچوں، خواتین اور بڑوں کے لیے معیاری آن لائن قرآن تعلیم۔"
+              : "Quality online Quran education with Tajweed, care and confidence for learners worldwide."}
+          </p>
+          <div>
+            <Link className="language" href={t.otherPath}>
+              {t.other}
+            </Link>
+          </div>
         </div>
       </footer>
 
+      {/* FLOATING WHATSAPP BUTTON */}
       <a
         className="floating-whatsapp"
-        href="https://wa.me/923336519527"
+        href="https://wa.me/923336519527?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%DB%8C%DA%A9%D9%85!%20%D9%81%D8%A7%D8%B1%D9%88%D9%82%DB%8C%20%D9%82%D8%B1%D8%A2%D9%86%20%D8%A7%DA%A9%DB%8C%DA%88%D9%85%DB%8C%20%D9%85%DB%8C%DA%BA%20%D8%AF%D8%A7%D8%AE%D9%84%DB%92%20%DA%A9%DB%92%20%D8%A8%D8%A7%D8%B1%DB%92%20%D9%85%DB%8C%DA%BA%20%D9%85%D8%B9%D9%84%D9%88%D9%85%D8%A7%D8%AA%20%DA%86%D8%A7%DB%81%DB%8C%DB%92%DB%94"
         target="_blank"
         rel="noreferrer"
         aria-label="WhatsApp"
       >
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.625.846 5.059 2.284 7.033l-1.492 5.448 5.601-1.469c1.912 1.044 4.103 1.638 6.433 1.638 6.627 0 12-5.373 12-12s-5.373-12-12-12z"/>
+        <svg
+          width="30"
+          height="30"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.625.846 5.059 2.284 7.033l-1.492 5.448 5.601-1.469c1.912 1.044 4.103 1.638 6.433 1.638 6.627 0 12-5.373 12-12s-5.373-12-12-12z" />
         </svg>
       </a>
-    </div>
-  );
-}
-
-function SectionHead({
-  label,
-  title,
-  text,
-  light = false,
-}: {
-  label: string;
-  title: string;
-  text: string;
-  light?: boolean;
-}) {
-  return (
-    <div className={`section-head ${light ? "light" : ""}`}>
-      <span className="eyebrow">
-        <b className="eyebrow-star" aria-hidden="true">✦</b> {label}
-      </span>
-      <h2>{title}</h2>
-      {text && <p>{text}</p>}
     </div>
   );
 }
