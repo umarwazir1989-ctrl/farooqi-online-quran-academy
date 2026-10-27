@@ -36,7 +36,8 @@ export default function TrialApplicationForm({ locale }: { locale: Locale }) {
         body: JSON.stringify(payload),
       });
 
-      const result = await response.json();
+      const text = await response.text().catch(() => "");
+      const result = text ? JSON.parse(text) : {};
 
       if (!response.ok || !result.ok) {
         throw new Error(result.error || "Submission failed");

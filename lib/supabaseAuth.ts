@@ -35,7 +35,7 @@ export async function getCurrentUser() {
   });
 
   if (!response.ok) return null;
-  return response.json();
+  const text = await response.text(); return text ? JSON.parse(text) : null;
 }
 
 export async function getCurrentProfile() {
@@ -57,7 +57,7 @@ export async function getCurrentProfile() {
   );
 
   if (!response.ok) return null;
-  const rows = await response.json();
+  const text = await response.text(); const rows = text ? JSON.parse(text) : [];
   return rows[0] || null;
 }
 
@@ -77,7 +77,7 @@ export async function signInWithPassword(email: string, password: string) {
     }
   );
 
-  const data = await response.json();
+  const text = await response.text(); const data = text ? JSON.parse(text) : {};
 
   if (!response.ok) {
     throw new Error(data?.error_description || data?.msg || "Login failed");

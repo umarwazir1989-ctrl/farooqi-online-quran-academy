@@ -29,7 +29,8 @@ export async function createTrialApplication(payload: Record<string, unknown>) {
     throw new Error(`Supabase insert failed: ${response.status} ${detail}`);
   }
 
-  const rows = await response.json();
+  const text = await response.text();
+  const rows = text ? JSON.parse(text) : [];
   return rows[0];
 }
 
@@ -53,5 +54,6 @@ export async function listTrialApplications(limit = 100) {
     throw new Error(`Supabase fetch failed: ${response.status} ${detail}`);
   }
 
-  return response.json();
+  const text = await response.text();
+  return text ? JSON.parse(text) : [];
 }

@@ -412,7 +412,8 @@ export default function AcademySite({ locale }: { locale: Locale }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const data = await res.json();
+      const text = await res.text().catch(() => "");
+      const data = text ? JSON.parse(text) : null;
       if (data?.id) appId = String(data.id);
     } catch {
       // Continue to WhatsApp fallback
