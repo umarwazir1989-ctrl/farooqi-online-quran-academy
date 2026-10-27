@@ -1,30 +1,30 @@
 export type Locale = "ur" | "en";
 
 export interface TeacherInfo {
-  name: string;
-  qualification: string;
-  role: string;
-  experience: string;
-  bio: string;
-  specialties: string[];
+  readonly name: string;
+  readonly qualification: string;
+  readonly role: string;
+  readonly experience: string;
+  readonly bio: string;
+  readonly specialties: readonly string[];
 }
 
 export interface CourseOutlineModule {
-  title: string;
-  topics: string[];
+  readonly title: string;
+  readonly topics: readonly string[];
 }
 
 export interface CourseDetail {
-  code: string;
-  name: string;
-  shortDesc: string;
-  audience: string;
-  duration: string;
-  sessions: string;
-  track: "quran" | "islamic" | "advanced";
-  modules: CourseOutlineModule[];
-  outcomes: string[];
-  prerequisites: string;
+  readonly code: string;
+  readonly name: string;
+  readonly shortDesc: string;
+  readonly audience: string;
+  readonly duration: string;
+  readonly sessions: string;
+  readonly track: "quran" | "islamic" | "advanced" | string;
+  readonly modules: readonly CourseOutlineModule[];
+  readonly outcomes: readonly string[];
+  readonly prerequisites: string;
 }
 
 export interface SurahMeta {

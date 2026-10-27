@@ -108,7 +108,7 @@ export default function AcademySite({ locale }: { locale: Locale }) {
 
   // Courses Track Filter & Course Outline Modal
   const [courseFilter, setCourseFilter] = useState<"all" | "quran" | "islamic" | "advanced">("all");
-  const [selectedCourseForOutline, setSelectedCourseForOutline] = useState<CourseDetail | null>(null);
+  const [selectedCourseForOutline, setSelectedCourseForOutline] = useState<CourseDetail | any>(null);
 
   // Fee Calculator State
   const [calcCurrency, setCalcCurrency] = useState("GBP");
