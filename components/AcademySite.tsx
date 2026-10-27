@@ -10,6 +10,7 @@ import {
   NOORANI_QAIDA_LESSONS,
   type Locale,
   type CourseDetail,
+  type CourseOutlineModule,
 } from "@/lib/siteData";
 
 type QariReciterId = "husary_muallim" | "afasy" | "basit" | "sudais" | "minshawi_muallim";
@@ -108,7 +109,7 @@ export default function AcademySite({ locale }: { locale: Locale }) {
 
   // Courses Track Filter & Course Outline Modal
   const [courseFilter, setCourseFilter] = useState<"all" | "quran" | "islamic" | "advanced">("all");
-  const [selectedCourseForOutline, setSelectedCourseForOutline] = useState<CourseDetail | any>(null);
+  const [selectedCourseForOutline, setSelectedCourseForOutline] = useState<CourseDetail | null>(null);
 
   // Fee Calculator State
   const [calcCurrency, setCalcCurrency] = useState("GBP");
@@ -895,7 +896,7 @@ export default function AcademySite({ locale }: { locale: Locale }) {
                     <button
                       type="button"
                       className="text-link"
-                      onClick={() => setSelectedCourseForOutline(course)}
+                      onClick={() => setSelectedCourseForOutline(course as CourseDetail)}
                     >
                       {isUrdu ? "نصاب و آؤٹ لائن دیکھیں ←" : "View Course Outline →"}
                     </button>
@@ -970,11 +971,11 @@ export default function AcademySite({ locale }: { locale: Locale }) {
               </h3>
 
               <div style={{ display: "grid", gap: "10px", marginBottom: "22px" }}>
-                {selectedCourseForOutline.modules.map((mod, i) => (
+                {selectedCourseForOutline.modules.map((mod: CourseOutlineModule, i: number) => (
                   <div key={i} className="outline-module-card">
                     <h4>{mod.title}</h4>
                     <ul>
-                      {mod.topics.map((t, ti) => (
+                      {mod.topics.map((t: string, ti: number) => (
                         <li key={ti}>{t}</li>
                       ))}
                     </ul>
@@ -995,7 +996,7 @@ export default function AcademySite({ locale }: { locale: Locale }) {
                   {isUrdu ? "کامیابی کے بعد کیا حاصل ہوگا؟ (Learning Outcomes):" : "Learning Outcomes:"}
                 </strong>
                 <ul style={{ margin: 0, paddingInlineStart: "20px", color: "var(--muted)", fontSize: "0.88rem" }}>
-                  {selectedCourseForOutline.outcomes.map((out, oi) => (
+                  {selectedCourseForOutline.outcomes.map((out: string, oi: number) => (
                     <li key={oi}>{out}</li>
                   ))}
                 </ul>
