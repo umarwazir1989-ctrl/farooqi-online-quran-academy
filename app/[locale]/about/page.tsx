@@ -18,9 +18,16 @@ export default async function Page(props: {
         <section>
           <div className="wrap">
             <div className="info-grid">
-              {t.aboutPoints.map(([a,b]) => (
-                <article className="info-card" key={a}><h3>{a}</h3><p>{b}</p></article>
-              ))}
+              {t.aboutPoints.map((point) => {
+                const a = point[0];
+                const b = point[1];
+                return (
+                  <article className="info-card" key={a}>
+                    <h3>{a}</h3>
+                    <p>{b}</p>
+                  </article>
+                );
+              })}
             </div>
             <div className="content-panel">
               <h2>{locale === "ur" ? "ہمارا تعلیمی تصور" : "Our Learning Approach"}</h2>

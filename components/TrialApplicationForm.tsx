@@ -133,9 +133,14 @@ export default function TrialApplicationForm({ locale }: { locale: Locale }) {
           <option value="" disabled>
             {isUrdu ? "کورس منتخب کریں" : "Select a course"}
           </option>
-          {t.coursesList.map(([name]) => (
-            <option value={name} key={name}>{name}</option>
-          ))}
+          {t.coursesList.map((courseItem) => {
+            const name = courseItem[0];
+            return (
+              <option value={name} key={name}>
+                {name}
+              </option>
+            );
+          })}
         </select>
       </label>
 
