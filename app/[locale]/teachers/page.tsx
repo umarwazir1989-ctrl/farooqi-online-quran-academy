@@ -5,14 +5,12 @@ import { siteData, type Locale } from "@/lib/siteData";
 
 const locales = ["ur", "en"] as const;
 
-export default async function TeachersPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
+export default async function Page(props: {
+  params: Promise<{ locale: string }> | { locale: string };
 }) {
-  const { locale: rawLocale } = await params;
-  if (!locales.includes(rawLocale as Locale)) notFound();
-  const locale = rawLocale as Locale;
+  const resolved = await Promise.resolve(props.params);
+  const rawLocale = resolved?.locale;
+  const locale: Locale = rawLocale === "ur" ? "ur" : "en";
   const t = siteData[locale];
   const isUrdu = locale === "ur";
 

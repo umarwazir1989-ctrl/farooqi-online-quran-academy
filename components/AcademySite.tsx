@@ -7,6 +7,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import {
   siteData,
   QURAN_SURAHS,
+  QURAN_FULL_DATA,
   NOORANI_QAIDA_LESSONS,
   type Locale,
   type CourseDetail,
@@ -97,6 +98,10 @@ export default function AcademySite({ locale }: { locale: Locale }) {
   // Noorani Qaida State
   const [activeQaidaLessonId, setActiveQaidaLessonId] = useState(1);
   const [playingQaidaItem, setPlayingQaidaItem] = useState<string | null>(null);
+  const [qaidaGainBoost, setQaidaGainBoost] = useState<number>(2.8);
+  const [quranScript, setQuranScript] = useState<"indopak" | "uthmani">("indopak");
+  const [playingTeacherIdx, setPlayingTeacherIdx] = useState<number | null>(null);
+  const teacherAudioRef = useRef<HTMLAudioElement | null>(null);
 
   // Full Quran Player State
   const [selectedReciterId, setSelectedReciterId] = useState<QariReciterId>("husary_muallim");
@@ -105,6 +110,10 @@ export default function AcademySite({ locale }: { locale: Locale }) {
   const [isPlayingQuran, setIsPlayingQuran] = useState(false);
   const [quranAudioDuration, setQuranAudioDuration] = useState(0);
   const [quranAudioCurrentTime, setQuranAudioCurrentTime] = useState(0);
+  const [wordByWordMode, setWordByWordMode] = useState(false);
+  const [showTranslations, setShowTranslations] = useState(true);
+  const [activeAyahNum, setActiveAyahNum] = useState(1);
+
   const quranAudioRef = useRef<HTMLAudioElement | null>(null);
 
   // Courses Track Filter & Course Outline Modal
@@ -229,21 +238,125 @@ export default function AcademySite({ locale }: { locale: Locale }) {
     }
   }
 
-  function playQaidaSound(letterArabic: string, letterName: string) {
-    setPlayingQaidaItem(letterArabic);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const gainNodeRef = useRef<GainNode | null>(null);
 
-    // Use Web Speech API with Arabic locale if available for instant offline pronunciation
+  useEffect(() => {
+    if (gainNodeRef.current) {
+      gainNodeRef.current.gain.value = qaidaGainBoost;
+    }
+  }, [qaidaGainBoost]);
+
+  function getGainNode(): GainNode | null {
+    if (typeof window === "undefined") return null;
+    const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    if (!AudioContextClass) return null;
+    if (!audioCtxRef.current) {
+      const ctx = new AudioContextClass();
+      const gain = ctx.createGain();
+      gain.gain.value = qaidaGainBoost;
+      gain.connect(ctx.destination);
+      audioCtxRef.current = ctx;
+      gainNodeRef.current = gain;
+    }
+    if (audioCtxRef.current.state === "suspended") {
+      audioCtxRef.current.resume();
+    }
+    if (gainNodeRef.current) {
+      gainNodeRef.current.gain.value = qaidaGainBoost;
+    }
+    return gainNodeRef.current;
+  }
+
+  const LETTER_FILE_IDS: Record<string, string> = {
+    "ا": "1_alif", "ب": "2_baa", "ت": "3_taa", "ث": "4_thaa", "ج": "5_jeem", "ح": "6_haa", "خ": "7_khaa",
+    "د": "8_daal", "ذ": "9_dhaal", "ر": "10_raa", "ز": "11_zaay", "س": "12_seen", "ش": "13_sheen", "ص": "14_saad",
+    "ض": "15_daad", "ط": "16_taa", "ظ": "17_zaa", "ع": "18_ayn", "غ": "19_ghayn", "ف": "20_faa", "ق": "21_qaaf",
+    "ك": "22_kaaf", "ل": "23_laam", "م": "24_meem", "ن": "25_noon", "و": "26_waaw", "هـ": "27_haa", "ء": "28_hamza",
+    "ي": "29_yaa"
+  };
+
+  const ARABIC_LETTER_NAMES: Record<string, string> = {
+    "ا": "أَلِف", "ب": "بَاء", "ت": "تَاء", "ث": "ثَاء", "ج": "جِيم", "ح": "حَاء", "خ": "خَاء",
+    "د": "دَال", "ذ": "ذَال", "ر": "رَاء", "ز": "زَاي", "س": "سِين", "ش": "شِين", "ص": "صَاد",
+    "ض": "ضَاد", "ط": "طَاء", "ظ": "ظَاء", "ع": "عَيْن", "غ": "غَيْن", "ف": "فَاء", "ق": "قَاف",
+    "ك": "كَاف", "ل": "لَام", "م": "مِيم", "ن": "نُون", "و": "وَاو", "هـ": "هَاء", "ء": "هَمْزَة",
+    "ي": "يَاء", "لا": "لَام أَلِف", "با": "بَاء أَلِف", "تا": "تَاء أَلِف", "ثا": "ثَاء أَلِف",
+    "بل": "بَاء لَام", "تل": "تَاء لَام", "ثل": "ثَاء لَام", "نل": "نُون لَام", "يل": "يَاء لَام",
+    "بـح": "بَاء حَاء", "تـخ": "تَاء خَاء", "نـج": "نُون جِيم"
+  };
+
+  function fallbackSpeak(letterArabic: string) {
     if (typeof window !== "undefined" && "speechSynthesis" in window) {
       window.speechSynthesis.cancel();
-      const utter = new SpeechSynthesisUtterance(letterArabic);
+      const textToSpeak = ARABIC_LETTER_NAMES[letterArabic] || letterArabic;
+      const utter = new SpeechSynthesisUtterance(textToSpeak);
       utter.lang = "ar-SA";
-      utter.rate = 0.8;
+      utter.volume = 1.0;
+      utter.rate = 0.72;
+      utter.pitch = 1.05;
       utter.onend = () => setPlayingQaidaItem(null);
       utter.onerror = () => setPlayingQaidaItem(null);
       window.speechSynthesis.speak(utter);
     } else {
       setTimeout(() => setPlayingQaidaItem(null), 1200);
     }
+  }
+
+  function playQaidaSound(letterArabic: string, letterName: string) {
+    setPlayingQaidaItem(letterArabic);
+
+    const fileId = LETTER_FILE_IDS[letterArabic];
+    const gain = getGainNode();
+
+    if (fileId && audioCtxRef.current && gain) {
+      const audioUrl = `https://raw.githubusercontent.com/adnan/Arabic-Alphabet/master/sounds/${fileId}.mp3`;
+      const audio = new Audio(audioUrl);
+      audio.crossOrigin = "anonymous";
+      try {
+        const source = audioCtxRef.current.createMediaElementSource(audio);
+        source.connect(gain);
+      } catch {
+        // cross origin fallback
+      }
+      audio.play().then(() => {
+        audio.onended = () => setPlayingQaidaItem(null);
+        audio.onerror = () => fallbackSpeak(letterArabic);
+      }).catch(() => {
+        fallbackSpeak(letterArabic);
+      });
+    } else {
+      fallbackSpeak(letterArabic);
+    }
+  }
+
+  function playTeacherRecitationSample(idx: number) {
+    if (teacherAudioRef.current) {
+      teacherAudioRef.current.pause();
+      teacherAudioRef.current = null;
+    }
+    if (playingTeacherIdx === idx) {
+      setPlayingTeacherIdx(null);
+      return;
+    }
+
+    setPlayingTeacherIdx(idx);
+    const sampleUrls = [
+      "https://everyayah.com/data/Alafasy_128kbps/001001.mp3",
+      "https://everyayah.com/data/Husary_128kbps_Mujawwad/093001.mp3",
+      "https://everyayah.com/data/Minshawy_Teacher_128kbps/078001.mp3",
+      "https://everyayah.com/data/Alafasy_128kbps/112001.mp3",
+      "https://everyayah.com/data/Husary_128kbps_Mujawwad/114001.mp3"
+    ];
+
+    const audio = new Audio(sampleUrls[idx % sampleUrls.length]);
+    teacherAudioRef.current = audio;
+    audio.volume = 1.0;
+    audio.play().catch(() => {});
+    audio.onended = () => {
+      setPlayingTeacherIdx(null);
+      teacherAudioRef.current = null;
+    };
   }
 
   function formatTime(seconds: number): string {
@@ -612,10 +725,34 @@ export default function AcademySite({ locale }: { locale: Locale }) {
                     {isUrdu ? activeQaidaLesson.descUr : activeQaidaLesson.descEn}
                   </p>
                 </div>
-                <div style={{ color: "var(--green)", fontSize: "0.84rem", fontWeight: 700 }}>
-                  {isUrdu
-                    ? "🔊 آواز سننے کے لیے کسی بھی خانے پر کلک کریں"
-                    : "🔊 Click any letter/word to play audio"}
+                <div style={{ display: "flex", flexDirection: "column", gap: "6px", alignItems: "flex-end" }}>
+                  <div style={{ color: "var(--green)", fontSize: "0.84rem", fontWeight: 700 }}>
+                    {isUrdu ? "🔊 آواز سننے کے لیے کسی بھی خانے پر کلک کریں" : "🔊 Click any letter/word to play audio"}
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--muted)" }}>
+                      {isUrdu ? "والیوم بوسٹ:" : "Volume Boost:"}
+                    </span>
+                    {[1.0, 1.5, 2.0, 2.8].map((val) => (
+                      <button
+                        key={val}
+                        type="button"
+                        style={{
+                          padding: "3px 8px",
+                          borderRadius: "6px",
+                          fontSize: "0.72rem",
+                          fontWeight: 700,
+                          border: qaidaGainBoost === val ? "1px solid var(--gold)" : "1px solid var(--line)",
+                          background: qaidaGainBoost === val ? "var(--gold)" : "#fff",
+                          color: qaidaGainBoost === val ? "#1b1a17" : "var(--muted)",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => setQaidaGainBoost(val)}
+                      >
+                        {Math.round(val * 100)}%
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -688,6 +825,45 @@ export default function AcademySite({ locale }: { locale: Locale }) {
                 >
                   {isUrdu ? "قاری کا انتخاب کریں:" : "Select Reciter:"}
                 </span>
+                {/* SCRIPT TOGGLE (INDO-PAK VS UTHMANI) */}
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px", flexWrap: "wrap" }}>
+                  <span style={{ fontSize: "0.82rem", color: "var(--gold-light)", fontWeight: 700 }}>
+                    {isUrdu ? "رسم الخط (Script):" : "Quranic Script:"}
+                  </span>
+                  <button
+                    type="button"
+                    style={{
+                      padding: "4px 12px",
+                      borderRadius: "8px",
+                      fontSize: "0.78rem",
+                      fontWeight: 700,
+                      background: quranScript === "indopak" ? "var(--green)" : "rgba(255,255,255,0.1)",
+                      color: "#fff",
+                      border: "1px solid var(--gold)",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => setQuranScript("indopak")}
+                  >
+                    {isUrdu ? "📜 پاک و ہند (۱۶ سطری نستعلیق)" : "Indo-Pak Nastaliq"}
+                  </button>
+                  <button
+                    type="button"
+                    style={{
+                      padding: "4px 12px",
+                      borderRadius: "8px",
+                      fontSize: "0.78rem",
+                      fontWeight: 700,
+                      background: quranScript === "uthmani" ? "var(--green)" : "rgba(255,255,255,0.1)",
+                      color: "#fff",
+                      border: "1px solid var(--gold)",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => setQuranScript("uthmani")}
+                  >
+                    {isUrdu ? "📖 عثمانی مصحف (حفص)" : "Uthmani Madani"}
+                  </button>
+                </div>
+
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
                   {RECITERS.map((reciter) => (
                     <button
@@ -789,6 +965,247 @@ export default function AcademySite({ locale }: { locale: Locale }) {
                   </div>
                 </div>
               )}
+
+              {/* INTERACTIVE MUSHAF READER (SYNCHRONIZED WITH AUDIO) */}
+              <div
+                style={{
+                  background: "#ffffff",
+                  borderRadius: "20px",
+                  padding: "24px",
+                  marginTop: "24px",
+                  marginBottom: "24px",
+                  border: "2px solid rgba(198, 149, 47, 0.4)",
+                  boxShadow: "0 10px 25px rgba(6, 46, 36, 0.08)",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                    gap: "12px",
+                    borderBottom: "1px solid #f0e6d2",
+                    paddingBottom: "16px",
+                    marginBottom: "18px",
+                  }}
+                >
+                  <div>
+                    <span
+                      style={{
+                        fontSize: "0.78rem",
+                        fontWeight: 700,
+                        color: "#c6952f",
+                        letterSpacing: "0.5px",
+                        display: "block",
+                      }}
+                    >
+                      {isUrdu ? "📖 مصحف شریف اور تلاوتِ کلامِ پاک" : "📖 Live Holy Quran Mushaf"}
+                    </span>
+                    <h3
+                      style={{
+                        margin: "4px 0 0 0",
+                        color: "#062e24",
+                        fontSize: "1.35rem",
+                      }}
+                    >
+                      {activeSurah.number}. {activeSurah.nameAr} — {isUrdu ? activeSurah.nameUr : activeSurah.nameEn}
+                    </h3>
+                    <small style={{ color: "#666" }}>
+                      {activeSurah.type} · {activeSurah.ayahs} {isUrdu ? "آیات" : "Verses"} · {isUrdu ? "تلاوت سنتے جائیں اور ساتھ ساتھ مصحف میں دیکھتے جائیں" : "Listen & Read along simultaneously"}
+                    </small>
+                  </div>
+
+                  <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                    <button
+                      type="button"
+                      style={{
+                        padding: "6px 14px",
+                        borderRadius: "999px",
+                        fontSize: "0.78rem",
+                        fontWeight: 700,
+                        background: wordByWordMode ? "#0b4f3f" : "#ffffff",
+                        color: wordByWordMode ? "#e9d9a9" : "#0b4f3f",
+                        border: "1px solid #0b4f3f",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => setWordByWordMode(!wordByWordMode)}
+                    >
+                      {wordByWordMode
+                        ? (isUrdu ? "✓ لفظ بہ لفظ فعال" : "✓ Word-by-Word Active")
+                        : (isUrdu ? "لفظ بہ لفظ موڈ چلائیں" : "Enable Word-by-Word")}
+                    </button>
+
+                    <button
+                      type="button"
+                      style={{
+                        padding: "6px 14px",
+                        borderRadius: "999px",
+                        fontSize: "0.78rem",
+                        fontWeight: 700,
+                        background: showTranslations ? "#f1ead9" : "#ffffff",
+                        color: "#0b4f3f",
+                        border: "1px solid #c6952f",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => setShowTranslations(!showTranslations)}
+                    >
+                      {showTranslations
+                        ? (isUrdu ? "ترجمہ چھپائیں" : "Hide Translation")
+                        : (isUrdu ? "ترجمہ دکھائیں" : "Show Translation")}
+                    </button>
+                  </div>
+                </div>
+
+                {selectedSurahNumber !== 9 && (
+                  <div
+                    style={{
+                      textAlign: "center",
+                      margin: "14px 0 20px 0",
+                      fontSize: "1.55rem",
+                      color: "#062e24",
+                      direction: "rtl",
+                    }}
+                  >
+                    بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                  </div>
+                )}
+
+                <div
+                  style={{
+                    maxHeight: "480px",
+                    overflowY: "auto",
+                    paddingRight: "6px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "14px",
+                  }}
+                >
+                  {QURAN_FULL_DATA[String(selectedSurahNumber)]?.verses?.map((verse: any) => (
+                    <div
+                      key={verse.num}
+                      style={{
+                        background: activeAyahNum === verse.num ? "#faf6ec" : "#ffffff",
+                        border: activeAyahNum === verse.num ? "2px solid #c6952f" : "1px solid #e5e7eb",
+                        borderRadius: "14px",
+                        padding: "14px 18px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginBottom: "8px",
+                        }}
+                      >
+                        <span
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: "28px",
+                            height: "28px",
+                            borderRadius: "50%",
+                            background: "#0b4f3f",
+                            color: "#e9d9a9",
+                            fontWeight: 800,
+                            fontSize: "0.75rem",
+                          }}
+                        >
+                          {verse.num}
+                        </span>
+                        <button
+                          type="button"
+                          style={{
+                            background: "none",
+                            border: "none",
+                            color: "#0b4f3f",
+                            fontWeight: 700,
+                            fontSize: "0.78rem",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => {
+                            setActiveAyahNum(verse.num);
+                            const pSurah = String(selectedSurahNumber).padStart(3, "0");
+                            const pAyah = String(verse.num).padStart(3, "0");
+                            const vAudio = new Audio();
+                            vAudio.play().catch(() => {});
+                          }}
+                        >
+                          ▶ {isUrdu ? "یہ آیت سنیں" : "Listen Ayah"}
+                        </button>
+                      </div>
+
+                      {wordByWordMode ? (
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", direction: "rtl", marginBottom: "10px" }}>
+                          {verse.words?.map((w: any, wIdx: number) => (
+                            <div
+                              key={wIdx}
+                              style={{
+                                background: "#fbf9f4",
+                                border: "1px solid #e5dcbe",
+                                borderRadius: "8px",
+                                padding: "6px 8px",
+                                textAlign: "center",
+                                minWidth: "55px",
+                                cursor: "pointer",
+                              }}
+                              onClick={() => {
+                                const pSurah = String(selectedSurahNumber).padStart(3, "0");
+                                const pAyah = String(verse.num).padStart(3, "0");
+                                const pWord = String(wIdx + 1).padStart(3, "0");
+                                const wAudio = new Audio();
+                                wAudio.play().catch(() => {});
+                              }}
+                            >
+                              <div style={{ fontSize: "1.25rem", color: "#062e24", fontWeight: 700 }}>
+                                {w.ar}
+                              </div>
+                              <div style={{ fontSize: "0.7rem", color: "#8a6d2b", fontWeight: 600 }}>
+                                {w.trans}
+                              </div>
+                              <div style={{ fontSize: "0.74rem", color: "#0b4f3f", fontWeight: 700, marginTop: "2px" }}>
+                                {isUrdu ? w.ur : w.en}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p
+                          style={{
+                            fontSize: "1.4rem",
+                            color: "#062e24",
+                            lineHeight: "2.1",
+                            direction: "rtl",
+                            textAlign: "right",
+                            margin: "0 0 8px 0",
+                          }}
+                        >
+                          {verse.ar}
+                        </p>
+                      )}
+
+                      {showTranslations && (
+                        <div style={{ borderTop: "1px dashed #e5e7eb", paddingTop: "6px", marginTop: "6px", fontSize: "0.85rem" }}>
+                          <p style={{ margin: "0 0 2px 0", color: "#0b4f3f", fontWeight: 600 }}>
+                            {isUrdu ? "اردو: " + verse.ur : "English: " + verse.en}
+                          </p>
+                          {isUrdu && (
+                            <p style={{ margin: 0, fontSize: "0.78rem", color: "#6b7280" }}>
+                              English: {verse.en}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )) || (
+                    <div style={{ padding: "20px", textAlign: "center", color: "#666" }}>
+                      <p>{isUrdu ? "اس سورت کی مکمل صوتی تلاوت اوپر پلے بٹن سے سنیں!" : "Listen to full recitation audio using the controls above!"}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
 
               {/* SURAH SEARCH & 114 SURAHS DIRECTORY */}
               <div>
@@ -1070,6 +1487,29 @@ export default function AcademySite({ locale }: { locale: Locale }) {
                         ))}
                       </div>
                     </div>
+                  </div>
+
+                  <div style={{ marginTop: "12px", marginBottom: "8px" }}>
+                    <button
+                      type="button"
+                      style={{
+                        width: "100%",
+                        padding: "8px 12px",
+                        borderRadius: "10px",
+                        fontSize: "0.82rem",
+                        fontWeight: 700,
+                        background: playingTeacherIdx === t.teachersList.indexOf(teacher) ? "#d97706" : "var(--green)",
+                        color: "#fff",
+                        border: "none",
+                        cursor: "pointer",
+                        transition: "all 0.2s ease"
+                      }}
+                      onClick={() => playTeacherRecitationSample(t.teachersList.indexOf(teacher))}
+                    >
+                      {playingTeacherIdx === t.teachersList.indexOf(teacher)
+                        ? (isUrdu ? "🔊 تلاوت جاری ہے... (روکیں)" : "🔊 Playing Sample... (Stop)")
+                        : (isUrdu ? "▶️ تلاوت کا نمونہ سنیں" : "▶️ Listen to Recitation Sample")}
+                    </button>
                   </div>
 
                   <div className="card-footer-row" style={{ marginTop: "16px" }}>

@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
+import AcademySite from "@/components/AcademySite";
 
 export default function Home() {
-  redirect("/en");
+  return <AcademySite locale="en" />;
 }

@@ -1,20 +1,19 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import AcademySite from "@/components/AcademySite";
 
 const locales = ["ur", "en"] as const;
 type Locale = (typeof locales)[number];
 
 export function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
+  return [{ locale: "ur" }, { locale: "en" }];
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
+export async function generateMetadata(props: {
+  params: Promise<{ locale: string }> | { locale: string };
 }): Promise<Metadata> {
-  const { locale } = await params;
+  const resolved = await Promise.resolve(props.params);
+  const rawLocale = resolved?.locale;
+  const locale: Locale = rawLocale === "ur" ? "ur" : "en";
   const isUrdu = locale === "ur";
 
   return {
@@ -46,16 +45,12 @@ export async function generateMetadata({
   };
 }
 
-export default async function LocalePage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
+export default async function LocalePage(props: {
+  params: Promise<{ locale: string }> | { locale: string };
 }) {
-  const { locale } = await params;
+  const resolved = await Promise.resolve(props.params);
+  const rawLocale = resolved?.locale;
+  const locale: Locale = rawLocale === "ur" ? "ur" : "en";
 
-  if (!locales.includes(locale as Locale)) {
-    notFound();
-  }
-
-  return <AcademySite locale={locale as Locale} />;
+  return <AcademySite locale={locale} />;
 }
