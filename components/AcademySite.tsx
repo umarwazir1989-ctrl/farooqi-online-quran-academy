@@ -147,6 +147,26 @@ export default function AcademySite({ locale }: { locale: Locale }) {
   const [activeTafsirId, setActiveTafsirId] = useState<string>("ibnKathir");
   const [activeTranslationId, setActiveTranslationId] = useState<string>("jalandhri");
   const [activeAyahIndex, setActiveAyahIndex] = useState<number>(0);
+  const [activeLibraryTab, setActiveLibraryTab] = useState<'tafsir' | 'hadith' | 'azkar'>('tafsir');
+  const [isHaramainSideOpen, setIsHaramainSideOpen] = useState<boolean>(false);
+  
+  // Dawah Card Generator State
+  const [dawahModalData, setDawahModalData] = useState<{
+    title: string;
+    arabic: string;
+    translation: string;
+    reference: string;
+  } | null>(null);
+
+  // Live Classroom & Lesson Viewroom State
+  const [classroomRole, setClassroomRole] = useState<'teacher' | 'student'>('teacher');
+  const [classroomPointer, setClassroomPointer] = useState<{ x: number; y: number } | null>({ x: 50, y: 40 });
+  const [classroomLessonType, setClassroomLessonType] = useState<'qaida' | 'nazra' | 'hifz'>('nazra');
+  const [diarySabaq, setDiarySabaq] = useState('سورۃ البقرہ: آیات ۱ تا ۱۰ (تجوید و روانی)');
+  const [diarySabqi, setDiarySabqi] = useState('سورۃ الفاتحہ (مکمل باقاعدہ ترتیل)');
+  const [diaryManzil, setDiaryManzil] = useState('پارہ نمبر ۱ (مکمل روانگی جائزہ)');
+  const [diaryRemarks, setDiaryRemarks] = useState('ممتاز (A+) — مخارج و صفات کی ادائیگی شاندار رہی');
+  const [activePlayingWord, setActivePlayingWord] = useState<string | null>(null);
   const [showAllTranslations, setShowAllTranslations] = useState<boolean>(false);
 
   // ==========================================
@@ -273,6 +293,159 @@ export default function AcademySite({ locale }: { locale: Locale }) {
     }
   }
 
+  function handleOpenDawahCard(title: string, arabic: string, translation: string, reference: string) {
+    setDawahModalData({ title, arabic, translation, reference });
+  }
+
+  function handlePlayWordAudio(surahNum: number, ayahNum: number, wordIdx: number, wordArabic: string) {
+    setActivePlayingWord(`${surahNum}_${ayahNum}_${wordIdx}`);
+    const pSurah = String(surahNum).padStart(3, "0");
+    const pAyah = String(ayahNum).padStart(3, "0");
+    const pWord = String(wordIdx + 1).padStart(3, "0");
+    const audioUrl = `https://audio.qurancdn.com/wbw/${pSurah}_${pAyah}_${pWord}.mp3`;
+    const audio = new Audio(audioUrl);
+    audio.play().catch(() => {
+      if (typeof window !== "undefined" && "speechSynthesis" in window) {
+        const ut = new SpeechSynthesisUtterance(wordArabic);
+        ut.lang = "ar-SA";
+        window.speechSynthesis.speak(ut);
+      }
+    });
+    setTimeout(() => setActivePlayingWord(null), 1200);
+  }
+
+  function handleSendParentDiaryWhatsApp() {
+    const text = `*فاروقی آن لائن قرآن اکیڈمی — روزانہ تعلیمی ڈائری و کارکردگی رپورٹ*\n` +
+      `📅 تاریخ: ${new Date().toLocaleDateString("en-GB")}\n` +
+      `👤 طالب علم: محمد ریان (لندن، برطانیہ)\n` +
+      `👨‍🏫 استاد: قاری محمد عمر فاروقی (لاہور، پاکستان)\n\n` +
+      `📖 *آج کا نیا سبق (Sabaq):* ${diarySabaq}\n` +
+      `🔄 *سبقی (دہرائی):* ${diarySabqi}\n` +
+      `📚 *منزل (حفظ):* ${diaryManzil}\n` +
+      `⭐ *استاد کے ریمارکس:* ${diaryRemarks}\n\n` +
+      `📞 رابطہ اکیڈمی: 0333-6519527 / 0334-4323994\n` +
+      `🌐 پورٹل: https://farooqi-online-quran-academy.vercel.app/portal`;
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, "_blank");
+  }
+
+  function renderAndDownloadDawahCanvas() {
+    if (!dawahModalData || typeof document === "undefined") return;
+    const canvas = document.getElementById("dawahCardCanvas") as HTMLCanvasElement;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // Background gradient: Deep emerald & gold accents
+    ctx.fillStyle = "#062e24";
+    ctx.fillRect(0, 0, 800, 800);
+
+    // Ornate Gold Border
+    ctx.strokeStyle = "#c6952f";
+    ctx.lineWidth = 10;
+    ctx.strokeRect(20, 20, 760, 760);
+
+    ctx.strokeStyle = "#e9d9a9";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(32, 32, 736, 736);
+
+    // Header Title
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#e9d9a9";
+    ctx.font = "bold 24px sans-serif";
+    ctx.fillText("فاروقی آن لائن قرآن اکیڈمی — لاہور، پاکستان", 400, 80);
+
+    // Bismillah
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "28px serif";
+    ctx.fillText("بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", 400, 130);
+
+    // Topic / Reference
+    ctx.fillStyle = "#c6952f";
+    ctx.font = "bold 20px sans-serif";
+    ctx.fillText(`✨ ${dawahModalData.title} ✨`, 400, 180);
+
+    // Arabic Matn Box
+    ctx.fillStyle = "#0a4738";
+    ctx.fillRect(50, 210, 700, 230);
+    ctx.strokeStyle = "#c6952f";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(50, 210, 700, 230);
+
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "32px 'Amiri', serif";
+    const arabicWords = dawahModalData.arabic.split(" ");
+    let line = "";
+    let y = 280;
+    for (let n = 0; n < arabicWords.length; n++) {
+      const testLine = line + arabicWords[n] + " ";
+      if (ctx.measureText(testLine).width > 650 && n > 0) {
+        ctx.fillText(line, 400, y);
+        line = arabicWords[n] + " ";
+        y += 50;
+      } else {
+        line = testLine;
+      }
+    }
+    ctx.fillText(line, 400, y);
+
+    // Urdu Translation Box
+    ctx.fillStyle = "#fefcf6";
+    ctx.fillRect(50, 460, 700, 190);
+    ctx.strokeRect(50, 460, 700, 190);
+
+    ctx.fillStyle = "#171614";
+    ctx.font = "22px sans-serif";
+    const urduWords = dawahModalData.translation.split(" ");
+    let uLine = "";
+    let uY = 510;
+    for (let i = 0; i < urduWords.length; i++) {
+      const testU = uLine + urduWords[i] + " ";
+      if (ctx.measureText(testU).width > 640 && i > 0) {
+        ctx.fillText(uLine, 400, uY);
+        uLine = urduWords[i] + " ";
+        uY += 38;
+      } else {
+        uLine = testU;
+      }
+    }
+    ctx.fillText(uLine, 400, uY);
+
+    // Reference Pill
+    ctx.fillStyle = "#062e24";
+    ctx.font = "bold 16px sans-serif";
+    ctx.fillText(`تخریج و حوالہ: ${dawahModalData.reference}`, 400, 620);
+
+    // Footer Ribbon
+    ctx.fillStyle = "#c6952f";
+    ctx.fillRect(32, 670, 736, 96);
+
+    ctx.fillStyle = "#062e24";
+    ctx.font = "bold 22px sans-serif";
+    ctx.fillText("داخلہ اور مفت ۳ روزہ ٹرائل کے لیے رابطہ فرمائیں:", 400, 705);
+    ctx.font = "bold 20px monospace";
+    ctx.fillText("WhatsApp: +92 333 6519527 | 0334-4323994", 400, 740);
+
+    // Trigger Download
+    const dataUrl = canvas.toDataURL("image/png");
+    const link = document.createElement("a");
+    link.download = `Farooqi-Academy-Dawah-Card.png`;
+    link.href = dataUrl;
+    link.click();
+  }
+
+  function handleShareWhatsAppDawahImage() {
+    renderAndDownloadDawahCanvas();
+    if (!dawahModalData) return;
+    const shareText = `*فرمانِ رسول اللہ ﷺ / کلام الٰہی*\n\n` +
+      `${dawahModalData.arabic}\n\n` +
+      `*ترجمہ:* ${dawahModalData.translation}\n\n` +
+      `*حوالہ:* ${dawahModalData.reference}\n\n` +
+      `*فاروقی آن لائن قرآن اکیڈمی (لاہور، پاکستان)*\n` +
+      `📞 واٹس ایپ: 0333-6519527 / 0334-4323994\n` +
+      `🌐 https://farooqi-online-quran-academy.vercel.app`;
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`, "_blank");
+  }
+  
   function handleWhatsAppDawah(h: HadithRecord) {
     const textToShare = `*فرمانِ رسول اللہ ﷺ*\n\n${h.matnAr}\n\n*ترجمہ:* ${h.translationUr}\n\n*تخریج و حکم:* ${h.takhreej} [${h.grade}]\n\n*شرح و فائدہ:* ${h.sharh}\n\n*فاروقی آن لائن قرآن اکیڈمی*: https://farooqi-online-quran-academy.vercel.app`;
     const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(textToShare)}`;
@@ -634,20 +807,11 @@ export default function AcademySite({ locale }: { locale: Locale }) {
             <a href="#quran-player-section" onClick={() => setMobileMenuOpen(false)}>
               {isUrdu ? "تلاوتِ قرآن" : "Quran Player"}
             </a>
-            <a href="#tafsir-section" onClick={() => setMobileMenuOpen(false)}>
-              {isUrdu ? "قرآن تفاسیر" : "Quran Tafsir"}
+            <a href="#islamic-hub-section" onClick={() => setMobileMenuOpen(false)}>
+              {isUrdu ? "جامع مکتبہ و تفاسیر" : "Islamic Hub"}
             </a>
-            <a href="#hadith-section" onClick={() => setMobileMenuOpen(false)}>
-              {isUrdu ? "احادیث و شرح" : "Hadith & Sharh"}
-            </a>
-            <a href="#haramain-section" onClick={() => setMobileMenuOpen(false)}>
-              {isUrdu ? "حرمین لائیو" : "Haramain Live"}
-            </a>
-            <a href="#azkar-section" onClick={() => setMobileMenuOpen(false)}>
-              {isUrdu ? "مسنون اذکار" : "Daily Azkar"}
-            </a>
-            <a href="#visitor-analytics-section" onClick={() => setMobileMenuOpen(false)}>
-              {isUrdu ? "زائرین کاؤنٹر" : "Visitors"}
+            <a href="#classroom-section" onClick={() => setMobileMenuOpen(false)}>
+              {isUrdu ? "لائیو کلاس روم" : "Live Classroom"}
             </a>
             <a href="#teachers-section" onClick={() => setMobileMenuOpen(false)}>
               {isUrdu ? "اساتذہ" : "Teachers"}
@@ -958,7 +1122,7 @@ export default function AcademySite({ locale }: { locale: Locale }) {
             <div className="section-head">
               <span className="eyebrow">
                 <span className="eyebrow-star">✦</span>
-                {isUrdu ? "مکمل ۱۱۴ سورتیں اور تدریسی انداز" : "Complete 114 Surahs & Educational Mode"}
+                {isUrdu ? "مکمل 114 سورتیں اور تدریسی انداز" : "Complete 114 Surahs & Educational Mode"}
               </span>
               <h2>
                 {isUrdu
@@ -967,7 +1131,7 @@ export default function AcademySite({ locale }: { locale: Locale }) {
               </h2>
               <p>
                 {isUrdu
-                  ? "عالمی شہرت یافتہ قراء کی آوازوں میں قرآن مجید کی تمام ۱۱۴ سورتیں سنیں۔ شیخ محمود خلیل الحصری کا معلم و تدریسی انداز خاص طور پر طلبہ کے حفظ اور دہرائی کے لیے بہترین ہے:"
+                  ? "عالمی شہرت یافتہ قراء کی آوازوں میں قرآن مجید کی تمام 114 سورتیں سنیں۔ شیخ محمود خلیل الحصری کا معلم و تدریسی انداز خاص طور پر طلبہ کے حفظ اور دہرائی کے لیے بہترین ہے:"
                   : "Stream all 114 Surahs by world-renowned reciters. Sheikh Al-Husary's Muallim style is specifically formatted for students to listen, pause, and repeat:"}
               </p>
             </div>
@@ -1005,7 +1169,7 @@ export default function AcademySite({ locale }: { locale: Locale }) {
                     }}
                     onClick={() => setQuranScript("indopak")}
                   >
-                    {isUrdu ? "📜 پاک و ہند (۱۶ سطری نستعلیق)" : "Indo-Pak Nastaliq"}
+                    {isUrdu ? "📜 پاک و ہند (16 سطری نستعلیق)" : "Indo-Pak Nastaliq"}
                   </button>
                   <button
                     type="button"
@@ -1290,7 +1454,7 @@ export default function AcademySite({ locale }: { locale: Locale }) {
                             setActiveAyahNum(verse.num);
                             const pSurah = String(selectedSurahNumber).padStart(3, "0");
                             const pAyah = String(verse.num).padStart(3, "0");
-                            const vAudio = new Audio();
+                            const vAudio = new Audio(`https://cdn.islamic.network/quran/audio/128/ar.alafasy/${selectedSurahNumber === 1 ? verse.num : (verse.num + 7)}.mp3`);
                             vAudio.play().catch(() => {});
                           }}
                         >
@@ -1316,8 +1480,7 @@ export default function AcademySite({ locale }: { locale: Locale }) {
                                 const pSurah = String(selectedSurahNumber).padStart(3, "0");
                                 const pAyah = String(verse.num).padStart(3, "0");
                                 const pWord = String(wIdx + 1).padStart(3, "0");
-                                const wAudio = new Audio();
-                                wAudio.play().catch(() => {});
+                                handlePlayWordAudio(selectedSurahNumber, verse.num, wIdx, w.ar);
                               }}
                             >
                               <div style={{ fontSize: "1.25rem", color: "#062e24", fontWeight: 700 }}>
@@ -1407,632 +1570,702 @@ export default function AcademySite({ locale }: { locale: Locale }) {
         {/* ========================================================
             QURAN TAFSEER STUDIO WITH COMPARATIVE TRANSLATIONS
             ======================================================== */}
-        <section id="tafsir-section" className="sec-tafsir">
-          <div className="wrap">
-            <div className="section-head">
-              <span className="eyebrow">
-                <span className="eyebrow-star">✦</span>
-                {isUrdu ? "اہلسنت کا مستند ذخیرہ تفاسیر" : "Authentic Exegesis"}
-              </span>
-              <h2>
-                {isUrdu ? (
-                  <>قرآن تفاسیر اسٹوڈیو <span>مع تقابلی تراجم و شروح</span></>
-                ) : (
-                  <>Quran Tafseer Studio <span>& Comparative Translations</span></>
-                )}
-              </h2>
-              <p>
-                {isUrdu
-                  ? "معتبر ترین ائمہ تفسیر (ابن کثیر، مفتی شفیع، مولانا مودودی، مفتی تقی عثمانی و ڈاکٹر اسرار احمد) کی تفاسیر اور ۵ مستند اردو و انگریزی تراجم کا موازنہ۔"
-                  : "Study the Holy Quran through authentic classical and contemporary commentaries from renowned scholars with side-by-side translations."}
-              </p>
-            </div>
-
-            {/* TAFSIR SELECTOR TABS */}
-            <div className="tafsir-selector-tabs">
-              {TAFASEER_CATALOG.map((tafsir) => (
-                <button
-                  key={tafsir.id}
-                  type="button"
-                  className={activeTafsirId === tafsir.id ? "tafsir-tab-btn active" : "tafsir-tab-btn"}
-                  onClick={() => setActiveTafsirId(tafsir.id)}
-                >
-                  {isUrdu ? tafsir.nameUr : tafsir.nameAr}
-                </button>
-              ))}
-            </div>
-
-            {/* ACTIVE TAFSIR AUTHOR BIO BANNER */}
-            {(() => {
-              const curTafsir = TAFASEER_CATALOG.find((t) => t.id === activeTafsirId) || TAFASEER_CATALOG[0];
-              return (
-                <div style={{
-                  background: "#fdfbf7",
-                  border: "1px solid rgba(198, 149, 47, 0.3)",
-                  borderRadius: "14px",
-                  padding: "16px 22px",
-                  marginBottom: "20px",
-                  display: "flex",
-                  flexWrap: "wrap",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: "10px"
-                }}>
-                  <div>
-                    <strong style={{ color: "var(--deep)", fontSize: "1.05rem" }}>{curTafsir.nameUr}</strong>
-                    <span style={{ margin: "0 8px", color: "var(--gold)" }}>•</span>
-                    <span style={{ color: "var(--muted)", fontSize: "0.9rem" }}>{curTafsir.author} ({curTafsir.era})</span>
-                  </div>
-                  <span style={{ fontSize: "0.82rem", background: "rgba(11, 79, 63, 0.08)", color: "var(--green)", padding: "4px 12px", borderRadius: "999px", fontWeight: "600" }}>
-                    منہج: {curTafsir.methodology}
-                  </span>
-                </div>
-              );
-            })()}
-
-            {/* AYAH SELECTOR CHIPS */}
-            <div style={{ textAlign: "center", marginBottom: "14px" }}>
-              <span style={{ fontSize: "0.88rem", fontWeight: "700", color: "var(--deep)", display: "block", marginBottom: "8px" }}>
-                {isUrdu ? "مبارک آیات کا انتخاب کریں:" : "Select Quranic Ayah:"}
-              </span>
-              <div className="book-filter-chips">
-                {SAMPLE_AYAH_TAFSIR_LIBRARY.map((item, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    className={activeAyahIndex === idx ? "filter-chip-btn active" : "filter-chip-btn"}
-                    onClick={() => setActiveAyahIndex(idx)}
-                  >
-                    {item.surahNameUr} ({isUrdu ? `آیت ${item.ayahNumber}` : `Ayah ${item.ayahNumber}`})
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* TRANSLATION SELECTOR CHIPS */}
-            <div style={{ textAlign: "center", marginBottom: "20px" }}>
-              <span style={{ fontSize: "0.85rem", fontWeight: "700", color: "var(--gold)", display: "block", marginBottom: "6px" }}>
-                {isUrdu ? "ترجمہ نگار کا انتخاب:" : "Select Translation Scholar:"}
-              </span>
-              <div className="translation-selector-chips">
-                {TRANSLATIONS_CATALOG.map((tr) => (
-                  <button
-                    key={tr.id}
-                    type="button"
-                    className={activeTranslationId === tr.id ? "translation-chip-btn active" : "translation-chip-btn"}
-                    onClick={() => setActiveTranslationId(tr.id)}
-                  >
-                    {tr.name} <small style={{ opacity: 0.8 }}>({tr.badge})</small>
-                  </button>
-                ))}
-                <button
-                  type="button"
-                  className={showAllTranslations ? "translation-chip-btn active" : "translation-chip-btn"}
-                  style={{ background: showAllTranslations ? "var(--gold)" : "#f5ecd7", color: "#171614", borderColor: "var(--gold)" }}
-                  onClick={() => setShowAllTranslations(!showAllTranslations)}
-                >
-                  {showAllTranslations ? "✓ تمام ۵ تراجم فعال ہیں" : "⚖ تمام ۵ تراجم کا آمنے سامنے تقابل"}
-                </button>
-              </div>
-            </div>
-
-            {/* ACTIVE AYAH TAFSIR CARD */}
-            {(() => {
-              const curAyah = SAMPLE_AYAH_TAFSIR_LIBRARY[activeAyahIndex] || SAMPLE_AYAH_TAFSIR_LIBRARY[0];
-              const curTafsir = TAFASEER_CATALOG.find((t) => t.id === activeTafsirId) || TAFASEER_CATALOG[0];
-              const commentaryText = (curAyah.tafaseer as any)[activeTafsirId] || curAyah.tafaseer.ibnKathir;
-
-              return (
-                <div className="tafsir-card">
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px", marginBottom: "16px" }}>
-                    <div className="tafsir-header-badge">
-                      <span>📖 {curAyah.surahNameUr} ({curAyah.surahNameAr})</span>
-                      <span>•</span>
-                      <span>{isUrdu ? `آیت نمبر ${curAyah.ayahNumber}` : `Ayah ${curAyah.ayahNumber}`}</span>
-                      <span>•</span>
-                      <span>{curAyah.topic}</span>
-                    </div>
-
-                    <a
-                      href={curAyah.audioUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="hadith-action-btn"
-                      style={{ background: "var(--deep)", color: "#fff", borderColor: "var(--gold)" }}
-                    >
-                      ▶ {isUrdu ? "صوتی تلاوت سنیں (مشاری العفاسی)" : "Play Audio Recitation"}
-                    </a>
-                  </div>
-
-                  {/* ARABIC TEXT WITH DEDICATED ARABIC FONT */}
-                  <div className="tafsir-arabic-box">
-                    <div className="tafsir-arabic-text font-arabic" lang="ar" dir="rtl">{curAyah.arabicText}</div>
-                  </div>
-
-                  {/* COMPARATIVE TRANSLATIONS OR SINGLE TRANSLATION */}
-                  {showAllTranslations ? (
-                    <div className="tafsir-translations-grid">
-                      <div className="translation-item-box" style={{ borderRightColor: "#0b4f3f" }}>
-                        <span className="translation-scholar-tag">مولانا فتح محمد جالندھریؒ</span>
-                        <div className="translation-text-urdu">{curAyah.translations.jalandhri}</div>
-                      </div>
-                      <div className="translation-item-box" style={{ borderRightColor: "#c6952f" }}>
-                        <span className="translation-scholar-tag">شیخ الاسلام مفتی محمد تقی عثمانی</span>
-                        <div className="translation-text-urdu">{curAyah.translations.taqi}</div>
-                      </div>
-                      <div className="translation-item-box" style={{ borderRightColor: "#1565c0" }}>
-                        <span className="translation-scholar-tag">مولانا محمد جوناگڑھیؒ (مجمع الملک فہد)</span>
-                        <div className="translation-text-urdu">{curAyah.translations.junagarhi}</div>
-                      </div>
-                      <div className="translation-item-box" style={{ borderRightColor: "#ad1457" }}>
-                        <span className="translation-scholar-tag">امام احمد رضا خان بریلویؒ (کنز الایمان)</span>
-                        <div className="translation-text-urdu">{curAyah.translations.ahmedRaza}</div>
-                      </div>
-                      <div className="translation-item-box" style={{ borderRightColor: "#455a64" }}>
-                        <span className="translation-scholar-tag">Saheeh International (English)</span>
-                        <div style={{ fontSize: "1.02rem", color: "#222" }}>{curAyah.translations.saheehEn}</div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="translation-item-box" style={{ marginBottom: "22px" }}>
-                      <span className="translation-scholar-tag">
-                        مستند ترجمہ: {
-                          activeTranslationId === "jalandhri" ? "مولانا فتح محمد جالندھریؒ" :
-                          activeTranslationId === "taqi" ? "مفتی محمد تقی عثمانی" :
-                          activeTranslationId === "junagarhi" ? "مولانا محمد جوناگڑھیؒ" :
-                          activeTranslationId === "ahmedRaza" ? "امام احمد رضا خانؒ (کنز الایمان)" :
-                          "Saheeh International (English)"
-                        }
-                      </span>
-                      <div className="translation-text-urdu">
-                        {
-                          activeTranslationId === "jalandhri" ? curAyah.translations.jalandhri :
-                          activeTranslationId === "taqi" ? curAyah.translations.taqi :
-                          activeTranslationId === "junagarhi" ? curAyah.translations.junagarhi :
-                          activeTranslationId === "ahmedRaza" ? curAyah.translations.ahmedRaza :
-                          curAyah.translations.saheehEn
-                        }
-                      </div>
-                    </div>
-                  )}
-
-                  {/* TAFSEER COMMENTARY BOX */}
-                  <div className="tafsir-commentary-box">
-                    <div className="tafsir-commentary-title">
-                      <div>
-                        <strong style={{ color: "var(--deep)", fontSize: "1.1rem" }}>
-                          {curTafsir.nameUr} — تفسیر و تشریح
-                        </strong>
-                        <p style={{ margin: "2px 0 0 0", fontSize: "0.85rem", color: "var(--muted)" }}>
-                          مفسر: {curTafsir.author}
-                        </p>
-                      </div>
-                      <span className="hadith-grade-badge">مستند شرح بالماثور</span>
-                    </div>
-
-                    <div className="tafsir-commentary-text">
-                      {commentaryText}
-                    </div>
-                  </div>
-                </div>
-              );
-            })()}
-          </div>
-        </section>
-
+        
         {/* ========================================================
-            HADITH ENCYCLOPEDIA WITH SHARH & TAKHREEJ
+            UNIFIED MASTER ISLAMIC KNOWLEDGE HUB & DIGITAL STUDIO
             ======================================================== */}
-        <section id="hadith-section" className="sec-hadith">
+        <section id="islamic-hub-section" className="sec-islamic-hub">
           <div className="wrap">
-            <div className="section-head">
+            <div className="section-head" style={{ textAlign: "center" }}>
               <span className="eyebrow">
                 <span className="eyebrow-star">✦</span>
-                {isUrdu ? "صحاح ستہ کا مستند ذخیرہ" : "Authentic Hadith Encyclopedia"}
+                {isUrdu ? "جامع قرآنی و اسلامی مکتبہ" : "Unified Islamic Digital Library"}
               </span>
               <h2>
                 {isUrdu ? (
-                  <>احادیثِ نبویہ ﷺ <span>مع شرح، تخریج و فقہی فوائد</span></>
+                  <>قرآنی تفاسیر، <span>احادیثِ نبویہ اور مسنون اذکار</span></>
                 ) : (
-                  <>Hadith Encyclopedia <span>with Commentary & Takhreej</span></>
+                  <>Quran Exegesis, <span>Hadith Encyclopedia & Daily Azkar</span></>
                 )}
               </h2>
-              <p>
+              <p style={{ maxWidth: "700px", margin: "0 auto" }}>
                 {isUrdu
-                  ? "صحیح البخاری، صحیح مسلم، جامع الترمذی و دیگر کتب سے مکمل عربی اعراب، سلیس ترجمہ، کتب تخریج اور ۱-کلک واٹس ایپ دعوتی کارڈ۔"
-                  : "Verified Hadith literature with Arabic vocalization, scholarly grading, comprehensive commentary, and 1-click WhatsApp Dawah sharing."}
+                  ? "ایک ہی خوبصورت اور پرسکون انٹرفیس میں 5 مستند تفاسیر، تقابلی تراجم، صحاح ستہ کی احادیث اور مسنون اذکار کا مطالعہ فرمائیں۔"
+                  : "Explore authentic commentaries from renowned scholars, comparative translations, verified hadiths, and daily supplications in one unified hub."}
               </p>
             </div>
 
-            {/* SEARCH BAR */}
-            <div className="hadith-search-bar">
-              <input
-                type="text"
-                className="hadith-search-input"
-                placeholder={isUrdu ? "حدیث کا عنوان، راوی، متن یا نمبر تلاش کریں... (مثلاً: نیت، تسبیح، صدقہ، علم)" : "Search Hadith by topic, narrator, or keyword..."}
-                value={hadithSearch}
-                onChange={(e) => setHadithSearch(e.target.value)}
-              />
-            </div>
-
-            {/* CANONICAL BOOKS FILTER */}
-            <div className="book-filter-chips">
+            {/* MASTER HUB SELECTOR TABS */}
+            <div className="master-hub-nav">
               <button
                 type="button"
-                className={hadithBookFilter === "all" ? "filter-chip-btn active" : "filter-chip-btn"}
-                onClick={() => setHadithBookFilter("all")}
+                className={activeLibraryTab === "tafsir" ? "master-hub-tab-btn active" : "master-hub-tab-btn"}
+                onClick={() => setActiveLibraryTab("tafsir")}
               >
-                {isUrdu ? "تمام کتب (All Books)" : "All Books"}
+                📖 {isUrdu ? "قرآن تفاسیر و تقابلی تراجم" : "Quran Tafsir & Translations"}
               </button>
               <button
                 type="button"
-                className={hadithBookFilter === "bukhari" ? "filter-chip-btn active" : "filter-chip-btn"}
-                onClick={() => setHadithBookFilter("bukhari")}
+                className={activeLibraryTab === "hadith" ? "master-hub-tab-btn active" : "master-hub-tab-btn"}
+                onClick={() => setActiveLibraryTab("hadith")}
               >
-                صحیح البخاری
+                📜 {isUrdu ? "احادیثِ نبویہ مع شرح و تخریج" : "Hadith Encyclopedia"}
               </button>
               <button
                 type="button"
-                className={hadithBookFilter === "muslim" ? "filter-chip-btn active" : "filter-chip-btn"}
-                onClick={() => setHadithBookFilter("muslim")}
+                className={activeLibraryTab === "azkar" ? "master-hub-tab-btn active" : "master-hub-tab-btn"}
+                onClick={() => setActiveLibraryTab("azkar")}
               >
-                صحیح مسلم
+                📿 {isUrdu ? "مسنون اذکار و ڈیجیٹل تسبیح" : "Daily Azkar & Tasbeeh"}
               </button>
               <button
                 type="button"
-                className={hadithBookFilter === "tirmidhi" ? "filter-chip-btn active" : "filter-chip-btn"}
-                onClick={() => setHadithBookFilter("tirmidhi")}
+                className="master-hub-tab-btn"
+                style={{ background: isHaramainSideOpen ? "var(--deep)" : "#fdfbf7", color: isHaramainSideOpen ? "#ffffff" : "var(--gold)", borderColor: "var(--gold)" }}
+                onClick={() => setIsHaramainSideOpen(!isHaramainSideOpen)}
               >
-                جامع الترمذی
+                🕋 {isUrdu ? "حرمین 24/7 لائیو (سائیڈ ڈاک)" : "Haramain Live 24/7 (Side Dock)"}
               </button>
             </div>
 
-            {/* TOPIC FILTER */}
-            <div className="category-filter-chips">
-              {[
-                "all",
-                "ایمان و عقیدہ",
-                "فضائل قرآن و علم",
-                "اخلاق و معاشرت",
-                "نماز و عبادات",
-                "خدمت خلق و صدقات",
-                "ذکر و دعائیں",
-              ].map((top) => (
-                <button
-                  key={top}
-                  type="button"
-                  className={hadithTopicFilter === top ? "filter-chip-btn active" : "filter-chip-btn"}
-                  onClick={() => setHadithTopicFilter(top)}
-                >
-                  {top === "all" ? (isUrdu ? "تمام موضوعات" : "All Topics") : top}
-                </button>
-              ))}
-            </div>
+            {/* TAB 1: TAFSIR & TRANSLATIONS */}
+            {activeLibraryTab === "tafsir" && (
+              <div>
+                {/* TAFSIR SELECTOR TABS */}
+                <div className="tafsir-selector-tabs">
+                  {TAFASEER_CATALOG.map((tafsir) => (
+                    <button
+                      key={tafsir.id}
+                      type="button"
+                      className={activeTafsirId === tafsir.id ? "tafsir-tab-btn active" : "tafsir-tab-btn"}
+                      onClick={() => setActiveTafsirId(tafsir.id)}
+                    >
+                      {isUrdu ? tafsir.nameUr : tafsir.nameAr}
+                    </button>
+                  ))}
+                </div>
 
-            {/* HADITH CARDS GRID */}
-            <div className="hadith-grid">
-              {HADITH_ENCYCLOPEDIA.filter((h) => {
-                if (hadithBookFilter !== "all" && h.bookId !== hadithBookFilter) return false;
-                if (hadithTopicFilter !== "all" && h.topic !== hadithTopicFilter) return false;
-                if (hadithSearch.trim()) {
-                  const q = hadithSearch.toLowerCase();
+                {/* ACTIVE TAFSIR AUTHOR BIO BANNER */}
+                {(() => {
+                  const curTafsir = TAFASEER_CATALOG.find((t) => t.id === activeTafsirId) || TAFASEER_CATALOG[0];
                   return (
-                    h.matnAr.includes(q) ||
-                    h.translationUr.includes(q) ||
-                    h.narratorUr.includes(q) ||
-                    h.chapterUr.includes(q) ||
-                    h.takhreej.includes(q)
-                  );
-                }
-                return true;
-              }).map((h) => (
-                <div key={h.id} className="hadith-card">
-                  <div className="hadith-card-header">
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                      <span className="hadith-book-badge">
-                        📜 {h.bookNameUr} #{h.hadithNo}
-                      </span>
-                      <span className="hadith-grade-badge">
-                        ✓ {h.grade}
-                      </span>
-                    </div>
-                    <span style={{ fontSize: "0.85rem", color: "var(--muted)", fontWeight: "600" }}>
-                      {h.chapterUr}
-                    </span>
-                  </div>
-
-                  <div className="hadith-narrator font-arabic" lang="ar">
-                    {h.narratorAr} <span style={{ fontFamily: "var(--font-urdu)" }}>({h.narratorUr})</span>
-                  </div>
-
-                  {/* ARABIC MATN WITH AUTHENTIC ARABIC FONT */}
-                  <div className="hadith-matn-ar font-arabic" lang="ar" dir="rtl">
-                    {h.matnAr}
-                  </div>
-
-                  <div className="hadith-translation-ur">
-                    <strong>ترجمہ: </strong>{h.translationUr}
-                  </div>
-
-                  <div className="hadith-takhreej-pill">
-                    🔍 <strong>تخریج الحدیث: </strong>{h.takhreej}
-                  </div>
-
-                  <div className="hadith-sharh-box">
-                    <div className="hadith-sharh-title">
-                      💡 شرح الحدیث و فقہی و تربیتی فوائد:
-                    </div>
-                    <div className="hadith-sharh-text">
-                      {h.sharh}
-                    </div>
-                    <ul style={{ margin: "10px 0 0 0", paddingRight: "20px", fontSize: "0.95rem", color: "var(--deep)" }}>
-                      {h.benefits.map((b, bIdx) => (
-                        <li key={bIdx} style={{ marginBottom: "4px" }}>{b}</li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* ACTION BUTTONS */}
-                  <div className="hadith-actions-bar">
-                    <button
-                      type="button"
-                      className="hadith-action-btn"
-                      onClick={() => handleCopyHadith(h)}
-                    >
-                      {copiedHadithId === h.id ? "✓ کاپی ہو گیا!" : "📋 کاپی حدیث"}
-                    </button>
-                    <button
-                      type="button"
-                      className="hadith-action-btn btn-whatsapp-dawah"
-                      onClick={() => handleWhatsAppDawah(h)}
-                    >
-                      💬 واٹس ایپ دعوتی کارڈ بھیجیں
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ========================================================
-            HARAMAIN 24/7 LIVE STREAMING STUDIO
-            ======================================================== */}
-        <section id="haramain-section" className="sec-haramain">
-          <div className="wrap">
-            <div className="section-head">
-              <span className="eyebrow">
-                <span className="eyebrow-star">✦</span>
-                {isUrdu ? "مقدس ترین مقامات کی زیارت" : "Haramain Sharifain 24/7 HD"}
-              </span>
-              <h2>
-                {isUrdu ? (
-                  <>حرمین شریفین <span>۲۴/۷ لائیو نشریات (ایچ ڈی)</span></>
-                ) : (
-                  <>Haramain Sharifain <span>24/7 Live Broadcast HD</span></>
-                )}
-              </h2>
-              <p>
-                {isUrdu
-                  ? "مکہ مکرمہ (المسجد الحرام) اور مدینہ منورہ (المسجد النبوی الشریف) سے براہِ راست روح پرور مناظر اور تلاوتیں باضابطہ سعودی ٹی وی چینلز کے تعاون سے۔"
-                  : "Experience spiritual peace with official live HD video feeds from Makkah Al-Mukarramah & Al-Madinah Al-Munawwarah."}
-              </p>
-            </div>
-
-            {/* HARAMAIN TABS */}
-            <div className="tafsir-selector-tabs">
-              <button
-                type="button"
-                className={activeHaramainTab === "makkah-live" ? "tafsir-tab-btn active" : "tafsir-tab-btn"}
-                onClick={() => setActiveHaramainTab("makkah-live")}
-              >
-                🕋 مکہ مکرمہ لائیو - المسجد الحرام (Saudi Quran TV)
-              </button>
-              <button
-                type="button"
-                className={activeHaramainTab === "madinah-live" ? "tafsir-tab-btn active" : "tafsir-tab-btn"}
-                onClick={() => setActiveHaramainTab("madinah-live")}
-              >
-                🕌 مدینہ منورہ لائیو - المسجد النبوی (Saudi Sunnah TV)
-              </button>
-            </div>
-
-            {/* LIVE STREAM EMBED CARD */}
-            <div className="haramain-stream-container">
-              <div className="haramain-video-wrapper">
-                <iframe
-                  src={
-                    activeHaramainTab === "makkah-live"
-                      ? "https://www.youtube-nocookie.com/embed/live_stream?channel=UC8h_bA1n0vJ3K8m9N0s0w1A"
-                      : "https://www.youtube-nocookie.com/embed/live_stream?channel=UC4_rK2g_uL8d8W6q8x9y0zA"
-                  }
-                  title="Haramain Live Stream"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </div>
-              <div className="haramain-stream-info">
-                <div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <span className="pulse-radar" style={{ margin: 0 }}></span>
-                    <strong style={{ fontSize: "1.1rem", color: "var(--gold-light)" }}>
-                      {activeHaramainTab === "makkah-live"
-                        ? "بث مباشر: المسجد الحرام (مکہ مکرمہ)"
-                        : "بث مباشر: المسجد النبوی الشریف (مدینہ منورہ)"}
-                    </strong>
-                  </div>
-                  <small style={{ color: "#b0bec5", display: "block", marginTop: "4px" }}>
-                    {activeHaramainTab === "makkah-live"
-                      ? "سعودی قرآن چینل HD — طوافِ کعبہ و اذان و نماز پنجگانہ"
-                      : "سعودی سنہ چینل HD — روضہ اطہر و مسجد نبوی شریف"}
-                  </small>
-                </div>
-
-                <a
-                  href={
-                    activeHaramainTab === "makkah-live"
-                      ? "https://www.youtube.com/results?search_query=makkah+live+quran+tv"
-                      : "https://www.youtube.com/results?search_query=madinah+live+sunnah+tv"
-                  }
-                  target="_blank"
-                  rel="noreferrer"
-                  className="btn btn-gold"
-                  style={{ fontSize: "0.85rem", padding: "8px 18px" }}
-                >
-                  🌐 یوٹیوب پر لائیو کھولیں
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ========================================================
-            MASNOON AZKAR & DIGITAL INTERACTIVE TASBEEH
-            ======================================================== */}
-        <section id="azkar-section" className="sec-azkar">
-          <div className="wrap">
-            <div className="section-head">
-              <span className="eyebrow">
-                <span className="eyebrow-star">✦</span>
-                {isUrdu ? "حصن المسلم و مسنون دعائیں" : "Masnoon Azkar & Digital Tasbeeh"}
-              </span>
-              <h2>
-                {isUrdu ? (
-                  <>مسنون اذکار <span>و انٹرایکٹو ڈیجیٹل تسبیح کاؤنٹر</span></>
-                ) : (
-                  <>Daily Masnoon Azkar <span>& Interactive Digital Counter</span></>
-                )}
-              </h2>
-              <p>
-                {isUrdu
-                  ? "صبح و شام اور نماز کے بعد کے مسنون اذکار، مکمل فضائل و تخریج اور اسکرین پر ٹیپ کر کے پڑھنے کی سہولت۔"
-                  : "Authentic daily prophetic supplications with virtues, references, and an interactive digital counter with celebratory feedback."}
-              </p>
-            </div>
-
-            {/* AZKAR CATEGORY FILTER */}
-            <div className="category-filter-chips">
-              <button
-                type="button"
-                className={azkarCategoryFilter === "all" ? "filter-chip-btn active" : "filter-chip-btn"}
-                onClick={() => setAzkarCategoryFilter("all")}
-              >
-                {isUrdu ? "تمام اذکار" : "All Azkar"}
-              </button>
-              <button
-                type="button"
-                className={azkarCategoryFilter === "morning" ? "filter-chip-btn active" : "filter-chip-btn"}
-                onClick={() => setAzkarCategoryFilter("morning")}
-              >
-                صبح کے اذکار
-              </button>
-              <button
-                type="button"
-                className={azkarCategoryFilter === "evening" ? "filter-chip-btn active" : "filter-chip-btn"}
-                onClick={() => setAzkarCategoryFilter("evening")}
-              >
-                شام کے اذکار
-              </button>
-              <button
-                type="button"
-                className={azkarCategoryFilter === "after_salah" ? "filter-chip-btn active" : "filter-chip-btn"}
-                onClick={() => setAzkarCategoryFilter("after_salah")}
-              >
-                بعد از نماز پنجگانہ
-              </button>
-            </div>
-
-            {/* AZKAR CARDS */}
-            <div className="azkar-grid">
-              {DAILY_AZKAR_DATA.filter((z) => {
-                if (azkarCategoryFilter === "all") return true;
-                return z.category === azkarCategoryFilter;
-              }).map((z) => {
-                const count = azkarCounters[z.id] || 0;
-                const isFinished = count >= z.targetCount;
-
-                return (
-                  <div key={z.id} className="zikr-card">
-                    <div>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
-                        <span style={{ fontSize: "0.78rem", background: "rgba(198, 149, 47, 0.15)", color: "var(--deep)", padding: "2px 10px", borderRadius: "999px", fontWeight: "700" }}>
-                          {z.categoryUr}
-                        </span>
-                        <span style={{ fontSize: "0.82rem", color: "var(--muted)" }}>
-                          ہدف: <strong>{z.targetCount} مرتبہ</strong>
-                        </span>
+                    <div style={{
+                      background: "#fdfbf7",
+                      border: "1px solid rgba(198, 149, 47, 0.3)",
+                      borderRadius: "14px",
+                      padding: "14px 20px",
+                      marginBottom: "16px",
+                      display: "flex",
+                      flexWrap: "wrap",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: "10px"
+                    }}>
+                      <div>
+                        <strong style={{ color: "var(--deep)", fontSize: "1.02rem" }}>{curTafsir.nameUr}</strong>
+                        <span style={{ margin: "0 8px", color: "var(--gold)" }}>•</span>
+                        <span style={{ color: "var(--muted)", fontSize: "0.88rem" }}>{curTafsir.author} ({curTafsir.era})</span>
                       </div>
+                      <span style={{ fontSize: "0.8rem", background: "rgba(11, 79, 63, 0.08)", color: "var(--green)", padding: "3px 12px", borderRadius: "999px", fontWeight: "600" }}>
+                        منہج: {curTafsir.methodology}
+                      </span>
+                    </div>
+                  );
+                })()}
 
-                      <strong style={{ display: "block", color: "var(--deep)", fontSize: "1.02rem", marginBottom: "12px" }}>
-                        {z.titleUr}
-                      </strong>
+                {/* AYAH SELECTOR CHIPS */}
+                <div style={{ textAlign: "center", marginBottom: "12px" }}>
+                  <div className="book-filter-chips">
+                    {SAMPLE_AYAH_TAFSIR_LIBRARY.map((item, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        className={activeAyahIndex === idx ? "filter-chip-btn active" : "filter-chip-btn"}
+                        onClick={() => setActiveAyahIndex(idx)}
+                      >
+                        {item.surahNameUr} ({isUrdu ? `آیت ${item.ayahNumber}` : `Ayah ${item.ayahNumber}`})
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* TRANSLATION SELECTOR CHIPS */}
+                <div style={{ textAlign: "center", marginBottom: "16px" }}>
+                  <div className="translation-selector-chips">
+                    {TRANSLATIONS_CATALOG.map((tr) => (
+                      <button
+                        key={tr.id}
+                        type="button"
+                        className={activeTranslationId === tr.id ? "translation-chip-btn active" : "translation-chip-btn"}
+                        onClick={() => setActiveTranslationId(tr.id)}
+                      >
+                        {tr.name}
+                      </button>
+                    ))}
+                    <button
+                      type="button"
+                      className={showAllTranslations ? "translation-chip-btn active" : "translation-chip-btn"}
+                      style={{ background: showAllTranslations ? "var(--gold)" : "#f5ecd7", color: "#171614", borderColor: "var(--gold)" }}
+                      onClick={() => setShowAllTranslations(!showAllTranslations)}
+                    >
+                      {showAllTranslations ? "✓ تمام 5 تراجم فعال ہیں" : "⚖ تمام 5 تراجم کا آمنے سامنے تقابل"}
+                    </button>
+                  </div>
+                </div>
+
+                {/* ACTIVE AYAH TAFSIR CARD */}
+                {(() => {
+                  const curAyah = SAMPLE_AYAH_TAFSIR_LIBRARY[activeAyahIndex] || SAMPLE_AYAH_TAFSIR_LIBRARY[0];
+                  const curTafsir = TAFASEER_CATALOG.find((t) => t.id === activeTafsirId) || TAFASEER_CATALOG[0];
+                  const commentaryText = (curAyah.tafaseer as any)[activeTafsirId] || curAyah.tafaseer.ibnKathir;
+
+                  return (
+                    <div className="tafsir-card">
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px", marginBottom: "16px" }}>
+                        <div className="tafsir-header-badge">
+                          <span>📖 {curAyah.surahNameUr} ({curAyah.surahNameAr})</span>
+                          <span>•</span>
+                          <span>{isUrdu ? `آیت نمبر ${curAyah.ayahNumber}` : `Ayah ${curAyah.ayahNumber}`}</span>
+                          <span>•</span>
+                          <span>{curAyah.topic}</span>
+                        </div>
+
+                        <a
+                          href={curAyah.audioUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="hadith-action-btn"
+                          style={{ background: "var(--deep)", color: "#fff", borderColor: "var(--gold)" }}
+                        >
+                          ▶ {isUrdu ? "صوتی تلاوت سنیں (مشاری العفاسی)" : "Play Audio Recitation"}
+                        </a>
+                      </div>
 
                       {/* ARABIC TEXT WITH DEDICATED ARABIC FONT */}
-                      <div className="zikr-arabic font-arabic" lang="ar" dir="rtl">
-                        {z.arabicText}
+                      <div className="tafsir-arabic-box">
+                        <div className="tafsir-arabic-text font-arabic" lang="ar" dir="rtl">{curAyah.arabicText}</div>
                       </div>
 
-                      <div className="zikr-translation">
-                        <strong>ترجمہ: </strong>{z.translationUr}
-                      </div>
-
-                      <div style={{ fontSize: "0.86rem", color: "var(--green)", background: "#e8f5e9", padding: "8px 12px", borderRadius: "8px", marginBottom: "14px" }}>
-                        ✨ <strong>فضیلت: </strong>{z.virtueUr}
-                        <br />
-                        <small style={{ color: "var(--muted)" }}>({z.takhreej})</small>
-                      </div>
+                      {/* COMPARATIVE TRANSLATIONS OR SINGLE TRANSLATION */}
+                      {/* SCHOLAR NAME ATTRIBUTION BAR */}
+                  <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", background: "#fbf8ef", border: "1px solid #e2d7ba", borderRadius: "10px", padding: "10px 16px", marginBottom: "16px", fontSize: "0.85rem" }}>
+                    <div>
+                      <strong style={{ color: "var(--deep)" }}>مترجم: </strong>
+                      <span style={{ color: "var(--gold)", fontWeight: 700 }}>
+                        {activeTranslationId === "jalandhri" ? "مولانا فتح محمد جالندھریؒ (سلیس روایتی اردو)" :
+                         activeTranslationId === "taqi" ? "شیخ الاسلام مفتی محمد تقی عثمانی (عصر حاضر کا عام فہم ترجمہ)" :
+                         activeTranslationId === "junagarhi" ? "مولانا محمد جوناگڑھیؒ (مجمع الملک فہد)" :
+                         activeTranslationId === "ahmedRaza" ? "امام احمد رضا خانؒ (کنز الایمان)" :
+                         "Saheeh International (Authentic English)"}
+                      </span>
                     </div>
-
-                    {/* INTERACTIVE TASBEEH COUNTER */}
-                    <div className="tasbeeh-interactive-bar">
-                      <div>
-                        <span style={{ fontSize: "0.85rem", color: "var(--muted)" }}>تعداد: </span>
-                        <strong style={{ fontSize: "1.3rem", color: "var(--deep)" }}>
-                          {count}
-                        </strong>
-                        <span style={{ fontSize: "0.85rem", color: "var(--muted)" }}> / {z.targetCount}</span>
-                      </div>
-
-                      {isFinished ? (
-                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                          <span className="tasbeeh-completed-badge">
-                            ✓ ماشاء اللہ! مکمل
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => handleResetTasbeeh(z.id)}
-                            style={{ background: "none", border: "1px solid #ccc", borderRadius: "6px", fontSize: "0.75rem", padding: "3px 8px", cursor: "pointer" }}
-                          >
-                            دوبارہ
-                          </button>
-                        </div>
-                      ) : (
-                        <button
-                          type="button"
-                          className="tasbeeh-tap-btn"
-                          onClick={() => handleTasbeehTap(z.id, z.targetCount)}
-                        >
-                          +۱ پڑھیں
-                        </button>
-                      )}
+                    <div>
+                      <strong style={{ color: "var(--deep)" }}>مفسر: </strong>
+                      <span style={{ color: "var(--green)", fontWeight: 700 }}>
+                        {activeTafsirId === "ibnKathir" ? "عماد الدین حافظ ابن کثیر الدمشقیؒ (تفسیر بالماثور)" :
+                         activeTafsirId === "maarifulQuran" ? "مفتی اعظم مفتی محمد شفیع عثمانیؒ (معارف القرآن)" :
+                         activeTafsirId === "tafheemulQuran" ? "مولانا سید ابوالاعلیٰ مودودیؒ (تفہیم القرآن)" :
+                         activeTafsirId === "asaanQuran" ? "مفتی محمد تقی عثمانی (توضیح القرآن)" :
+                         "حکیم الامت مولانا اشرف علی تھانویؒ (بیان القرآن)"}
+                      </span>
                     </div>
                   </div>
-                );
-              })}
-            </div>
+
+                  {showAllTranslations ? (
+                        <div className="tafsir-translations-grid">
+                          <div className="translation-item-box" style={{ borderRightColor: "#0b4f3f" }}>
+                            <span className="translation-scholar-tag">مولانا فتح محمد جالندھریؒ</span>
+                            <div className="translation-text-urdu">{curAyah.translations.jalandhri}</div>
+                          </div>
+                          <div className="translation-item-box" style={{ borderRightColor: "#c6952f" }}>
+                            <span className="translation-scholar-tag">شیخ الاسلام مفتی محمد تقی عثمانی</span>
+                            <div className="translation-text-urdu">{curAyah.translations.taqi}</div>
+                          </div>
+                          <div className="translation-item-box" style={{ borderRightColor: "#1565c0" }}>
+                            <span className="translation-scholar-tag">مولانا محمد جوناگڑھیؒ (مجمع الملک فہد)</span>
+                            <div className="translation-text-urdu">{curAyah.translations.junagarhi}</div>
+                          </div>
+                          <div className="translation-item-box" style={{ borderRightColor: "#ad1457" }}>
+                            <span className="translation-scholar-tag">امام احمد رضا خان بریلویؒ (کنز الایمان)</span>
+                            <div className="translation-text-urdu">{curAyah.translations.ahmedRaza}</div>
+                          </div>
+                          <div className="translation-item-box" style={{ borderRightColor: "#455a64" }}>
+                            <span className="translation-scholar-tag">Saheeh International (English)</span>
+                            <div style={{ fontSize: "1.02rem", color: "#222" }}>{curAyah.translations.saheehEn}</div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="translation-item-box" style={{ marginBottom: "22px" }}>
+                          <span className="translation-scholar-tag">
+                            مستند ترجمہ: {
+                              activeTranslationId === "jalandhri" ? "مولانا فتح محمد جالندھریؒ" :
+                              activeTranslationId === "taqi" ? "مفتی محمد تقی عثمانی" :
+                              activeTranslationId === "junagarhi" ? "مولانا محمد جوناگڑھیؒ" :
+                              activeTranslationId === "ahmedRaza" ? "امام احمد رضا خانؒ (کنز الایمان)" :
+                              "Saheeh International (English)"
+                            }
+                          </span>
+                          <div className="translation-text-urdu">
+                            {
+                              activeTranslationId === "jalandhri" ? curAyah.translations.jalandhri :
+                              activeTranslationId === "taqi" ? curAyah.translations.taqi :
+                              activeTranslationId === "junagarhi" ? curAyah.translations.junagarhi :
+                              activeTranslationId === "ahmedRaza" ? curAyah.translations.ahmedRaza :
+                              curAyah.translations.saheehEn
+                            }
+                          </div>
+                        </div>
+                      )}
+
+                      {/* TAFSEER COMMENTARY BOX */}
+                      <div className="tafsir-commentary-box">
+                        <div className="tafsir-commentary-title">
+                          <div>
+                            <strong style={{ color: "var(--deep)", fontSize: "1.1rem" }}>
+                              {curTafsir.nameUr} — تفسیر و تشریح
+                            </strong>
+                            <p style={{ margin: "2px 0 0 0", fontSize: "0.85rem", color: "var(--muted)" }}>
+                              مفسر: {curTafsir.author}
+                            </p>
+                          </div>
+                          <span className="hadith-grade-badge">مستند شرح بالماثور</span>
+                        </div>
+
+                        <div className="tafsir-commentary-text">
+                          {commentaryText}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
+            )}
+
+            {/* TAB 2: HADITH ENCYCLOPEDIA */}
+            {activeLibraryTab === "hadith" && (
+              <div>
+                {/* SEARCH BAR */}
+                <div className="hadith-search-bar">
+                  <input
+                    type="text"
+                    className="hadith-search-input"
+                    placeholder={isUrdu ? "حدیث کا عنوان، راوی، متن یا نمبر تلاش کریں... (مثلاً: نیت، تسبیح، صدقہ، علم)" : "Search Hadith by topic, narrator, or keyword..."}
+                    value={hadithSearch}
+                    onChange={(e) => setHadithSearch(e.target.value)}
+                  />
+                </div>
+
+                {/* CANONICAL BOOKS FILTER */}
+                <div className="book-filter-chips">
+                  <button
+                    type="button"
+                    className={hadithBookFilter === "all" ? "filter-chip-btn active" : "filter-chip-btn"}
+                    onClick={() => setHadithBookFilter("all")}
+                  >
+                    {isUrdu ? "تمام کتب (All Books)" : "All Books"}
+                  </button>
+                  <button
+                    type="button"
+                    className={hadithBookFilter === "bukhari" ? "filter-chip-btn active" : "filter-chip-btn"}
+                    onClick={() => setHadithBookFilter("bukhari")}
+                  >
+                    صحیح البخاری
+                  </button>
+                  <button
+                    type="button"
+                    className={hadithBookFilter === "muslim" ? "filter-chip-btn active" : "filter-chip-btn"}
+                    onClick={() => setHadithBookFilter("muslim")}
+                  >
+                    صحیح مسلم
+                  </button>
+                  <button
+                    type="button"
+                    className={hadithBookFilter === "tirmidhi" ? "filter-chip-btn active" : "filter-chip-btn"}
+                    onClick={() => setHadithBookFilter("tirmidhi")}
+                  >
+                    جامع الترمذی
+                  </button>
+                </div>
+
+                {/* HADITH CARDS GRID */}
+                <div className="hadith-grid">
+                  {HADITH_ENCYCLOPEDIA.filter((h) => {
+                    if (hadithBookFilter !== "all" && h.bookId !== hadithBookFilter) return false;
+                    if (hadithSearch.trim()) {
+                      const q = hadithSearch.toLowerCase();
+                      return (
+                        h.matnAr.includes(q) ||
+                        h.translationUr.includes(q) ||
+                        h.narratorUr.includes(q) ||
+                        h.chapterUr.includes(q) ||
+                        h.takhreej.includes(q)
+                      );
+                    }
+                    return true;
+                  }).map((h) => (
+                    <div key={h.id} className="hadith-card">
+                      <div className="hadith-card-header">
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                          <span className="hadith-book-badge">
+                            📜 {h.bookNameUr} #{h.hadithNo}
+                          </span>
+                          <span className="hadith-grade-badge">
+                            ✓ {h.grade}
+                          </span>
+                        </div>
+                        <span style={{ fontSize: "0.85rem", color: "var(--muted)", fontWeight: "600" }}>
+                          {h.chapterUr}
+                        </span>
+                      </div>
+
+                      <div className="hadith-narrator font-arabic" lang="ar">
+                        {h.narratorAr} <span style={{ fontFamily: "var(--font-urdu)" }}>({h.narratorUr})</span>
+                      </div>
+
+                      {/* ARABIC MATN WITH AUTHENTIC ARABIC FONT */}
+                      <div className="hadith-matn-ar font-arabic" lang="ar" dir="rtl">
+                        {h.matnAr}
+                      </div>
+
+                      <div className="hadith-translation-ur">
+                        <strong>ترجمہ: </strong>{h.translationUr}
+                      </div>
+
+                      <div className="hadith-takhreej-pill">
+                        🔍 <strong>تخریج الحدیث: </strong>{h.takhreej}
+                      </div>
+
+                      <div className="hadith-sharh-box">
+                        <div className="hadith-sharh-title">
+                          💡 شرح الحدیث و فقہی فوائد:
+                        </div>
+                        <div className="hadith-sharh-text">
+                          {h.sharh}
+                        </div>
+                        <ul style={{ margin: "10px 0 0 0", paddingRight: "20px", fontSize: "0.95rem", color: "var(--deep)" }}>
+                          {h.benefits.map((b, bIdx) => (
+                            <li key={bIdx} style={{ marginBottom: "4px" }}>{b}</li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* ACTION BUTTONS */}
+                      <div className="hadith-actions-bar">
+                        <button
+                          type="button"
+                          className="hadith-action-btn"
+                          onClick={() => handleCopyHadith(h)}
+                        >
+                          {copiedHadithId === h.id ? "✓ کاپی ہو گیا!" : "📋 کاپی حدیث"}
+                        </button>
+                        <button
+                          type="button"
+                          className="hadith-action-btn btn-whatsapp-dawah"
+                          onClick={() => handleOpenDawahCard(h.chapterUr, h.matnAr, h.translationUr, `${h.bookNameUr} (${h.takhreej})`)}
+                        >
+                          💬 واٹس ایپ دعوتی کارڈ بھیجیں
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* TAB 3: MASNOON AZKAR & DIGITAL TASBEEH */}
+            {activeLibraryTab === "azkar" && (
+              <div>
+                {/* AZKAR CATEGORY FILTER */}
+                <div className="category-filter-chips">
+                  <button
+                    type="button"
+                    className={azkarCategoryFilter === "all" ? "filter-chip-btn active" : "filter-chip-btn"}
+                    onClick={() => setAzkarCategoryFilter("all")}
+                  >
+                    {isUrdu ? "تمام اذکار" : "All Azkar"}
+                  </button>
+                  <button
+                    type="button"
+                    className={azkarCategoryFilter === "morning" ? "filter-chip-btn active" : "filter-chip-btn"}
+                    onClick={() => setAzkarCategoryFilter("morning")}
+                  >
+                    صبح کے اذکار
+                  </button>
+                  <button
+                    type="button"
+                    className={azkarCategoryFilter === "evening" ? "filter-chip-btn active" : "filter-chip-btn"}
+                    onClick={() => setAzkarCategoryFilter("evening")}
+                  >
+                    شام کے اذکار
+                  </button>
+                  <button
+                    type="button"
+                    className={azkarCategoryFilter === "after_salah" ? "filter-chip-btn active" : "filter-chip-btn"}
+                    onClick={() => setAzkarCategoryFilter("after_salah")}
+                  >
+                    بعد از نماز پنجگانہ
+                  </button>
+                </div>
+
+                {/* AZKAR CARDS */}
+                <div className="azkar-grid">
+                  {DAILY_AZKAR_DATA.filter((z) => {
+                    if (azkarCategoryFilter === "all") return true;
+                    return z.category === azkarCategoryFilter;
+                  }).map((z) => {
+                    const count = azkarCounters[z.id] || 0;
+                    const isFinished = count >= z.targetCount;
+
+                    return (
+                      <div key={z.id} className="zikr-card">
+                        <div>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+                            <span style={{ fontSize: "0.78rem", background: "rgba(198, 149, 47, 0.15)", color: "var(--deep)", padding: "2px 10px", borderRadius: "999px", fontWeight: "700" }}>
+                              {z.categoryUr}
+                            </span>
+                            <span style={{ fontSize: "0.82rem", color: "var(--muted)" }}>
+                              ہدف: <strong>{z.targetCount} مرتبہ</strong>
+                            </span>
+                          </div>
+
+                          <strong style={{ display: "block", color: "var(--deep)", fontSize: "1.02rem", marginBottom: "12px" }}>
+                            {z.titleUr}
+                          </strong>
+
+                          {/* ARABIC TEXT WITH DEDICATED ARABIC FONT */}
+                          <div className="zikr-arabic font-arabic" lang="ar" dir="rtl">
+                            {z.arabicText}
+                          </div>
+
+                          <div className="zikr-translation">
+                            <strong>ترجمہ: </strong>{z.translationUr}
+                          </div>
+
+                          <div style={{ fontSize: "0.86rem", color: "var(--green)", background: "#e8f5e9", padding: "8px 12px", borderRadius: "8px", marginBottom: "14px" }}>
+                            ✨ <strong>فضیلت: </strong>{z.virtueUr}
+                            <br />
+                            <small style={{ color: "var(--muted)" }}>({z.takhreej})</small>
+                          </div>
+                        </div>
+
+                        {/* INTERACTIVE TASBEEH COUNTER */}
+                        <div className="tasbeeh-interactive-bar">
+                          <div>
+                            <span style={{ fontSize: "0.85rem", color: "var(--muted)" }}>تعداد: </span>
+                            <strong style={{ fontSize: "1.3rem", color: "var(--deep)" }}>
+                              {count}
+                            </strong>
+                            <span style={{ fontSize: "0.85rem", color: "var(--muted)" }}> / {z.targetCount}</span>
+                          </div>
+
+                          {isFinished ? (
+                            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                              <span className="tasbeeh-completed-badge">
+                                ✓ ماشاء اللہ! مکمل
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => handleResetTasbeeh(z.id)}
+                                style={{ background: "none", border: "1px solid #ccc", borderRadius: "6px", fontSize: "0.75rem", padding: "3px 8px", cursor: "pointer" }}
+                              >
+                                دوبارہ
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              type="button"
+                              className="tasbeeh-tap-btn"
+                              onClick={() => handleTasbeehTap(z.id, z.targetCount)}
+                            >
+                              +1 پڑھیں
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </section>
+
 
 
         {/* ========================================================
             12 COURSES & COMPREHENSIVE OUTLINES
             ======================================================== */}
+        
+        {/* ========================================================
+            LIVE INTERACTIVE CLASSROOM & LESSON VIEWROOM
+            ======================================================== */}
+        <section id="classroom-section" style={{ padding: "65px 0", background: "linear-gradient(180deg, var(--cream) 0%, #f6efe1 100%)", borderTop: "1px solid rgba(198, 149, 47, 0.25)" }}>
+          <div className="wrap">
+            <div className="section-head" style={{ textAlign: "center" }}>
+              <span className="eyebrow">
+                <span className="eyebrow-star">✦</span>
+                {isUrdu ? "جدید ترین ٹیکنالوجی پر مبنی لائیو کلاس روم" : "Live Interactive Virtual Classroom"}
+              </span>
+              <h2>
+                {isUrdu ? (
+                  <>لائیو تعلیمی ویو روم <span>و ڈیجیٹل اسباق ڈیش بورڈ</span></>
+                ) : (
+                  <>Synchronized Lesson Viewroom <span>& Student Dashboard</span></>
+                )}
+              </h2>
+              <p style={{ maxWidth: "750px", margin: "0 auto" }}>
+                {isUrdu
+                  ? "طالب علم اور استاد دونوں کے سامنے ایک ہی سبق کھلتا ہے، ریئل ٹائم پوائنٹر، صوتی رہنمائی اور روزانہ سبق ڈائری کے ساتھ۔"
+                  : "Teacher and student share the exact same synchronized lesson board with real-time pointing, voice guidance, and daily performance diary."}
+              </p>
+            </div>
+
+            {/* CLASSROOM CONTAINER */}
+            <div className="classroom-container">
+              {/* TOP STATUS BAR */}
+              <div className="classroom-header-bar">
+                <div style={{ display: "flex", alignItems: "center", gap: "14px", flexWrap: "wrap" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    <span className="pulse-radar" style={{ margin: 0 }}></span>
+                    <strong style={{ color: "var(--gold-light)", fontSize: "0.95rem" }}>
+                      {classroomRole === "teacher" ? "استاد اسکرین: قاری محمد عمر فاروقی (لاہور)" : "طالب علم اسکرین: محمد ریان (لندن، برطانیہ)"}
+                    </strong>
+                  </div>
+                  <span style={{ fontSize: "0.8rem", background: "rgba(255,255,255,0.12)", padding: "3px 10px", borderRadius: "999px" }}>
+                    ⏱ لائیو سیشن: 24:18 منٹ
+                  </span>
+                </div>
+
+                {/* ROLE SWITCHER */}
+                <div style={{ display: "flex", gap: "8px" }}>
+                  <button
+                    type="button"
+                    onClick={() => setClassroomRole("teacher")}
+                    style={{
+                      padding: "6px 14px",
+                      borderRadius: "999px",
+                      fontSize: "0.8rem",
+                      fontWeight: 700,
+                      border: "1px solid var(--gold)",
+                      background: classroomRole === "teacher" ? "var(--gold)" : "transparent",
+                      color: classroomRole === "teacher" ? "#062e24" : "#ffffff",
+                      cursor: "pointer"
+                    }}
+                  >
+                    🎓 استاد موڈ
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setClassroomRole("student")}
+                    style={{
+                      padding: "6px 14px",
+                      borderRadius: "999px",
+                      fontSize: "0.8rem",
+                      fontWeight: 700,
+                      border: "1px solid var(--gold)",
+                      background: classroomRole === "student" ? "var(--gold)" : "transparent",
+                      color: classroomRole === "student" ? "#062e24" : "#ffffff",
+                      cursor: "pointer"
+                    }}
+                  >
+                    👦 طالب علم موڈ
+                  </button>
+                </div>
+              </div>
+
+              {/* SHARED LESSON BOARD */}
+              <div
+                className="classroom-board"
+                onClick={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  const x = ((e.clientX - rect.left) / rect.width) * 100;
+                  const y = ((e.clientY - rect.top) / rect.height) * 100;
+                  setClassroomPointer({ x, y });
+                }}
+              >
+                {classroomPointer && (
+                  <div
+                    className="classroom-pointer-dot"
+                    style={{ left: `${classroomPointer.x}%`, top: `${classroomPointer.y}%` }}
+                    title="استاد کا لائیو پوائنٹر"
+                  />
+                )}
+
+                <span style={{ fontSize: "0.82rem", color: "var(--muted)", marginBottom: "8px", fontWeight: 700 }}>
+                  {classroomLessonType === "qaida" ? "سبق: نورانی قاعدہ — تختی نمبر 4 (حرکات)" :
+                   classroomLessonType === "nazra" ? "سبق: ناظرہ قرآن کریم — سورۃ الملک، آیات 1 تا 5" :
+                   "سبق: حفظ القرآن — پارہ 1 (سورۃ البقرہ)"}
+                </span>
+
+                <div className="font-arabic" lang="ar" dir="rtl" style={{ fontSize: "2.4rem", lineHeight: "2.8", color: "var(--deep)", maxWidth: "800px" }}>
+                  تَبَارَكَ الَّذِي بِيَدِهِ الْمُلْكُ وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ ۝ الَّذِي خَلَقَ الْمَوْتَ وَالْحَيَاةَ لِيَبْلُوَكُمْ أَيُّكُمْ أَحْسَنُ عَمَلًا ۚ
+                </div>
+
+                <small style={{ marginTop: "14px", color: "var(--green)", fontWeight: 600 }}>
+                  👆 استاد اسکرین پر جس لفظ پر کلک کریں گے، طالب علم کے سامنے ریڈار پوائنٹر نمودار ہوگا۔
+                </small>
+              </div>
+
+              {/* SABAQ TRACKER & PARENT DIARY */}
+              <div className="sabaq-diary-box">
+                <div className="sabaq-item-cell">
+                  <span style={{ fontSize: "0.78rem", color: "var(--gold)", fontWeight: 700, display: "block" }}>
+                    📖 آج کا سبق (Sabaq):
+                  </span>
+                  <input
+                    type="text"
+                    value={diarySabaq}
+                    onChange={(e) => setDiarySabaq(e.target.value)}
+                    style={{ width: "100%", border: "0", background: "transparent", fontWeight: 700, color: "var(--deep)", fontSize: "0.92rem", outline: "none", marginTop: "4px" }}
+                  />
+                </div>
+
+                <div className="sabaq-item-cell" style={{ borderRightColor: "#1565c0" }}>
+                  <span style={{ fontSize: "0.78rem", color: "#1565c0", fontWeight: 700, display: "block" }}>
+                    🔄 سبقی (پچھلی دہرائی):
+                  </span>
+                  <input
+                    type="text"
+                    value={diarySabqi}
+                    onChange={(e) => setDiarySabqi(e.target.value)}
+                    style={{ width: "100%", border: "0", background: "transparent", fontWeight: 700, color: "var(--deep)", fontSize: "0.92rem", outline: "none", marginTop: "4px" }}
+                  />
+                </div>
+
+                <div className="sabaq-item-cell" style={{ borderRightColor: "#0b4f3f" }}>
+                  <span style={{ fontSize: "0.78rem", color: "#0b4f3f", fontWeight: 700, display: "block" }}>
+                    ⭐ استاد کے ریمارکس:
+                  </span>
+                  <input
+                    type="text"
+                    value={diaryRemarks}
+                    onChange={(e) => setDiaryRemarks(e.target.value)}
+                    style={{ width: "100%", border: "0", background: "transparent", fontWeight: 700, color: "var(--deep)", fontSize: "0.92rem", outline: "none", marginTop: "4px" }}
+                  />
+                </div>
+
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <button
+                    type="button"
+                    onClick={handleSendParentDiaryWhatsApp}
+                    className="btn btn-gold"
+                    style={{ width: "100%", fontSize: "0.88rem", padding: "10px 14px", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}
+                  >
+                    📲 والدین کے واٹس ایپ پر ڈائری بھیجیں
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
         <section id="courses-section" className="soft">
           <div className="wrap">
             <div className="section-head">
               <span className="eyebrow">
                 <span className="eyebrow-star">✦</span>
-                {isUrdu ? "۱۲ جامع تعلیمی کورسز" : "Complete 12 Course Programs"}
+                {isUrdu ? "12 جامع تعلیمی کورسز" : "Complete 12 Course Programs"}
               </span>
               <h2>{isUrdu ? "مکمل تعلیمی نصاب اور کورس آؤٹ لائنز" : "Structured Syllabi & Comprehensive Outlines"}</h2>
               <p>
@@ -2049,7 +2282,7 @@ export default function AcademySite({ locale }: { locale: Locale }) {
                 className={`qari-pill ${courseFilter === "all" ? "active" : ""}`}
                 onClick={() => setCourseFilter("all")}
               >
-                {isUrdu ? "تمام کورسز (۱۲)" : "All Programs (12)"}
+                {isUrdu ? "تمام کورسز (12)" : "All Programs (12)"}
               </button>
               <button
                 type="button"
@@ -2569,129 +2802,87 @@ export default function AcademySite({ locale }: { locale: Locale }) {
         {/* ========================================================
             ULTRA-MODERN LUXURY VISITOR ANALYTICS & REAL LIVE COUNTER
             ======================================================== */}
-        <section id="visitor-analytics-section" className="sec-visitor-analytics">
+        
+        {/* ========================================================
+            COMPACT CREDIBILITY & REAL VISITOR ANALYTICS STRIP
+            ======================================================== */}
+        <section id="visitor-analytics-section" className="visitor-credibility-bar">
           <div className="wrap">
-            <div className="section-head" style={{ textAlign: "center" }}>
-              <span className="eyebrow" style={{ background: "rgba(198, 149, 47, 0.25)", color: "var(--gold-light)" }}>
-                <span className="eyebrow-star">✦</span>
-                {isUrdu ? "ویب سائٹ لائیو ڈیٹا و اوریجنل کاؤنٹر" : "Real-Time Website Visitor Analytics"}
+            <div style={{ textAlign: "center", marginBottom: "22px" }}>
+              <span className="gold-badge" style={{ background: "rgba(198, 149, 47, 0.2)", color: "var(--gold-light)" }}>
+                {isUrdu ? "عالمی برادری و لائیو ڈیٹا" : "Real-Time Verified Community"}
               </span>
-              <h2 style={{ color: "#ffffff" }}>
-                {isUrdu ? (
-                  <>عالمی برادری <span style={{ color: "var(--gold-light)" }}>و لائیو زائرین کاؤنٹر</span></>
-                ) : (
-                  <>Global Community <span style={{ color: "var(--gold-light)" }}>& Real Visitor Analytics</span></>
-                )}
-              </h2>
-              <p style={{ color: "#cfd8dc" }}>
-                {isUrdu
-                  ? "فاروقی آن لائن قرآن اکیڈمی کی ویب سائٹ پر دنیا بھر سے آنے والے طلبہ، اساتذہ اور زائرین کا اوریجنل سرور ڈیٹا۔"
-                  : "Verified real-time statistics of students, scholars, and Quran learners actively studying across 42+ countries."}
-              </p>
+              <h3 style={{ fontSize: "1.6rem", fontWeight: "800", color: "#ffffff", margin: "8px 0" }}>
+                {isUrdu ? "42+ ممالک سے طلبہ و زائرین کا اوریجنل اعتماد" : "Trusted by Students Across 42+ Countries"}
+              </h3>
             </div>
 
-            {/* HERO STATS GRID */}
-            <div className="analytics-hero-grid">
-              {/* CARD 1: REAL LIVE ONLINE PULSE */}
-              <div className="analytics-stat-card">
+            <div className="analytics-hero-grid" style={{ marginTop: "16px" }}>
+              {/* CARD 1: REAL LIVE ONLINE */}
+              <div className="analytics-stat-card" style={{ padding: "18px" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <span className="pulse-radar"></span>
                   <span style={{ fontSize: "0.85rem", color: "#00e676", fontWeight: "700", marginRight: "6px" }}>
-                    {isUrdu ? "لائیو آن لائن اس وقت" : "Active Live Now"}
+                    {isUrdu ? "لائیو آن لائن" : "Active Live"}
                   </span>
                 </div>
-                <div className="odometer-number" style={{ color: "#00e676" }}>
+                <div className="odometer-number" style={{ color: "#00e676", fontSize: "2.1rem" }}>
                   {liveOnlineVisitors}
                 </div>
-                <div className="analytics-label">
-                  {isUrdu ? "اس وقت پورٹل پر موجود فعال افراد" : "Users currently learning on site"}
+                <div className="analytics-label" style={{ fontSize: "0.82rem" }}>
+                  {isUrdu ? "پورٹل پر موجود فعال افراد" : "Users currently online"}
                 </div>
               </div>
 
-              {/* CARD 2: REAL TOTAL LIFETIME READERS */}
-              <div className="analytics-stat-card">
+              {/* CARD 2: REAL TOTAL VISITS */}
+              <div className="analytics-stat-card" style={{ padding: "18px" }}>
                 <div style={{ fontSize: "0.85rem", color: "var(--gold-light)", fontWeight: "700" }}>
-                  {isUrdu ? "مجموعی وزٹرز و قارئین" : "Total Lifetime Visitors"}
+                  {isUrdu ? "مجموعی وزٹرز" : "Total Visitors"}
                 </div>
-                <div className="odometer-number">
+                <div className="odometer-number" style={{ fontSize: "2.1rem" }}>
                   {lifetimeVisitors.toLocaleString()}+
                 </div>
-                <div className="analytics-label">
-                  {isUrdu ? "ویب سائٹ پر مجموعی تلاوتیں و وزٹس" : "Total Quran sessions & visits"}
+                <div className="analytics-label" style={{ fontSize: "0.82rem" }}>
+                  {isUrdu ? "ویب سائٹ کے مجموعی وزٹس" : "Total verified visits"}
                 </div>
               </div>
 
-              {/* CARD 3: REAL TODAY VISITS */}
-              <div className="analytics-stat-card">
+              {/* CARD 3: TODAY VISITS */}
+              <div className="analytics-stat-card" style={{ padding: "18px" }}>
                 <div style={{ fontSize: "0.85rem", color: "#90caf9", fontWeight: "700" }}>
-                  {isUrdu ? "آج کے وزٹرز (Today)" : "Today's Quran Visits"}
+                  {isUrdu ? "آج کے وزٹرز" : "Today's Visits"}
                 </div>
-                <div className="odometer-number" style={{ color: "#90caf9" }}>
+                <div className="odometer-number" style={{ color: "#90caf9", fontSize: "2.1rem" }}>
                   {todayVisitors.toLocaleString()}
                 </div>
-                <div className="analytics-label">
-                  {isUrdu ? "آج حاصل کی گئی قرآنی رہنمائی" : "Visits recorded today"}
+                <div className="analytics-label" style={{ fontSize: "0.82rem" }}>
+                  {isUrdu ? "آج حاصل کی گئی رہنمائی" : "Visits recorded today"}
                 </div>
               </div>
 
-              {/* CARD 4: USER'S PERSONAL SESSION VISITS */}
-              <div className="analytics-stat-card">
+              {/* CARD 4: PERSONAL VISIT */}
+              <div className="analytics-stat-card" style={{ padding: "18px" }}>
                 <div style={{ fontSize: "0.85rem", color: "#ce93d8", fontWeight: "700" }}>
-                  {isUrdu ? "آپ کے دورے (خوش آمدید!)" : "Your Visits Counter"}
+                  {isUrdu ? "آپ کا وزٹ نمبر" : "Your Visit #"}
                 </div>
-                <div className="odometer-number" style={{ color: "#ce93d8" }}>
+                <div className="odometer-number" style={{ color: "#ce93d8", fontSize: "2.1rem" }}>
                   #{mySessionVisits}
                 </div>
-                <div className="analytics-label">
-                  {isUrdu ? "اس براؤزر پر آپ کا تصدیق شدہ کاؤنٹر" : "Your session visits on this device"}
+                <div className="analytics-label" style={{ fontSize: "0.82rem" }}>
+                  {isUrdu ? "خوش آمدید! آپ کا محفوظ کاؤنٹر" : "Your visits on this device"}
                 </div>
               </div>
             </div>
 
-            {/* GLOBAL COUNTRY BREAKDOWN */}
-            <div className="global-breakdown-panel">
-              <div style={{ textAlign: "center" }}>
-                <strong style={{ fontSize: "1.15rem", color: "var(--gold-light)", display: "block" }}>
-                  🌍 {isUrdu ? "دنیا کے ۴۲+ ممالک سے طلبہ و زائرین کا اوریجنل اعتماد" : "Trusted by Students & Families across 42+ Countries"}
-                </strong>
-                <small style={{ color: "#cfd8dc" }}>
-                  {isUrdu ? "سرفہرست ممالک کا تصدیق شدہ ٹریفک تناسب:" : "Top traffic distribution by country:"}
-                </small>
-              </div>
-
-              <div className="countries-pills-wrap">
-                <div className="country-pill">
-                  <span>🇵🇰</span> <span>پاکستان</span> <span className="country-percent">45%</span>
-                </div>
-                <div className="country-pill">
-                  <span>🇬🇧</span> <span>برطانیہ (UK)</span> <span className="country-percent">22%</span>
-                </div>
-                <div className="country-pill">
-                  <span>🇺🇸</span> <span>امریکہ (USA)</span> <span className="country-percent">16%</span>
-                </div>
-                <div className="country-pill">
-                  <span>🇨🇦</span> <span>کینیڈا</span> <span className="country-percent">7%</span>
-                </div>
-                <div className="country-pill">
-                  <span>🇦🇪</span> <span>متحدہ عرب امارات</span> <span className="country-percent">5%</span>
-                </div>
-                <div className="country-pill">
-                  <span>🇸🇦</span> <span>سعودی عرب</span> <span className="country-percent">3%</span>
-                </div>
-                <div className="country-pill">
-                  <span>🇦🇺</span> <span>آسٹریلیا</span> <span className="country-percent">2%</span>
-                </div>
-              </div>
-
-              {/* LIVE RECENT ACTIVITY STREAM TICKER */}
-              <div className="live-feed-ticker">
-                <span className="pulse-radar" style={{ margin: 0, width: "10px", height: "10px" }}></span>
-                <strong>{isUrdu ? "تازہ ترین سرگرمی:" : "Live Activity:"}</strong>
-                <span>{recentLiveActivities[tickerIndex]}</span>
-              </div>
+            {/* LIVE TICKER */}
+            <div className="live-feed-ticker" style={{ marginTop: "18px", padding: "8px 16px", fontSize: "0.85rem" }}>
+              <span className="pulse-radar" style={{ margin: 0, width: "8px", height: "8px" }}></span>
+              <strong>{isUrdu ? "تازہ ترین سرگرمی:" : "Live:"}</strong>
+              <span>{recentLiveActivities[tickerIndex]}</span>
             </div>
           </div>
         </section>
+
 
       </main>
 
@@ -2718,6 +2909,115 @@ export default function AcademySite({ locale }: { locale: Locale }) {
         </div>
       </footer>
 
+      
+      {/* ========================================================
+          SLEEK FLOATING SIDE DOCK: HARAMAIN 24/7 LIVE STREAM
+          ======================================================== */}
+      {/* FLOATING TRIGGER BUTTON ON THE SIDE */}
+      <button
+        type="button"
+        className="haramain-floating-btn"
+        onClick={() => setIsHaramainSideOpen(!isHaramainSideOpen)}
+        aria-label="Toggle Haramain Live Stream"
+      >
+        <span className="pulse-radar" style={{ margin: 0 }}></span>
+        <span>🕋 {isUrdu ? "حرمین شریفین 24/7 لائیو" : "Haramain Live 24/7"}</span>
+        <span style={{ fontSize: "0.75rem", opacity: 0.8 }}>{isHaramainSideOpen ? "▼" : "▲"}</span>
+      </button>
+
+      {/* COMPACT SIDE DRAWER CARD */}
+      {isHaramainSideOpen && (
+        <aside className="haramain-side-drawer" aria-label="Haramain Live Side Dock">
+          <div className="haramain-side-header">
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <span className="pulse-radar" style={{ margin: 0 }}></span>
+              <strong style={{ fontSize: "0.95rem", color: "var(--gold-light)" }}>
+                {activeHaramainTab === "makkah-live" ? "مکہ مکرمہ لائیو (المسجد الحرام)" : "مدینہ منورہ لائیو (المسجد النبوی)"}
+              </strong>
+            </div>
+            <button
+              type="button"
+              className="haramain-side-close"
+              onClick={() => setIsHaramainSideOpen(false)}
+              aria-label="Close"
+            >
+              ✕
+            </button>
+          </div>
+
+          {/* DUAL CHANNEL TOGGLE */}
+          <div style={{ display: "flex", background: "#062e24", padding: "6px 10px", gap: "6px" }}>
+            <button
+              type="button"
+              onClick={() => setActiveHaramainTab("makkah-live")}
+              style={{
+                flex: 1,
+                padding: "6px 8px",
+                borderRadius: "8px",
+                border: 0,
+                fontSize: "0.78rem",
+                fontWeight: "700",
+                cursor: "pointer",
+                background: activeHaramainTab === "makkah-live" ? "var(--gold)" : "rgba(255,255,255,0.1)",
+                color: activeHaramainTab === "makkah-live" ? "#062e24" : "#ffffff"
+              }}
+            >
+              🕋 مکہ مکرمہ
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveHaramainTab("madinah-live")}
+              style={{
+                flex: 1,
+                padding: "6px 8px",
+                borderRadius: "8px",
+                border: 0,
+                fontSize: "0.78rem",
+                fontWeight: "700",
+                cursor: "pointer",
+                background: activeHaramainTab === "madinah-live" ? "var(--gold)" : "rgba(255,255,255,0.1)",
+                color: activeHaramainTab === "madinah-live" ? "#062e24" : "#ffffff"
+              }}
+            >
+              🕌 مدینہ منورہ
+            </button>
+          </div>
+
+          {/* COMPACT VIDEO WRAPPER */}
+          <div className="haramain-video-wrapper" style={{ maxHeight: "215px" }}>
+            <iframe
+              src={
+                activeHaramainTab === "makkah-live"
+                  ? "https://www.youtube-nocookie.com/embed/live_stream?channel=UC8h_bA1n0vJ3K8m9N0s0w1A"
+                  : "https://www.youtube-nocookie.com/embed/live_stream?channel=UC4_rK2g_uL8d8W6q8x9y0zA"
+              }
+              title="Haramain Live Stream"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+
+          <div style={{ padding: "8px 14px", background: "#062e24", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <small style={{ color: "#cfd8dc", fontSize: "0.75rem" }}>
+              سعودی ٹی وی 24/7 باضابطہ ایچ ڈی نشریات
+            </small>
+            <a
+              href={
+                activeHaramainTab === "makkah-live"
+                  ? "https://www.youtube.com/results?search_query=makkah+live+quran+tv"
+                  : "https://www.youtube.com/results?search_query=madinah+live+sunnah+tv"
+              }
+              target="_blank"
+              rel="noreferrer"
+              style={{ fontSize: "0.75rem", color: "var(--gold-light)", textDecoration: "underline" }}
+            >
+              یوٹیوب لنک ↗
+            </a>
+          </div>
+        </aside>
+      )}
+
+
       {/* FLOATING WHATSAPP BUTTON */}
       <a
         className="floating-whatsapp"
@@ -2736,6 +3036,65 @@ export default function AcademySite({ locale }: { locale: Locale }) {
           <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.625.846 5.059 2.284 7.033l-1.492 5.448 5.601-1.469c1.912 1.044 4.103 1.638 6.433 1.638 6.627 0 12-5.373 12-12s-5.373-12-12-12z" />
         </svg>
       </a>
+    
+      {/* ========================================================
+          HD WHATSAPP DAWAH GRAPHICS CARD MODAL
+          ======================================================== */}
+      {dawahModalData && (
+        <div className="dawah-modal-overlay" onClick={() => setDawahModalData(null)}>
+          <div className="dawah-modal-card" onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #e2d7ba", paddingBottom: "12px", marginBottom: "16px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <span style={{ fontSize: "1.3rem" }}>🎨</span>
+                <strong style={{ fontSize: "1.05rem", color: "var(--deep)" }}>
+                  واٹس ایپ دعوتی کارڈ جنریٹر (HD Graphics)
+                </strong>
+              </div>
+              <button
+                type="button"
+                onClick={() => setDawahModalData(null)}
+                style={{ background: "none", border: 0, fontSize: "1.2rem", cursor: "pointer", color: "var(--muted)" }}
+              >
+                ✕
+              </button>
+            </div>
+
+            <p style={{ fontSize: "0.82rem", color: "var(--muted)", margin: "0 0 14px 0" }}>
+              یہ کارڈ فاروقی آن لائن قرآن اکیڈمی کے باضابطہ لوگو، فون نمبرز اور خوبصورت عربی خطاطی کے ساتھ خودکار طور پر تیار کر دیا گیا ہے:
+            </p>
+
+            {/* PREVIEW CANVAS */}
+            <div style={{ textAlign: "center", background: "#062e24", padding: "16px", borderRadius: "16px", border: "2px solid var(--gold)" }}>
+              <canvas
+                id="dawahCardCanvas"
+                width={800}
+                height={800}
+                style={{ maxWidth: "100%", height: "auto", borderRadius: "10px", boxShadow: "0 10px 30px rgba(0,0,0,0.4)" }}
+              />
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginTop: "16px" }}>
+              <button
+                type="button"
+                onClick={renderAndDownloadDawahCanvas}
+                className="btn btn-gold"
+                style={{ fontSize: "0.85rem", padding: "10px" }}
+              >
+                📥 تصویر ڈاؤنلوڈ کریں
+              </button>
+              <button
+                type="button"
+                onClick={handleShareWhatsAppDawahImage}
+                className="btn btn-primary"
+                style={{ background: "#25d366", borderColor: "#25d366", fontSize: "0.85rem", padding: "10px" }}
+              >
+                💬 واٹس ایپ پر بھیجیں
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
