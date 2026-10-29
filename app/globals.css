@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@600;700&family=Gulzar&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:ital,wght@0,400;0,700;1,400&family=Scheherazade+New:wght@400;500;600;700;800&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Gulzar&family=Cormorant+Garamond:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
   --ink: #171614;
@@ -3994,3 +3994,646 @@ footer {
   }
 }
 
+
+/* ==========================================================
+   ISLAMIC LIBRARY SUITE & VISITOR ANALYTICS STYLES
+   ========================================================== */
+
+.sec-tafsir, .sec-hadith, .sec-haramain, .sec-azkar, .sec-visitor-analytics {
+  padding: 80px 0;
+  position: relative;
+}
+
+.sec-tafsir {
+  background: linear-gradient(180deg, var(--cream) 0%, rgba(198, 149, 47, 0.05) 50%, var(--cream) 100%);
+  border-top: 1px solid rgba(198, 149, 47, 0.2);
+}
+
+.sec-hadith {
+  background: linear-gradient(180deg, var(--cream) 0%, rgba(11, 79, 63, 0.04) 50%, var(--cream) 100%);
+  border-top: 1px solid rgba(11, 79, 63, 0.15);
+}
+
+.sec-haramain {
+  background: radial-gradient(circle at 50% 0%, rgba(11, 79, 63, 0.12), transparent 70%), var(--cream);
+  border-top: 1px solid rgba(198, 149, 47, 0.2);
+}
+
+.sec-azkar {
+  background: linear-gradient(180deg, var(--cream) 0%, rgba(241, 234, 216, 0.6) 100%);
+  border-top: 1px solid rgba(23, 22, 20, 0.08);
+}
+
+.sec-visitor-analytics {
+  background: radial-gradient(ellipse at top, #08372b 0%, #041f17 100%);
+  color: #fff;
+  border-top: 2px solid var(--gold);
+  border-bottom: 2px solid var(--gold);
+}
+
+.sec-visitor-analytics .section-title h2,
+.sec-visitor-analytics .section-title p {
+  color: #ffffff;
+}
+
+.sec-visitor-analytics .section-title h2 span {
+  color: var(--gold-light);
+}
+
+/* TAFSEER & TRANSLATION SELECTORS */
+.tafsir-selector-tabs, .translation-selector-chips, .book-filter-chips, .category-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 24px 0;
+}
+
+.tafsir-tab-btn, .translation-chip-btn, .filter-chip-btn {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(198, 149, 47, 0.3);
+  background: #ffffff;
+  color: var(--deep);
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
+.tafsir-tab-btn:hover, .translation-chip-btn:hover, .filter-chip-btn:hover {
+  border-color: var(--gold);
+  background: var(--soft);
+  transform: translateY(-1px);
+}
+
+.tafsir-tab-btn.active, .translation-chip-btn.active, .filter-chip-btn.active {
+  background: var(--deep);
+  color: #ffffff;
+  border-color: var(--gold);
+  box-shadow: 0 4px 12px rgba(5, 40, 31, 0.25);
+}
+
+/* TAFSEER DISPLAY CARD */
+.tafsir-card {
+  background: #ffffff;
+  border: 1px solid rgba(198, 149, 47, 0.25);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  padding: 36px;
+  margin-top: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.tafsir-card::before {
+  content: ;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--gold), var(--green), var(--gold));
+}
+
+.tafsir-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(198, 149, 47, 0.12);
+  color: var(--deep);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(198, 149, 47, 0.3);
+  margin-bottom: 16px;
+}
+
+.tafsir-arabic-box {
+  background: radial-gradient(circle at center, rgba(11, 79, 63, 0.05), transparent 75%), var(--soft);
+  border: 1px solid rgba(11, 79, 63, 0.15);
+  border-radius: 16px;
+  padding: 28px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.tafsir-arabic-text {
+  font-family: 'Amiri', 'Traditional Arabic', serif;
+  font-size: 2.1rem;
+  line-height: 2.4;
+  color: var(--deep);
+  direction: rtl;
+}
+
+.tafsir-translations-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.translation-item-box {
+  background: #faf8f3;
+  border-right: 4px solid var(--gold);
+  border-radius: 10px;
+  padding: 16px 20px;
+}
+
+.translation-scholar-tag {
+  font-size: 0.8rem;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.translation-text-urdu {
+  font-family: 'Noto Nastaliq Urdu', serif;
+  font-size: 1.15rem;
+  line-height: 2.1;
+  color: var(--ink);
+}
+
+.tafsir-commentary-box {
+  background: #fbfbf9;
+  border: 1px solid rgba(23, 22, 20, 0.1);
+  border-radius: 14px;
+  padding: 24px;
+}
+
+.tafsir-commentary-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px dashed rgba(198, 149, 47, 0.3);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.tafsir-commentary-text {
+  font-family: 'Noto Nastaliq Urdu', serif;
+  font-size: 1.15rem;
+  line-height: 2.2;
+  color: #24221f;
+  text-align: justify;
+}
+
+/* HADITH ENCYCLOPEDIA STYLES */
+.hadith-search-bar {
+  max-width: 650px;
+  margin: 0 auto 20px auto;
+  position: relative;
+}
+
+.hadith-search-input {
+  width: 100%;
+  padding: 14px 22px;
+  border-radius: 999px;
+  border: 2px solid rgba(198, 149, 47, 0.35);
+  background: #ffffff;
+  font-size: 1rem;
+  outline: none;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+}
+
+.hadith-search-input:focus {
+  border-color: var(--green);
+  box-shadow: 0 6px 20px rgba(11, 79, 63, 0.15);
+}
+
+.hadith-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.hadith-card {
+  background: #ffffff;
+  border: 1px solid rgba(11, 79, 63, 0.15);
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(5, 40, 31, 0.06);
+  padding: 28px;
+  transition: all 0.25s ease;
+}
+
+.hadith-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(5, 40, 31, 0.1);
+  border-color: rgba(198, 149, 47, 0.4);
+}
+
+.hadith-card-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px solid rgba(23, 22, 20, 0.08);
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+}
+
+.hadith-book-badge {
+  background: var(--deep);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 4px 14px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hadith-grade-badge {
+  background: #e8f5e9;
+  color: #1b5e20;
+  border: 1px solid #81c784;
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 3px 12px;
+  border-radius: 999px;
+}
+
+.hadith-narrator {
+  font-size: 0.95rem;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.hadith-matn-ar {
+  font-family: 'Amiri', serif;
+  font-size: 1.6rem;
+  line-height: 2.2;
+  color: var(--deep);
+  direction: rtl;
+  margin-bottom: 18px;
+  background: #faf7f0;
+  padding: 18px 22px;
+  border-radius: 12px;
+  border-right: 4px solid var(--gold);
+}
+
+.hadith-translation-ur {
+  font-family: 'Noto Nastaliq Urdu', serif;
+  font-size: 1.12rem;
+  line-height: 2.1;
+  color: #2a2824;
+  margin-bottom: 18px;
+}
+
+.hadith-takhreej-pill {
+  background: #f1ead8;
+  color: var(--deep);
+  font-size: 0.84rem;
+  padding: 6px 14px;
+  border-radius: 8px;
+  display: inline-block;
+  margin-bottom: 16px;
+  border: 1px dashed rgba(198, 149, 47, 0.4);
+}
+
+.hadith-sharh-box {
+  background: #fdfbf7;
+  border-top: 1px dashed rgba(23, 22, 20, 0.12);
+  padding-top: 16px;
+  margin-top: 16px;
+}
+
+.hadith-sharh-title {
+  font-weight: 700;
+  color: var(--deep);
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+
+.hadith-sharh-text {
+  font-family: 'Noto Nastaliq Urdu', serif;
+  font-size: 1.05rem;
+  line-height: 2.1;
+  color: #3b3730;
+}
+
+.hadith-actions-bar {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+
+.hadith-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid rgba(23, 22, 20, 0.15);
+  background: #ffffff;
+  color: var(--ink);
+  transition: all 0.2s ease;
+}
+
+.hadith-action-btn:hover {
+  background: var(--soft);
+  border-color: var(--gold);
+}
+
+.btn-whatsapp-dawah {
+  background: #25d366 !important;
+  color: #ffffff !important;
+  border-color: #25d366 !important;
+}
+
+.btn-whatsapp-dawah:hover {
+  background: #1ebd5b !important;
+}
+
+/* HARAMAIN LIVE STREAM STYLES */
+.haramain-stream-container {
+  max-width: 960px;
+  margin: 0 auto;
+  background: #000000;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  border: 2px solid var(--gold);
+}
+
+.haramain-video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 ratio */
+  height: 0;
+  background: #05281f;
+}
+
+.haramain-video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.haramain-stream-info {
+  background: #062e24;
+  padding: 20px 28px;
+  color: #ffffff;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* MASNOON AZKAR & DIGITAL TASBEEH */
+.azkar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.zikr-card {
+  background: #ffffff;
+  border: 1px solid rgba(198, 149, 47, 0.25);
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+}
+
+.zikr-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--gold);
+  box-shadow: 0 12px 30px rgba(198, 149, 47, 0.15);
+}
+
+.zikr-arabic {
+  font-family: 'Amiri', serif;
+  font-size: 1.45rem;
+  line-height: 2.1;
+  color: var(--deep);
+  text-align: center;
+  direction: rtl;
+  margin-bottom: 12px;
+}
+
+.zikr-translation {
+  font-family: 'Noto Nastaliq Urdu', serif;
+  font-size: 1.02rem;
+  line-height: 1.9;
+  color: #4a453d;
+  margin-bottom: 16px;
+}
+
+.tasbeeh-interactive-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f7f3e8;
+  border-radius: 12px;
+  padding: 10px 16px;
+  margin-top: auto;
+}
+
+.tasbeeh-tap-btn {
+  background: var(--deep);
+  color: var(--gold-light);
+  border: 2px solid var(--gold);
+  border-radius: 999px;
+  padding: 8px 20px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.tasbeeh-tap-btn:active {
+  transform: scale(0.92);
+  background: var(--green);
+}
+
+.tasbeeh-completed-badge {
+  color: #1b5e20;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ULTRA-MODERN VISITOR ANALYTICS & LIVE COUNTER */
+.analytics-hero-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 36px;
+}
+
+.analytics-stat-card {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(198, 149, 47, 0.35);
+  border-radius: 18px;
+  padding: 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.analytics-stat-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold-light);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.4);
+}
+
+.pulse-radar {
+  width: 14px;
+  height: 14px;
+  background-color: #00e676;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 8px;
+  position: relative;
+  box-shadow: 0 0 12px #00e676;
+  animation: radarPulse 1.8s infinite;
+}
+
+@keyframes radarPulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.7); }
+  70% { transform: scale(1.15); box-shadow: 0 0 0 10px rgba(0, 230, 118, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 230, 118, 0); }
+}
+
+.odometer-number {
+  font-family: 'Plus Jakarta Sans', monospace, sans-serif;
+  font-size: 2.6rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--gold-light);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  margin: 10px 0 4px 0;
+}
+
+.analytics-label {
+  font-size: 0.95rem;
+  color: #cfd8dc;
+  font-weight: 500;
+}
+
+.global-breakdown-panel {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  padding: 28px;
+  margin-top: 36px;
+}
+
+.countries-pills-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.country-pill {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(198, 149, 47, 0.25);
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 0.88rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.country-percent {
+  color: var(--gold-light);
+  font-weight: 700;
+}
+
+.live-feed-ticker {
+  margin-top: 24px;
+  padding: 12px 20px;
+  background: rgba(0, 230, 118, 0.08);
+  border-radius: 12px;
+  border: 1px solid rgba(0, 230, 118, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 0.92rem;
+  color: #b9f6ca;
+}
+
+/* ==========================================================
+   AUTHENTIC ARABIC CALLIGRAPHY TYPOGRAPHY ENGINE
+   ========================================================== */
+.font-arabic,
+.arabic-text,
+.quran-arabic-text,
+.tafsir-arabic-text,
+.hadith-matn-ar,
+.zikr-arabic,
+.arabic-letter-glyph,
+.ayah-verse-ar,
+.surah-header-ar,
+[lang="ar"],
+.arabic {
+  font-family: 'Amiri Quran', 'Amiri', 'Scheherazade New', 'Noto Naskh Arabic', 'Traditional Arabic', serif !important;
+  direction: rtl !important;
+  letter-spacing: 0 !important;
+  font-variant-ligatures: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+.quran-arabic-text,
+.tafsir-arabic-text {
+  font-size: 2.35rem !important;
+  line-height: 2.65 !important;
+  font-weight: 400;
+  color: var(--deep);
+  text-align: center !important;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.05);
+}
+
+.hadith-matn-ar {
+  font-size: 1.8rem !important;
+  line-height: 2.35 !important;
+  color: var(--deep);
+  text-align: right !important;
+}
+
+.zikr-arabic {
+  font-size: 1.7rem !important;
+  line-height: 2.25 !important;
+  color: var(--deep);
+  text-align: center !important;
+}
+
+.urdu-text,
+.translation-text-urdu,
+.tafsir-commentary-text,
+.hadith-translation-ur,
+.hadith-sharh-text,
+.zikr-translation {
+  font-family: 'Noto Nastaliq Urdu', 'Gulzar', 'Jameel Noori Nastaleeq', serif !important;
+  line-height: 2.25 !important;
+}

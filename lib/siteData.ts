@@ -1017,3 +1017,438 @@ export const siteData = {
 // PRECOMPILED QURAN DATA WITH WORD-BY-WORD & TRANSLATIONS
 // ============================================================================
 export const QURAN_FULL_DATA: Record<string, any> = {"1": {"number": 1, "nameAr": "الفاتحة", "nameEn": "Al-Fatihah", "nameUr": "سورۃ الفاتحہ", "type": "مكية", "ayahsCount": 7, "rukuCount": 1, "descUr": "ام الکتاب اور شفا، نماز کی ہر رکعت میں پڑھی جانے والی سب سے عظیم سورت۔", "descEn": "The Opener, mother of the Book, recited in every unit of prayer.", "verses": [{"num": 1, "ar": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", "ur": "شروع اللہ کے نام سے جو بڑا مہربان نہایت رحم والا ہے", "en": "In the name of Allah, the Entirely Merciful, the Especially Merciful.", "words": [{"ar": "بِسْمِ", "ur": "نام سے", "en": "In the name", "trans": "Bismi"}, {"ar": "اللَّهِ", "ur": "اللہ کے", "en": "of Allah", "trans": "Allahi"}, {"ar": "الرَّحْمَٰنِ", "ur": "بڑا مہربان", "en": "the Entirely Merciful", "trans": "Ar-Rahman"}, {"ar": "الرَّحِيمِ", "ur": "نہایت رحم والا", "en": "the Especially Merciful", "trans": "Ar-Raheem"}]}, {"num": 2, "ar": "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ", "ur": "سب تعریفیں اللہ ہی کے لیے ہیں جو تمام جہانوں کا پالنے والا ہے", "en": "[All] praise is [due] to Allah, Lord of the worlds.", "words": [{"ar": "الْحَمْدُ", "ur": "تمام تعریفیں", "en": "All praise", "trans": "Al-hamdu"}, {"ar": "لِلَّهِ", "ur": "اللہ کے لیے", "en": "for Allah", "trans": "lillahi"}, {"ar": "رَبِّ", "ur": "رب / پروردگار", "en": "Lord of", "trans": "Rabbi"}, {"ar": "الْعَالَمِينَ", "ur": "تمام جہانوں کا", "en": "the worlds", "trans": "al-alameen"}]}, {"num": 3, "ar": "الرَّحْمَٰنِ الرَّحِيمِ", "ur": "نہایت مہربان، ہمیشہ رحم فرمانے والا", "en": "The Entirely Merciful, the Especially Merciful.", "words": [{"ar": "الرَّحْمَٰنِ", "ur": "نہایت مہربان", "en": "The Entirely Merciful", "trans": "Ar-Rahman"}, {"ar": "الرَّحِيمِ", "ur": "ہمیشہ رحم فرمانے والا", "en": "the Especially Merciful", "trans": "Ar-Raheem"}]}, {"num": 4, "ar": "مَالِكِ يَوْمِ الدِّينِ", "ur": "روزِ جزا کا مالک", "en": "Sovereign of the Day of Recompense.", "words": [{"ar": "مَالِكِ", "ur": "مالک", "en": "Master / King", "trans": "Maliki"}, {"ar": "يَوْمِ", "ur": "دن کا", "en": "(of the) Day", "trans": "Yawmi"}, {"ar": "الدِّينِ", "ur": "جزا و سزا کے", "en": "(of) Recompense", "trans": "Ad-Deen"}]}, {"num": 5, "ar": "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ", "ur": "ہم تیری ہی عبادت کرتے ہیں اور تجھ ہی سے مدد مانگتے ہیں", "en": "It is You we worship and You we ask for help.", "words": [{"ar": "إِيَّاكَ", "ur": "تیری ہی", "en": "You alone", "trans": "Iyyaka"}, {"ar": "نَعْبُدُ", "ur": "ہم بندگی کرتے ہیں", "en": "we worship", "trans": "na'budu"}, {"ar": "وَإِيَّاكَ", "ur": "اور تجھ ہی سے", "en": "and You alone", "trans": "wa iyyaka"}, {"ar": "نَسْتَعِينُ", "ur": "ہم مدد چاہتے ہیں", "en": "we ask for help", "trans": "nasta'een"}]}, {"num": 6, "ar": "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ", "ur": "ہمیں سیدھے راستے پر چلا", "en": "Guide us to the straight path.", "words": [{"ar": "اهْدِنَا", "ur": "ہدایت دے ہمیں / چلا", "en": "Guide us", "trans": "Ihdina"}, {"ar": "الصِّرَاطَ", "ur": "راستہ", "en": "(to) the path", "trans": "as-sirata"}, {"ar": "الْمُسْتَقِيمَ", "ur": "سیدھا", "en": "the straight", "trans": "al-mustaqeem"}]}, {"num": 7, "ar": "صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ", "ur": "ان لوگوں کا راستہ جن پر تو نے انعام کیا، نہ کہ جن پر غضب ہوا اور نہ گمراہوں کا", "en": "The path of those upon whom You have bestowed favor, not of those who have evoked [Your] anger or of those who are astray.", "words": [{"ar": "صِرَاطَ", "ur": "راستہ", "en": "(The) path", "trans": "Sirata"}, {"ar": "الَّذِينَ", "ur": "ان لوگوں کا", "en": "(of) those", "trans": "alladheena"}, {"ar": "أَنْعَمْتَ", "ur": "تو نے انعام کیا", "en": "You bestowed favor", "trans": "an'amta"}, {"ar": "عَلَيْهِمْ", "ur": "ان پر", "en": "upon them", "trans": "'alayhim"}, {"ar": "غَيْرِ", "ur": "نہ کہ", "en": "not (of)", "trans": "ghayri"}, {"ar": "الْمَغْضُوبِ", "ur": "غضب کیے گئے", "en": "those who earned wrath", "trans": "al-maghdoobi"}, {"ar": "عَلَيْهِمْ", "ur": "ان پر", "en": "upon them", "trans": "'alayhim"}, {"ar": "وَلَا", "ur": "اور نہ ہی", "en": "and not", "trans": "wa la"}, {"ar": "الضَّالِّينَ", "ur": "گمراہوں کا", "en": "(of) the lost ones", "trans": "ad-daalleen"}]}]}, "112": {"number": 112, "nameAr": "الإخلاص", "nameEn": "Al-Ikhlas", "nameUr": "سورۃ الاخلاص", "type": "مكية", "ayahsCount": 4, "rukuCount": 1, "descUr": "توحیدِ باری تعالیٰ کا نچوڑ، تہائی قرآن کے برابر ثواب۔", "descEn": "The Purity of Faith, embodying pure monotheism, equal to one-third of the Quran.", "verses": [{"num": 1, "ar": "قُلْ هُوَ اللَّهُ أَحَدٌ", "ur": "کہہ دیجیے کہ وہ اللہ ایک ہے", "en": "Say: He is Allah, [who is] One,", "words": [{"ar": "قُلْ", "ur": "فرما دیجیے", "en": "Say", "trans": "Qul"}, {"ar": "هُوَ", "ur": "وہ", "en": "He is", "trans": "huwa"}, {"ar": "اللَّهُ", "ur": "اللہ", "en": "Allah", "trans": "Allahu"}, {"ar": "أَحَدٌ", "ur": "ایک ہے", "en": "One", "trans": "ahad"}]}, {"num": 2, "ar": "اللَّهُ الصَّمَدُ", "ur": "اللہ بے نیاز ہے", "en": "Allah, the Eternal Refuge.", "words": [{"ar": "اللَّهُ", "ur": "اللہ", "en": "Allah", "trans": "Allahu"}, {"ar": "الصَّمَدُ", "ur": "بے نیاز ہے", "en": "the Eternal Refuge", "trans": "as-samad"}]}, {"num": 3, "ar": "لَمْ يَلِدْ وَلَمْ يُولَدْ", "ur": "نہ اس کی کوئی اولاد ہے اور نہ وہ کسی کی اولاد ہے", "en": "He neither begets nor is born,", "words": [{"ar": "لَمْ", "ur": "نہ", "en": "Not", "trans": "Lam"}, {"ar": "يَلِدْ", "ur": "اس نے جنا", "en": "He begot", "trans": "yalid"}, {"ar": "وَلَمْ", "ur": "اور نہ", "en": "and not", "trans": "wa lam"}, {"ar": "يُولَدْ", "ur": "وہ جنا گیا", "en": "was He begotten", "trans": "yoolad"}]}, {"num": 4, "ar": "وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ", "ur": "اور کوئی اس کا ہمسر (برابر کا) نہیں ہے", "en": "Nor is there to Him any equivalent.", "words": [{"ar": "وَلَمْ", "ur": "اور نہ", "en": "And not", "trans": "Wa lam"}, {"ar": "يَكُن", "ur": "ہے", "en": "is", "trans": "yakun"}, {"ar": "لَّهُ", "ur": "اس کے لیے", "en": "unto Him", "trans": "lahu"}, {"ar": "كُفُوًا", "ur": "ہمسر / برابر", "en": "equivalent", "trans": "kufuwan"}, {"ar": "أَحَدٌ", "ur": "کوئی ایک", "en": "any one", "trans": "ahad"}]}]}, "113": {"number": 113, "nameAr": "الفلق", "nameEn": "Al-Falaq", "nameUr": "سورۃ الفلق", "type": "مكية", "ayahsCount": 5, "rukuCount": 1, "descUr": "معوذتین میں سے پہلی سورت، ہر شر اور حاسد کے حسد سے پناہ مانگنے کے لیے۔", "descEn": "The Daybreak, seeking refuge from the evils of darkness, witchcraft, and envy.", "verses": [{"num": 1, "ar": "قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ", "ur": "کہہ دیجیے کہ میں صبح کے رب کی پناہ مانگتا ہوں", "en": "Say: I seek refuge in the Lord of daybreak", "words": [{"ar": "قُلْ", "ur": "کہہ دیجیے", "en": "Say", "trans": "Qul"}, {"ar": "أَعُوذُ", "ur": "میں پناہ لیتا ہوں", "en": "I seek refuge", "trans": "a'oodhu"}, {"ar": "بِرَبِّ", "ur": "رب کی", "en": "in the Lord of", "trans": "bi-Rabbi"}, {"ar": "الْفَلَقِ", "ur": "صبح کے", "en": "the daybreak", "trans": "al-falaq"}]}, {"num": 2, "ar": "مِن شَرِّ مَا خَلَقَ", "ur": "ہر اس چیز کی برائی سے جو اس نے پیدا کی", "en": "From the evil of that which He created", "words": [{"ar": "مِن", "ur": "سے", "en": "From", "trans": "Min"}, {"ar": "شَرِّ", "ur": "برائی / شر", "en": "the evil of", "trans": "sharri"}, {"ar": "مَا", "ur": "جو کچھ", "en": "what", "trans": "ma"}, {"ar": "خَلَقَ", "ur": "اس نے پیدا کیا", "en": "He created", "trans": "khalaq"}]}, {"num": 3, "ar": "وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ", "ur": "اور اندھیری رات کے شر سے جب وہ چھا جائے", "en": "And from the evil of darkness when it settles", "words": [{"ar": "وَمِن", "ur": "اور سے", "en": "And from", "trans": "Wa min"}, {"ar": "شَرِّ", "ur": "شر", "en": "the evil of", "trans": "sharri"}, {"ar": "غَاسِقٍ", "ur": "اندھیرے کے", "en": "darkness", "trans": "ghasiqin"}, {"ar": "إِذَا", "ur": "جب", "en": "when", "trans": "idha"}, {"ar": "وَقَبَ", "ur": "وہ چھا جائے", "en": "it settles", "trans": "waqab"}]}, {"num": 4, "ar": "وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ", "ur": "اور گرہوں میں پھونکنے والیوں (جادوگرنیوں) کے شر سے", "en": "And from the evil of the blowers in knots", "words": [{"ar": "وَمِن", "ur": "اور سے", "en": "And from", "trans": "Wa min"}, {"ar": "شَرِّ", "ur": "شر", "en": "evil of", "trans": "sharri"}, {"ar": "النَّفَّاثَاتِ", "ur": "پھونکنے والیوں کے", "en": "the blowers", "trans": "an-naffathati"}, {"ar": "فِي", "ur": "میں", "en": "in", "trans": "fee"}, {"ar": "الْعُقَدِ", "ur": "گرہوں", "en": "the knots", "trans": "al-'uqad"}]}, {"num": 5, "ar": "وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ", "ur": "اور حسد کرنے والے کے شر سے جب وہ حسد کرے", "en": "And from the evil of an envier when he envies.", "words": [{"ar": "وَمِن", "ur": "اور سے", "en": "And from", "trans": "Wa min"}, {"ar": "شَرِّ", "ur": "شر", "en": "the evil of", "trans": "sharri"}, {"ar": "حَاسِدٍ", "ur": "حاسد کے", "en": "an envier", "trans": "hasidin"}, {"ar": "إِذَا", "ur": "جب", "en": "when", "trans": "idha"}, {"ar": "حَسَدَ", "ur": "وہ حسد کرے", "en": "he envies", "trans": "hasad"}]}]}, "114": {"number": 114, "nameAr": "الناس", "nameEn": "An-Nas", "nameUr": "سورۃ الناس", "type": "مكية", "ayahsCount": 6, "rukuCount": 1, "descUr": "قرآن کریم کی آخری سورت، انسانوں اور جنات کے وسوسوں سے ربِّ کائنات کی پناہ۔", "descEn": "Mankind, the final Surah, seeking protection from whispered temptations.", "verses": [{"num": 1, "ar": "قُلْ أَعُوذُ بِرَبِّ النَّاسِ", "ur": "کہہ دیجیے کہ میں انسانوں کے پروردگار کی پناہ مانگتا ہوں", "en": "Say: I seek refuge in the Lord of mankind,", "words": [{"ar": "قُلْ", "ur": "کہہ دیجیے", "en": "Say", "trans": "Qul"}, {"ar": "أَعُوذُ", "ur": "میں پناہ لیتا ہوں", "en": "I seek refuge", "trans": "a'oodhu"}, {"ar": "بِرَبِّ", "ur": "رب کی", "en": "in the Lord of", "trans": "bi-Rabbi"}, {"ar": "النَّاسِ", "ur": "انسانوں کے", "en": "mankind", "trans": "an-naas"}]}, {"num": 2, "ar": "مَلِكِ النَّاسِ", "ur": "انسانوں کے بادشاہ کی", "en": "The Sovereign of mankind,", "words": [{"ar": "مَلِكِ", "ur": "بادشاہ کی", "en": "The King of", "trans": "Maliki"}, {"ar": "النَّاسِ", "ur": "انسانوں کے", "en": "mankind", "trans": "an-naas"}]}, {"num": 3, "ar": "إِلَٰهِ النَّاسِ", "ur": "انسانوں کے معبود کی", "en": "The God of mankind,", "words": [{"ar": "إِلَٰهِ", "ur": "معبودِ برحق کی", "en": "The God of", "trans": "Ilahi"}, {"ar": "النَّاسِ", "ur": "انسانوں کے", "en": "mankind", "trans": "an-naas"}]}, {"num": 4, "ar": "مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ", "ur": "وسوسہ ڈالنے والے، پیچھے ہٹ جانے والے کے شر سے", "en": "From the evil of the retreating whisperer -", "words": [{"ar": "مِن", "ur": "سے", "en": "From", "trans": "Min"}, {"ar": "شَرِّ", "ur": "شر", "en": "the evil of", "trans": "sharri"}, {"ar": "الْوَسْوَاسِ", "ur": "وسوسہ ڈالنے والے کے", "en": "the whisperer", "trans": "al-waswasi"}, {"ar": "الْخَنَّاسِ", "ur": "بار بار چھپنے والے", "en": "the retreating", "trans": "al-khannaas"}]}, {"num": 5, "ar": "الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ", "ur": "جو لوگوں کے دلوں میں وسوسے ڈالتا ہے", "en": "Who whispers into the breasts of mankind -", "words": [{"ar": "الَّذِي", "ur": "وہ جو", "en": "Who", "trans": "Alladhee"}, {"ar": "يُوَسْوِسُ", "ur": "وسوسہ ڈالتا ہے", "en": "whispers", "trans": "yuwaswisu"}, {"ar": "فِي", "ur": "میں", "en": "into", "trans": "fee"}, {"ar": "صُدُورِ", "ur": "سینوں / دلوں", "en": "breasts / hearts", "trans": "sudoori"}, {"ar": "النَّاسِ", "ur": "انسانوں کے", "en": "of mankind", "trans": "an-naas"}]}, {"num": 6, "ar": "مِنَ الْجِنَّةِ وَالنَّاسِ", "ur": "خواہ وہ جنات میں سے ہو یا انسانوں میں سے", "en": "From among the jinn and mankind.", "words": [{"ar": "مِنَ", "ur": "سے", "en": "From", "trans": "Mina"}, {"ar": "الْجِنَّةِ", "ur": "جنات", "en": "the jinn", "trans": "al-jinnati"}, {"ar": "وَالنَّاسِ", "ur": "اور انسانوں", "en": "and mankind", "trans": "wan-naas"}]}]}, "108": {"number": 108, "nameAr": "الكوثر", "nameEn": "Al-Kawthar", "nameUr": "سورۃ الکوثر", "type": "مكية", "ayahsCount": 3, "rukuCount": 1, "descUr": "قرآن مجید کی سب سے مختصر سورت، حوضِ کوثر اور خیرِ کثیر کی بشارت۔", "descEn": "The Abundance, the shortest Surah in the Quran, promising immense blessing.", "verses": [{"num": 1, "ar": "إِنَّا أَعْطَيْنَاكَ الْكَوْثَرَ", "ur": "بے شک ہم نے آپ کو کوثر (خیرِ کثیر) عطا فرمائی", "en": "Indeed, We have granted you, [O Muhammad], al-Kawthar.", "words": [{"ar": "إِنَّا", "ur": "بے شک ہم نے", "en": "Indeed We", "trans": "Inna"}, {"ar": "أَعْطَيْنَاكَ", "ur": "عطا کی آپ کو", "en": "have granted you", "trans": "a'taynaka"}, {"ar": "الْكَوْثَرَ", "ur": "کوثر / خیرِ کثیر", "en": "al-Kawthar", "trans": "al-kawthar"}]}, {"num": 2, "ar": "فَصَلِّ لِرَبِّكَ وَانْحَرْ", "ur": "پس آپ اپنے رب کے لیے نماز پڑھیے اور قربانی کیجیے", "en": "So pray to your Lord and sacrifice [to Him alone].", "words": [{"ar": "فَصَلِّ", "ur": "پس نماز پڑھیے", "en": "So pray", "trans": "Fa-salli"}, {"ar": "لِرَبِّكَ", "ur": "اپنے رب کے لیے", "en": "to your Lord", "trans": "li-Rabbika"}, {"ar": "وَانْحَرْ", "ur": "اور قربانی کیجیے", "en": "and sacrifice", "trans": "wanhar"}]}, {"num": 3, "ar": "إِنَّ شَانِئَكَ هُوَ الْأَبْتَرُ", "ur": "یقیناً آپ کا دشمن ہی بے نام و نشان (بے نسل) ہے", "en": "Indeed, your enemy is the one cut off.", "words": [{"ar": "إِنَّ", "ur": "بے شک", "en": "Indeed", "trans": "Inna"}, {"ar": "شَانِئَكَ", "ur": "آپ کا دشمن", "en": "your enemy", "trans": "shani'aka"}, {"ar": "هُوَ", "ur": "وہی", "en": "he is", "trans": "huwa"}, {"ar": "الْأَبْتَرُ", "ur": "بے نشان / کٹا ہوا", "en": "the cut off", "trans": "al-abtar"}]}]}, "67": {"number": 67, "nameAr": "الملك", "nameEn": "Al-Mulk", "nameUr": "سورۃ الملک", "type": "مكية", "ayahsCount": 30, "rukuCount": 2, "descUr": "عذابِ قبر سے نجات دلانے والی ۳۰ آیات پر مشتمل عظیم الشان سورت۔", "descEn": "The Sovereignty, 30 verses that intercede for its reciter and protect from punishment.", "verses": [{"num": 1, "ar": "تَبَارَكَ الَّذِي بِيَدِهِ الْمُلْكُ وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ", "ur": "بڑی بابرکت ہے وہ ذات جس کے ہاتھ میں ساری بادشاہی ہے اور وہ ہر چیز پر قادر ہے", "en": "Blessed is He in whose hand is dominion, and He is over all things competent -", "words": [{"ar": "تَبَارَكَ", "ur": "بڑی برکت والی ہے", "en": "Blessed is", "trans": "Tabaraka"}, {"ar": "الَّذِي", "ur": "وہ ذات جو", "en": "He who", "trans": "alladhee"}, {"ar": "بِيَدِهِ", "ur": "جس کے ہاتھ میں", "en": "in His hand is", "trans": "bi-yadihi"}, {"ar": "الْمُلْكُ", "ur": "ساری بادشاہی", "en": "the dominion", "trans": "al-mulk"}, {"ar": "وَهُوَ", "ur": "اور وہ", "en": "and He", "trans": "wa huwa"}, {"ar": "عَلَىٰ", "ur": "پر", "en": "over", "trans": "'ala"}, {"ar": "كُلِّ", "ur": "ہر", "en": "all", "trans": "kulli"}, {"ar": "شَيْءٍ", "ur": "چیز", "en": "things", "trans": "shay'in"}, {"ar": "قَدِيرٌ", "ur": "کامل قدرت والا", "en": "competent / powerful", "trans": "qadeer"}]}, {"num": 2, "ar": "الَّذِي خَلَقَ الْمَوْتَ وَالْحَيَاةَ لِيَبْلُوَكُمْ أَيُّكُمْ أَحْسَنُ عَمَلًا ۚ وَهُوَ الْعَزِيزُ الْغَفُورُ", "ur": "جس نے موت اور زندگی کو پیدا کیا تاکہ تمہیں آزمائے کہ تم میں سے اچھے عمل کس کے ہیں، اور وہ زبردست بخشنے والا ہے", "en": "[He] who created death and life to test you [as to] which of you is best in deed - and He is the Exalted in Might, the Forgiving -", "words": [{"ar": "الَّذِي", "ur": "جس نے", "en": "He who", "trans": "Alladhee"}, {"ar": "خَلَقَ", "ur": "پیدا فرمایا", "en": "created", "trans": "khalaqa"}, {"ar": "الْمَوْتَ", "ur": "موت کو", "en": "death", "trans": "al-mawta"}, {"ar": "وَالْحَيَاةَ", "ur": "اور زندگی کو", "en": "and life", "trans": "wal-hayata"}, {"ar": "لِيَبْلُوَكُمْ", "ur": "تاکہ تمہیں آزمائے", "en": "to test you", "trans": "li-yabluwakum"}, {"ar": "أَيُّكُمْ", "ur": "تم میں سے کون", "en": "which of you", "trans": "ayyukum"}, {"ar": "أَحْسَنُ", "ur": "بہترین ہے", "en": "best", "trans": "ahsanu"}, {"ar": "عَمَلًا", "ur": "عمل میں", "en": "in deed", "trans": "'amala"}, {"ar": "وَهُوَ", "ur": "اور وہی", "en": "and He is", "trans": "wa huwa"}, {"ar": "الْعَزِيزُ", "ur": "زبردست غلبے والا", "en": "the Exalted", "trans": "al-'azeezu"}, {"ar": "الْغَفُورُ", "ur": "نہایت بخشنے والا", "en": "the Forgiving", "trans": "al-ghafoor"}]}, {"num": 3, "ar": "الَّذِي خَلَقَ سَبْعَ سَمَاوَاتٍ طِبَاقًا ۖ مَّا تَرَىٰ فِي خَلْقِ الرَّحْمَٰنِ مِن تَفَاوُتٍ", "ur": "جس نے سات آسمان اوپر تلے بنائے، تم رحمٰن کی آفرینش میں کوئی خلل اور نقص نہ دیکھو گے", "en": "[And] who created seven heavens in layers. You do not see in the creation of the Most Merciful any inconsistency.", "words": [{"ar": "الَّذِي", "ur": "جس نے", "en": "Who", "trans": "Alladhee"}, {"ar": "خَلَقَ", "ur": "پیدا کیے", "en": "created", "trans": "khalaqa"}, {"ar": "سَبْعَ", "ur": "سات", "en": "seven", "trans": "sab'a"}, {"ar": "سَمَاوَاتٍ", "ur": "آسمان", "en": "heavens", "trans": "samawatin"}, {"ar": "طِبَاقًا", "ur": "تہ بہ تہ / اوپر تلے", "en": "in layers", "trans": "tibaqan"}, {"ar": "مَّا تَرَىٰ", "ur": "تم نہ دیکھو گے", "en": "you see not", "trans": "ma tara"}, {"ar": "فِي خَلْقِ", "ur": "پیدائش میں", "en": "in the creation of", "trans": "fee khalqi"}, {"ar": "الرَّحْمَٰنِ", "ur": "رحمٰن کی", "en": "the Most Merciful", "trans": "ar-Rahman"}, {"ar": "مِن تَفَاوُتٍ", "ur": "کوئی فرق و خلل", "en": "any inconsistency", "trans": "min tafawut"}]}]}, "36": {"number": 36, "nameAr": "يس", "nameEn": "Ya-Sin", "nameUr": "سورۃ یٰسٓ", "type": "مكية", "ayahsCount": 83, "rukuCount": 5, "descUr": "قلبِ قرآن، رسالت، توحید اور حشر و نشر کے دلائل پر مبنی عظیم سورت۔", "descEn": "The Heart of the Quran, affirming revelation, divine oneness and the Resurrection.", "verses": [{"num": 1, "ar": "يس", "ur": "یٰسٓ", "en": "Ya-Sin.", "words": [{"ar": "يس", "ur": "یا سین (حروف مقطعات)", "en": "Ya-Sin", "trans": "Ya-Seen"}]}, {"num": 2, "ar": "وَالْقُرْآنِ الْحَكِيمِ", "ur": "قسم ہے قرآنِ باحکمت کی", "en": "By the wise Quran.", "words": [{"ar": "وَالْقُرْآنِ", "ur": "اور قسم ہے قرآن کی", "en": "By the Quran", "trans": "Wal-Qur'ani"}, {"ar": "الْحَكِيمِ", "ur": "حکمت سے بھرپور", "en": "the Wise", "trans": "al-hakeem"}]}, {"num": 3, "ar": "إِنَّكَ لَمِنَ الْمُرْسَلِينَ", "ur": "بے شک آپ یقیناً پیغمبروں میں سے ہیں", "en": "Indeed you, [O Muhammad], are from among the messengers,", "words": [{"ar": "إِنَّكَ", "ur": "یقیناً آپ", "en": "Indeed you", "trans": "Innaka"}, {"ar": "لَمِنَ", "ur": "البتہ میں سے ہیں", "en": "are of", "trans": "lamina"}, {"ar": "الْمُرْسَلِينَ", "ur": "رسولوں", "en": "the messengers", "trans": "al-mursaleen"}]}, {"num": 4, "ar": "عَلَىٰ صِرَاطٍ مُّسْتَقِيمٍ", "ur": "سیدھے راستے پر ہیں", "en": "On a straight path.", "words": [{"ar": "عَلَىٰ", "ur": "پر", "en": "On", "trans": "'ala"}, {"ar": "صِرَاطٍ", "ur": "راستے", "en": "a path", "trans": "siratin"}, {"ar": "مُّسْتَقِيمٍ", "ur": "سیدھے", "en": "straight", "trans": "mustaqeem"}]}, {"num": 5, "ar": "تَنزِيلَ الْعَزِيزِ الرَّحِيمِ", "ur": "یہ غالب اور نہایت رحم فرمانے والے کا نازل کیا ہوا ہے", "en": "[This is] a revelation of the Exalted in Might, the Merciful,", "words": [{"ar": "تَنزِيلَ", "ur": "نازل کیا ہوا", "en": "A revelation of", "trans": "Tanzeela"}, {"ar": "الْعَزِيزِ", "ur": "غالب", "en": "the Exalted", "trans": "al-'azeezi"}, {"ar": "الرَّحِيمِ", "ur": "نہایت رحم فرمانے والے کی", "en": "the Merciful", "trans": "ar-raheem"}]}]}, "103": {"number": 103, "nameAr": "العصر", "nameEn": "Al-Asr", "nameUr": "سورۃ العصر", "type": "مكية", "ayahsCount": 3, "rukuCount": 1, "descUr": "وقت کی قسم اور انسانی نجات کا جامع قرآنی نسخہ (ایمان، عمل صالح، تواصی بالحق، تواصی بالصبر)۔", "descEn": "The Declining Day, outlining the path of salvation through faith, good deeds, truth and patience.", "verses": [{"num": 1, "ar": "وَالْعَصْرِ", "ur": "قسم ہے زمانے کی", "en": "By time,", "words": [{"ar": "وَالْعَصْرِ", "ur": "قسم ہے زمانے کی", "en": "By the time", "trans": "Wal-'Asr"}]}, {"num": 2, "ar": "إِنَّ الْإِنسَانَ لَفِي خُسْرٍ", "ur": "بے شک انسان سراسر خسارے میں ہے", "en": "Indeed, mankind is in loss,", "words": [{"ar": "إِنَّ", "ur": "بے شک", "en": "Indeed", "trans": "Inna"}, {"ar": "الْإِنسَانَ", "ur": "انسان", "en": "mankind", "trans": "al-insana"}, {"ar": "لَفِي", "ur": "البتہ میں ہے", "en": "is in", "trans": "lafee"}, {"ar": "خُسْرٍ", "ur": "خسارے / گھاٹے", "en": "loss", "trans": "khusr"}]}, {"num": 3, "ar": "إِلَّا الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ وَتَوَاصَوْا بِالْحَقِّ وَتَوَاصَوْا بِالصَّبْرِ", "ur": "سوائے ان لوگوں کے جو ایمان لائے اور نیک عمل کیے اور ایک دوسرے کو حق اور صبر کی تلقین کی", "en": "Except for those who have believed and done righteous deeds and advised each other to truth and advised each other to patience.", "words": [{"ar": "إِلَّا", "ur": "سوائے", "en": "Except", "trans": "Illa"}, {"ar": "الَّذِينَ", "ur": "ان کے جو", "en": "those who", "trans": "alladheena"}, {"ar": "آمَنُوا", "ur": "ایمان لائے", "en": "believed", "trans": "amanoo"}, {"ar": "وَعَمِلُوا", "ur": "اور عمل کیے", "en": "and did", "trans": "wa 'amiloo"}, {"ar": "الصَّالِحَاتِ", "ur": "نیک کام", "en": "righteous deeds", "trans": "as-salihati"}, {"ar": "وَتَوَاصَوْا", "ur": "اور ایک دوسرے کو نصیحت کی", "en": "and advised each other", "trans": "wa tawasaow"}, {"ar": "بِالْحَقِّ", "ur": "حق کی", "en": "to the truth", "trans": "bil-haqqi"}, {"ar": "وَتَوَاصَوْا", "ur": "اور نصیحت کی", "en": "and advised each other", "trans": "wa tawasaow"}, {"ar": "بِالصَّبْرِ", "ur": "صبر کی", "en": "to patience", "trans": "bis-sabr"}]}]}, "105": {"number": 105, "nameAr": "الفيل", "nameEn": "Al-Fil", "nameUr": "سورۃ الفیل", "type": "مكية", "ayahsCount": 5, "rukuCount": 1, "descUr": "اصحابِ فیل اور ابرہہ کے لشکر کی پرندوں کے ذریعے ہلاکت اور کعبہ کی حفاظت کا واقعہ۔", "descEn": "The Elephant, describing the destruction of Abraha's army attempting to destroy the Kaaba.", "verses": [{"num": 1, "ar": "أَلَمْ تَرَ كَيْفَ فَعَلَ رَبُّكَ بِأَصْحَابِ الْفِيلِ", "ur": "کیا آپ نے نہیں دیکھا کہ آپ کے رب نے ہاتھی والوں کے ساتھ کیا کیا؟", "en": "Have you not considered, [O Muhammad], how your Lord dealt with the companions of the elephant?", "words": [{"ar": "أَلَمْ تَرَ", "ur": "کیا آپ نے نہیں دیکھا", "en": "Have you not seen", "trans": "Alam tara"}, {"ar": "كَيْفَ", "ur": "کیسا", "en": "how", "trans": "kayfa"}, {"ar": "فَعَلَ", "ur": "کیا / معاملہ کیا", "en": "dealt", "trans": "fa'ala"}, {"ar": "رَبُّكَ", "ur": "آپ کے رب نے", "en": "your Lord", "trans": "Rabbuka"}, {"ar": "بِأَصْحَابِ", "ur": "والوں کے ساتھ", "en": "with the companions of", "trans": "bi-as-habi"}, {"ar": "الْفِيلِ", "ur": "ہاتھی", "en": "the elephant", "trans": "al-feel"}]}, {"num": 2, "ar": "أَلَمْ يَجْعَلْ كَيْدَهُمْ فِي تَضْلِيلٍ", "ur": "کیا اس نے ان کی تدبیر کو اکارت اور برباد نہیں کر دیا؟", "en": "Did He not make their plan into misguidance?", "words": [{"ar": "أَلَمْ يَجْعَلْ", "ur": "کیا اس نے نہ کر دیا", "en": "Did He not make", "trans": "Alam yaj'al"}, {"ar": "كَيْدَهُمْ", "ur": "ان کے مکر / چال کو", "en": "their plan", "trans": "kaydahum"}, {"ar": "فِي تَضْلِيلٍ", "ur": "بربادی میں", "en": "into ruin", "trans": "fee tadleel"}]}, {"num": 3, "ar": "وَأَرْسَلَ عَلَيْهِمْ طَيْرًا أَبَابِيلَ", "ur": "اور ان پر جھنڈ کے جھنڈ پرندے بھیجے", "en": "And He sent against them birds in flocks,", "words": [{"ar": "وَأَرْسَلَ", "ur": "اور اس نے بھیجے", "en": "And He sent", "trans": "Wa arsala"}, {"ar": "عَلَيْهِمْ", "ur": "ان پر", "en": "upon them", "trans": "'alayhim"}, {"ar": "طَيْرًا", "ur": "پرندے", "en": "birds", "trans": "tayran"}, {"ar": "أَبَابِيلَ", "ur": "جھنڈ کے جھنڈ", "en": "in flocks", "trans": "ababeel"}]}, {"num": 4, "ar": "تَرْمِيهِم بِحِجَارَةٍ مِّن سِجِّيلٍ", "ur": "جو ان پر پکی مٹی کی کنکریاں پھینکتے تھے", "en": "Striking them with stones of hard clay,", "words": [{"ar": "تَرْمِيهِم", "ur": "وہ مارتے تھے ان پر", "en": "Striking them", "trans": "Tarmeehim"}, {"ar": "بِحِجَارَةٍ", "ur": "پتھروں کے ساتھ", "en": "with stones", "trans": "bi-hijaratin"}, {"ar": "مِّن سِجِّيلٍ", "ur": "پکی ہوئی مٹی کے", "en": "of baked clay", "trans": "min sijjeel"}]}, {"num": 5, "ar": "فَجَعَلَهُمْ كَعَصْفٍ مَّأْكُولٍ", "ur": "پس اس نے انہیں کھائے ہوئے بھوسے کی طرح کر ڈالا", "en": "And He made them like eaten straw.", "words": [{"ar": "فَجَعَلَهُمْ", "ur": "پس اس نے کر دیا ان کو", "en": "So He made them", "trans": "Fa-ja'alahum"}, {"ar": "كَعَصْفٍ", "ur": "بھوسے کی مانند", "en": "like straw", "trans": "ka-'asfin"}, {"ar": "مَّأْكُولٍ", "ur": "کھایا ہوا", "en": "eaten up", "trans": "ma'kool"}]}]}, "106": {"number": 106, "nameAr": "قريش", "nameEn": "Quraish", "nameUr": "سورۃ قریش", "type": "مكية", "ayahsCount": 4, "rukuCount": 1, "descUr": "قریش پر اللہ تعالیٰ کی نعمتوں اور امن و رزق کی فراہمی پر ربِّ کعبہ کی بندگی کا حکم۔", "descEn": "Quraish, reminding the Tribe of Mecca of Allah's protection and provision.", "verses": [{"num": 1, "ar": "لِإِيلَافِ قُرَيْشٍ", "ur": "قریش کو مانوس کرنے کی خاطر", "en": "For the accustomed security of the Quraysh -", "words": [{"ar": "لِإِيلَافِ", "ur": "مانوس کرنے کے لیے", "en": "For the familiarity of", "trans": "Li-eelafi"}, {"ar": "قُرَيْشٍ", "ur": "قریش کو", "en": "Quraysh", "trans": "Quraysh"}]}, {"num": 2, "ar": "إِيلَافِهِمْ رِحْلَةَ الشِّتَاءِ وَالصَّيْفِ", "ur": "انہیں سردی اور گرمی کے سفر سے مانوس کرنے کے سبب", "en": "Their accustomed security [in] the caravan of winter and summer -", "words": [{"ar": "إِيلَافِهِمْ", "ur": "ان کے مانوس ہونے کے سبب", "en": "Their familiarity with", "trans": "Eelafihim"}, {"ar": "رِحْلَةَ", "ur": "سفر سے", "en": "the journey of", "trans": "rihlata"}, {"ar": "الشِّتَاءِ", "ur": "سردی کے", "en": "winter", "trans": "ash-shita'i"}, {"ar": "وَالصَّيْفِ", "ur": "اور گرمی کے", "en": "and summer", "trans": "was-sayf"}]}, {"num": 3, "ar": "فَلْيَعْبُدُوا رَبَّ هَٰذَا الْبَيْتِ", "ur": "پس انہیں چاہیے کہ اس گھر (کعبہ) کے رب کی عبادت کریں", "en": "Let them worship the Lord of this House,", "words": [{"ar": "فَلْيَعْبُدُوا", "ur": "پس چاہیے کہ وہ عبادت کریں", "en": "So let them worship", "trans": "Fal-ya'budoo"}, {"ar": "رَبَّ", "ur": "رب کی", "en": "the Lord of", "trans": "Rabba"}, {"ar": "هَٰذَا", "ur": "اس", "en": "this", "trans": "hadha"}, {"ar": "الْبَيْتِ", "ur": "گھر (کعبہ) کے", "en": "House", "trans": "al-bayt"}]}, {"num": 4, "ar": "الَّذِي أَطْعَمَهُم مِّن جُوعٍ وَآمَنَهُم مِّنْ خَوْفٍ", "ur": "جس نے انہیں بھوک میں کھانا کھلایا اور خوف سے امن عطا فرمایا", "en": "Who has fed them, [saving them] from hunger and made them safe, [saving them] from fear.", "words": [{"ar": "الَّذِي", "ur": "جس نے", "en": "Who", "trans": "Alladhee"}, {"ar": "أَطْعَمَهُم", "ur": "کھانا کھلایا ان کو", "en": "has fed them", "trans": "at'amahum"}, {"ar": "مِّن جُوعٍ", "ur": "بھوک میں", "en": "from hunger", "trans": "min joo'in"}, {"ar": "وَآمَنَهُم", "ur": "اور امن دیا ان کو", "en": "and made them safe", "trans": "wa amanahum"}, {"ar": "مِّنْ خَوْفٍ", "ur": "خوف سے", "en": "from fear", "trans": "min khawf"}]}]}, "110": {"number": 110, "nameAr": "النصر", "nameEn": "An-Nasr", "nameUr": "سورۃ النصر", "type": "مدنية", "ayahsCount": 3, "rukuCount": 1, "descUr": "فتحِ مکہ اور فوج در فوج دینِ اسلام میں داخلے کی بشارت اور تسبیح و استغفار کا حکم۔", "descEn": "The Divine Support, announcing the conquest of Mecca and widespread acceptance of Islam.", "verses": [{"num": 1, "ar": "إِذَا جَاءَ نَصْرُ اللَّهِ وَالْفَتْحُ", "ur": "جب اللہ کی مدد اور فتح آ پہنچے", "en": "When the victory of Allah has come and the conquest,", "words": [{"ar": "إِذَا", "ur": "جب", "en": "When", "trans": "Idha"}, {"ar": "جَاءَ", "ur": "آ پہنچے", "en": "comes", "trans": "ja'a"}, {"ar": "نَصْرُ اللَّهِ", "ur": "اللہ کی مدد", "en": "the help of Allah", "trans": "nasru Allahi"}, {"ar": "وَالْفَتْحُ", "ur": "اور فتح", "en": "and the conquest", "trans": "wal-fath"}]}, {"num": 2, "ar": "وَرَأَيْتَ النَّاسَ يَدْخُلُونَ فِي دِينِ اللَّهِ أَفْوَاجًا", "ur": "اور آپ لوگوں کو دیکھ لیں کہ وہ اللہ کے دین میں فوج در فوج داخل ہو رہے ہیں", "en": "And you see the people entering into the religion of Allah in multitudes,", "words": [{"ar": "وَرَأَيْتَ", "ur": "اور آپ دیکھ لیں", "en": "And you see", "trans": "Wa ra'ayta"}, {"ar": "النَّاسَ", "ur": "لوگوں کو", "en": "the people", "trans": "an-naasa"}, {"ar": "يَدْخُلُونَ", "ur": "وہ داخل ہو رہے ہیں", "en": "entering", "trans": "yadkhuloona"}, {"ar": "فِي دِينِ اللَّهِ", "ur": "اللہ کے دین میں", "en": "into the religion of Allah", "trans": "fee deeni Allahi"}, {"ar": "أَفْوَاجًا", "ur": "فوج در فوج / گروہ در گروہ", "en": "in crowds / multitudes", "trans": "afwajan"}]}, {"num": 3, "ar": "فَسَبِّحْ بِحَمْدِ رَبِّكَ وَاسْتَغْفِرْهُ ۚ إِنَّهُ كَانَ تَوَّابًا", "ur": "تو اپنے رب کی حمد کے ساتھ تسبیح کیجیے اور اس سے مغفرت مانگیے، بے شک وہ بڑا توبہ قبول فرمانے والا ہے", "en": "Then exalt [Him] with praise of your Lord and ask forgiveness of Him. Indeed, He is ever Accepting of repentance.", "words": [{"ar": "فَسَبِّحْ", "ur": "پس تسبیح کیجیے", "en": "So glorify", "trans": "Fa-sabbih"}, {"ar": "بِحَمْدِ رَبِّكَ", "ur": "اپنے رب کی حمد کے ساتھ", "en": "with praise of your Lord", "trans": "bi-hamdi Rabbika"}, {"ar": "وَاسْتَغْفِرْهُ", "ur": "اور اس سے بخشش مانگیے", "en": "and ask His forgiveness", "trans": "wastaghfirhu"}, {"ar": "إِنَّهُ كَانَ", "ur": "بے شک وہ ہے", "en": "indeed He is", "trans": "innahu kana"}, {"ar": "تَوَّابًا", "ur": "بڑا توبہ قبول کرنے والا", "en": "Accepting of repentance", "trans": "tawwaba"}]}]}, "97": {"number": 97, "nameAr": "القدر", "nameEn": "Al-Qadr", "nameUr": "سورۃ القدر", "type": "مكية", "ayahsCount": 5, "rukuCount": 1, "descUr": "شبِ قدر کی فضیلت، نزولِ قرآن اور ہزار مہینوں سے افضل بابرکت رات کا تذکرہ۔", "descEn": "The Night of Decree, revealing the excellence of Laylat al-Qadr and the descent of the Quran.", "verses": [{"num": 1, "ar": "إِنَّا أَنزَلْنَاهُ فِي لَيْلَةِ الْقَدْرِ", "ur": "بے شک ہم نے اس (قرآن) کو شبِ قدر میں نازل فرمایا", "en": "Indeed, We sent the Quran down during the Night of Decree.", "words": [{"ar": "إِنَّا", "ur": "بے شک ہم نے", "en": "Indeed We", "trans": "Inna"}, {"ar": "أَنزَلْنَاهُ", "ur": "نازل کیا اس کو", "en": "sent it down", "trans": "anzalnahu"}, {"ar": "فِي", "ur": "میں", "en": "in", "trans": "fee"}, {"ar": "لَيْلَةِ الْقَدْرِ", "ur": "شبِ قدر", "en": "the Night of Decree", "trans": "Laylatil-Qadr"}]}, {"num": 2, "ar": "وَمَا أَدْرَاكَ مَا لَيْلَةُ الْقَدْرِ", "ur": "اور آپ کو کیا معلوم کہ شبِ قدر کیا ہے؟", "en": "And what can make you know what is the Night of Decree?", "words": [{"ar": "وَمَا أَدْرَاكَ", "ur": "اور کیا بتائے آپ کو", "en": "And what will make you know", "trans": "Wa ma adraka"}, {"ar": "مَا", "ur": "کیا ہے", "en": "what is", "trans": "ma"}, {"ar": "لَيْلَةُ الْقَدْرِ", "ur": "شبِ قدر", "en": "the Night of Decree", "trans": "Laylatul-Qadr"}]}, {"num": 3, "ar": "لَيْلَةُ الْقَدْرِ خَيْرٌ مِّنْ أَلْفِ شَهْرٍ", "ur": "شبِ قدر ہزار مہینوں سے بہتر ہے", "en": "The Night of Decree is better than a thousand months.", "words": [{"ar": "لَيْلَةُ الْقَدْرِ", "ur": "شبِ قدر", "en": "The Night of Decree", "trans": "Laylatul-Qadr"}, {"ar": "خَيْرٌ", "ur": "بہتر ہے", "en": "is better", "trans": "khayrun"}, {"ar": "مِّنْ", "ur": "سے", "en": "than", "trans": "min"}, {"ar": "أَلْفِ شَهْرٍ", "ur": "ہزار مہینوں", "en": "a thousand months", "trans": "alfi shahr"}]}, {"num": 4, "ar": "تَنَزَّلُ الْمَلَائِكَةُ وَالرُّوحُ فِيهَا بِإِذْنِ رَبِّهِم مِّن كُلِّ أَمْرٍ", "ur": "اس میں فرشتے اور روح الامین (جبرائیل علیہ السلام) اپنے رب کے حکم سے ہر امر کے لیے اترتے ہیں", "en": "The angels and the Spirit descend therein by permission of their Lord for every matter.", "words": [{"ar": "تَنَزَّلُ", "ur": "اترتے ہیں", "en": "Descend", "trans": "Tanazzalu"}, {"ar": "الْمَلَائِكَةُ", "ur": "فرشتے", "en": "the angels", "trans": "al-mala'ikatu"}, {"ar": "وَالرُّوحُ", "ur": "اور روح (جبرائیل)", "en": "and the Spirit", "trans": "war-Roohu"}, {"ar": "فِيهَا", "ur": "اس رات میں", "en": "therein", "trans": "feeha"}, {"ar": "بِإِذْنِ رَبِّهِم", "ur": "اپنے رب کے حکم سے", "en": "by permission of their Lord", "trans": "bi-idhni Rabbihim"}, {"ar": "مِّن كُلِّ أَمْرٍ", "ur": "ہر امر کے ساتھ", "en": "for every matter", "trans": "min kulli amr"}]}, {"num": 5, "ar": "سَلَامٌ هِيَ حَتَّىٰ مَطْلَعِ الْفَجْرِ", "ur": "وہ (رات) سراسر سلامتی ہے فجر کے طلوع ہونے تک", "en": "Peace it is until the emergence of dawn.", "words": [{"ar": "سَلَامٌ", "ur": "سلامتی ہے", "en": "Peace", "trans": "Salamun"}, {"ar": "هِيَ", "ur": "وہ", "en": "it is", "trans": "hiya"}, {"ar": "حَتَّىٰ", "ur": "تک", "en": "until", "trans": "hatta"}, {"ar": "مَطْلَعِ الْفَجْرِ", "ur": "صبح کے طلوع ہونے", "en": "the emergence of dawn", "trans": "matla'il-fajr"}]}]}, "55": {"number": 55, "nameAr": "الرحمن", "nameEn": "Ar-Rahman", "nameUr": "سورۃ الرحمٰن", "type": "مدنية", "ayahsCount": 78, "rukuCount": 3, "descUr": "عروس القرآن، اللہ تعالیٰ کی ان گنت نعمتوں اور 'فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ' کا دلنشین ترانہ۔", "descEn": "The Beneficent, celebrated as the bride of the Quran, enumerating divine blessings.", "verses": [{"num": 1, "ar": "الرَّحْمَٰنُ", "ur": "نہایت مہربان (اللہ)", "en": "The Most Merciful", "words": [{"ar": "الرَّحْمَٰنُ", "ur": "بڑا مہربان", "en": "The Most Merciful", "trans": "Ar-Rahman"}]}, {"num": 2, "ar": "عَلَّمَ الْقُرْآنَ", "ur": "اسی نے قرآن کی تعلیم دی", "en": "Taught the Quran,", "words": [{"ar": "عَلَّمَ", "ur": "سکھایا", "en": "Taught", "trans": "'Allama"}, {"ar": "الْقُرْآنَ", "ur": "قرآن کو", "en": "the Quran", "trans": "al-Qur'an"}]}, {"num": 3, "ar": "خَلَقَ الْإِنسَانَ", "ur": "اسی نے انسان کو پیدا کیا", "en": "Created man,", "words": [{"ar": "خَلَقَ", "ur": "پیدا کیا", "en": "Created", "trans": "Khalaqa"}, {"ar": "الْإِنسَانَ", "ur": "انسان کو", "en": "man", "trans": "al-insan"}]}, {"num": 4, "ar": "عَلَّمَهُ الْبَيَانَ", "ur": "اسے بولنا (اور مافی الضمیر بیان کرنا) سکھایا", "en": "[And] taught him eloquence.", "words": [{"ar": "عَلَّمَهُ", "ur": "سکھایا اس کو", "en": "Taught him", "trans": "'Allamahu"}, {"ar": "الْبَيَانَ", "ur": "بیان و بول چال", "en": "eloquent speech", "trans": "al-bayan"}]}, {"num": 13, "ar": "فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ", "ur": "پس (اے جن و انس!) تم اپنے پروردگار کی کون کون سی نعمتوں کو جھٹلاؤ گے؟", "en": "So which of the favors of your Lord would you deny?", "words": [{"ar": "فَبِأَيِّ", "ur": "پس کس", "en": "So which", "trans": "Fa-bi'ayyi"}, {"ar": "آلَاءِ", "ur": "نعمتوں کو", "en": "(of the) favors", "trans": "ala'i"}, {"ar": "رَبِّكُمَا", "ur": "اپنے رب کی", "en": "(of) your Lord", "trans": "Rabbikuma"}, {"ar": "تُكَذِّبَانِ", "ur": "تم دونوں جھٹلاؤ گے", "en": "will you both deny", "trans": "tukadhdhiban"}]}]}};
+
+
+// Islamic Library Suite Data: Tafaseer, Hadith Encyclopedia, Haramain Live, and Masnoon Azkar
+// Curated for Farooqi Online Quran Academy Premium Hub
+
+export interface TafsirAuthor {
+  id: string;
+  nameUr: string;
+  nameAr: string;
+  author: string;
+  era: string;
+  description: string;
+  methodology: string;
+}
+
+export interface TranslationMeta {
+  id: string;
+  name: string;
+  scholar: string;
+  badge: string;
+  description: string;
+}
+
+export interface AyahTafsirDetail {
+  surahNumber: number;
+  surahNameUr: string;
+  surahNameAr: string;
+  ayahNumber: number;
+  arabicText: string;
+  translations: {
+    jalandhri: string;
+    taqi: string;
+    junagarhi: string;
+    ahmedRaza: string;
+    saheehEn: string;
+  };
+  tafaseer: {
+    ibnKathir: string;
+    maarifulQuran: string;
+    tafheemulQuran: string;
+    asaanQuran: string;
+    bayanulQuran: string;
+  };
+  audioUrl: string;
+  topic: string;
+}
+
+export interface HadithRecord {
+  id: string;
+  hadithNo: number;
+  bookId: 'bukhari' | 'muslim' | 'tirmidhi' | 'abudawood' | 'nasai' | 'ibnmajah' | 'mishkat';
+  bookNameUr: string;
+  bookNameAr: string;
+  chapterUr: string;
+  chapterAr: string;
+  narratorUr: string;
+  narratorAr: string;
+  matnAr: string;
+  translationUr: string;
+  translationEn: string;
+  takhreej: string;
+  grade: 'صحیح (متفق علیہ)' | 'صحیح' | 'حسن' | 'صحیح لغیرہ';
+  sharh: string;
+  benefits: string[];
+  topic: 'ایمان و عقیدہ' | 'فضائل قرآن و علم' | 'اخلاق و معاشرت' | 'نماز و عبادات' | 'خدمت خلق و صدقات' | 'ذکر و دعائیں';
+}
+
+export interface LiveStreamInfo {
+  id: string;
+  titleUr: string;
+  titleEn: string;
+  locationUr: string;
+  locationEn: string;
+  youtubeId: string;
+  descriptionUr: string;
+  streamUrl: string;
+  officialSource: string;
+}
+
+export interface MasnoonZikr {
+  id: string;
+  titleUr: string;
+  category: 'morning' | 'evening' | 'after_salah' | 'sleeping';
+  categoryUr: string;
+  arabicText: string;
+  translationUr: string;
+  virtueUr: string;
+  targetCount: number;
+  takhreej: string;
+}
+
+export const TAFASEER_CATALOG: TafsirAuthor[] = [
+  {
+    id: 'ibnKathir',
+    nameUr: 'تفسیر ابن کثیر',
+    nameAr: 'تفسير القرآن العظيم (ابن كثير)',
+    author: 'عماد الدین حافظ اسماعیل بن کثیر القرشیؒ (متوفی 774ھ)',
+    era: 'آٹھویں صدی ہجری',
+    description: 'تفسیر بالماثور میں امت مسلمہ کی سب سے مستند اور معتبر کتاب، جس میں ہر آیت کی تفسیر آیات قرآنی، احادیث رسول ﷺ اور اقوال صحابہ و تابعین سے کی گئی ہے۔',
+    methodology: 'تفسیر القرآن بالقرآن، ثم بالسنۃ، ثم بآثار الصحابۃ والتابعین مع نقد روایات۔'
+  },
+  {
+    id: 'maarifulQuran',
+    nameUr: 'معارف القرآن',
+    nameAr: 'معارف القرآن (مفتی محمد شفیع)',
+    author: 'مفتی اعظم پاکستان مفتی محمد شفیع عثمانیؒ (متوفی 1396ھ)',
+    era: 'چودہویں صدی ہجری (عصر حاضر)',
+    description: 'اردو زبان کی سب سے مقبول اور جامع تفسیر، جس میں روایتی تفسیر کے ساتھ ساتھ جدید فقہی و معاشرتی مسائل کے شرعی حل اور روحانی نکات بیان ہوئے ہیں۔',
+    methodology: 'جامع بین المنقول والمعقول، تفصیلی فقہی احکام و معارف سلوک۔'
+  },
+  {
+    id: 'tafheemulQuran',
+    nameUr: 'تفہیم القرآن',
+    nameAr: 'تفهيم القرآن (سيد مودودی)',
+    author: 'مولانا سید ابوالاعلیٰ مودودیؒ (متوفی 1399ھ)',
+    era: 'عصر حاضر',
+    description: 'قرآن حکیم کو دستور حیات اور انقلابی نظام کے طور پر پیش کرنے والی فکر انگیز تفسیر، سلیس اور دلنشین اسلوب میں جدید ذہن کے شکوک کا مداوا۔',
+    methodology: 'دعوتی، فکری، سماجی اور سیاسی بصیرت، شانِ نزول اور تاریخی پس منظر۔'
+  },
+  {
+    id: 'asaanQuran',
+    nameUr: 'آسان قرآن (توضیح القرآن)',
+    nameAr: 'توضيح القرآن (مفتی تقی عثمانی)',
+    author: 'شیخ الاسلام جسٹس مفتی محمد تقی عثمانی دامت برکاتہم',
+    era: 'دورِ حاضر',
+    description: 'انتہائی سلیس اور آسان فہم اردو ترجمہ و حواشی، جو قاری کو پیچیدہ اصطلاحات میں الجھائے بغیر براہِ راست قرآن کے پیغام سے جوڑتے ہیں۔',
+    methodology: 'آسان زبان، مختصر مگر جامع حواشی، معتدل مسلک اور عام فہم اسلوب۔'
+  },
+  {
+    id: 'bayanulQuran',
+    nameUr: 'بیان القرآن',
+    nameAr: 'بيان القرآن (مولانا اشرف علی تھانوی / ڈاکٹر اسرار احمد)',
+    author: 'حکیم الامت مولانا اشرف علی تھانویؒ و دروس ڈاکٹر اسرار احمدؒ',
+    era: 'علمی و فکری روایت',
+    description: 'علماء اور طلبہ کے لیے نحوی، صیغہ جاتی اور عمیق علمی مباحث، اور فہم قرآن کے انقلابی و آفاقی دروس کا مرقع۔',
+    methodology: 'نحوی و بلاغی تجزیہ، ربط آیات، اور قرآنی نظام خلافت کی روشنی۔'
+  }
+];
+
+export const TRANSLATIONS_CATALOG: TranslationMeta[] = [
+  {
+    id: 'jalandhri',
+    name: 'مولانا فتح محمد جالندھری',
+    scholar: 'مولانا فتح محمد جالندھریؒ',
+    badge: 'سب سے مقبول سلیس اردو',
+    description: 'برصغیر پاک و ہند میں پڑھا جانے والا سب سے مستند اور سلیس ترین روایتی اردو ترجمہ۔'
+  },
+  {
+    id: 'taqi',
+    name: 'مفتی محمد تقی عثمانی',
+    scholar: 'شیخ الاسلام مفتی محمد تقی عثمانی',
+    badge: 'معاصر و آسان فہم',
+    description: 'عصر حاضر کی شستہ اردو زبان میں کیا گیا مستند، عام فہم اور دلنشین ترجمہ۔'
+  },
+  {
+    id: 'junagarhi',
+    name: 'مولانا محمد جوناگڑھی',
+    scholar: 'مولانا محمد جوناگڑھیؒ',
+    badge: 'سلفی منہج و احادیث',
+    description: 'سعودی عرب مجمع ملک فہد کی طرف سے شائع شدہ مستند سلفی منہج کا ترجمہ۔'
+  },
+  {
+    id: 'ahmedRaza',
+    name: 'کنز الایمان (امام احمد رضا)',
+    scholar: 'امام احمد رضا خان قادری بریلویؒ',
+    badge: 'عقیدت و ادب نبوت',
+    description: 'شان الوہیت اور تعظیم رسالت مآب ﷺ کے لطیف ترین پہلوؤں پر مشتمل ترجمہ۔'
+  },
+  {
+    id: 'saheehEn',
+    name: 'Saheeh International (English)',
+    scholar: 'Saheeh International Translation Team',
+    badge: 'Authentic English',
+    description: 'Clear, contemporary, and strictly authentic English rendering of the Holy Quran.'
+  }
+];
+
+export const SAMPLE_AYAH_TAFSIR_LIBRARY: AyahTafsirDetail[] = [
+  {
+    surahNumber: 1,
+    surahNameUr: 'سورۃ الفاتحہ',
+    surahNameAr: 'سورة الفاتحة',
+    ayahNumber: 1,
+    arabicText: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
+    topic: 'ایمان و توحید',
+    audioUrl: 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3',
+    translations: {
+      jalandhri: 'شروع اللہ کا نام لے کر جو بڑا مہربان نہایت رحم والا ہے۔',
+      taqi: 'اللہ کے نام سے شروع جو نہایت مہربان، ہمیشہ رحم فرمانے والا ہے۔',
+      junagarhi: 'شروع کرتا ہوں اللہ تعالیٰ کے نام سے جو بڑا مہربان نہایت رحم والا ہے۔',
+      ahmedRaza: 'اللہ کے نام سے شروع جو بہت مہربان رحمت والا۔',
+      saheehEn: 'In the name of Allah, the Entirely Merciful, the Especially Merciful.'
+    },
+    tafaseer: {
+      ibnKathir: 'تسمیہ (بسم اللہ) ہر اچھے کام کے آغاز میں پڑھنا مسنون ہے۔ صحابہ کرام نے مصحف عثمانی کا آغاز اسی سے کیا۔ جمہور فقہاء کے نزدیک یہ سورۃ الفاتحہ کی مستقل آیت ہے۔ اس میں اللہ تعالیٰ کے مبارک ذاتی نام کے ساتھ اس کی دو عظیم صفات الرحمٰن اور الرحیم کا ذکر ہے جو رحمت عامہ اور رحمت خاصہ پر دلالت کرتی ہیں۔',
+      maarifulQuran: 'قرآن کریم کے آغاز میں تسمیہ رکھ کر انسانیت کو یہ الہامی سبق دیا گیا کہ انسان کا ہر قول اور فعل اپنے پروردگار کے نام اور اس کے حکم کے تابع ہونا چاہیے۔ 'اللہ' اسم ذات ہے جس کا کوئی متبادل نہیں۔ 'الرحمٰن' جوش رحمت اور 'الرحیم' دوام رحمت کو ظاہر کرتا ہے۔ بندہ جب اللہ کے نام سے آغاز کرتا ہے تو شیطانی دخل سے محفوظ رہتا ہے۔',
+      tafheemulQuran: 'اس آیت کا مقصود انسان کے ذہن میں یہ بنیادی حقیقت جاگزیں کرنا ہے کہ کائنات کی ہر حرکت اللہ کے اذن اور مشیت سے وابستہ ہے۔ جو کام اللہ کے نام کے بغیر کیا جائے وہ ابتر اور خیر و برکت سے محروم رہتا ہے۔ یہ شعور انسان کے اندر عاجزی اور بندگی کی مستقل کیفیت پیدا کرتا ہے۔',
+      asaanQuran: 'اللہ کے نام کے ساتھ کسی عمل کا آغاز کرنے کا مطلب یہ ہے کہ بندہ اپنے عجز کا اعتراف کرتا ہے اور اللہ تعالیٰ کی توفیق اور نصرت کا طالب ہوتا ہے۔ الرحمٰن اور الرحیم کے ذریعے اللہ کی لامحدود رحمت کا احساس دلایا گیا ہے تاکہ بندہ امید اور محبت کے ساتھ رجوع کرے۔',
+      bayanulQuran: 'تسمیہ کے اسرار میں سے ہے کہ 'ب' استعانت اور ملابست کے لیے ہے۔ یعنی میں یہ کام اللہ تعالیٰ کی مدد، توفیق اور اس کے مبارک نام کی برکت سے متلبس ہو کر کر رہا ہوں۔ یہ بندے کو اپنی خودی نفی کر کے توحید خالص میں غرق کرنے کا نام ہے۔'
+    }
+  },
+  {
+    surahNumber: 1,
+    surahNameUr: 'سورۃ الفاتحہ',
+    surahNameAr: 'سورة الفاتحة',
+    ayahNumber: 2,
+    arabicText: 'الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ',
+    topic: 'حمد و شکر الٰہی',
+    audioUrl: 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/2.mp3',
+    translations: {
+      jalandhri: 'سب تعریفیں اللہ ہی کے لیے ہیں جو تمام جہانوں کا پالنے والا ہے۔',
+      taqi: 'تمام تعریفیں اللہ ہی کے لیے سزاوار ہیں جو تمام جہانوں کا پروردگار ہے۔',
+      junagarhi: 'سب تعریف اللہ تعالیٰ ہی کے لیے ہے جو تمام جہانوں کا پالنے والا ہے۔',
+      ahmedRaza: 'سب خوبیاں اللہ کو جو مالک سارے جہان والوں کا۔',
+      saheehEn: '[All] praise is [due] to Allah, Lord of the worlds.'
+    },
+    tafaseer: {
+      ibnKathir: 'الْحَمْدُ میں الف لام استغراق کا ہے، یعنی ہر قسم کی مدح و ثنا صرف اللہ کے لیے مخصوص ہے۔ شکر خاص نعمت کے بدلے ہوتا ہے جبکہ حمد نعمت اور ذاتی کمالات دونوں پر کی جاتی ہے۔ 'رب' کے معنی مالک، سید اور مصلح کے ہیں، اور 'العالمین' سے مراد انسان، جنات، فرشتے اور تمام مخلوقات کے عوالم ہیں۔',
+      maarifulQuran: 'حمد کے مفہوم میں محبت، تعظیم اور شکر کا عمیق امتزاج ہے۔ کائنات میں جہاں کہیں بھی کوئی حسن، کمال یا خوبی نظر آئے وہ دراصل خالق کائنات کا عکس ہے۔ اس لیے تمام تعریفوں کا حقیقی مرکز و محور صرف اللہ عزوجل ہے۔ ربوبیت کا تقاضا ہے کہ وہ ہر مخلوق کی تدریجی پرورش اور ضروریات کی کفالت فرماتا ہے۔',
+      tafheemulQuran: 'اس آیت سے واضح ہوتا ہے کہ کائنات کا تعلق کسی اندھیری قوت یا خودکار حادثے سے نہیں بلکہ ایک رحیم و شفیق پروردگار کے علم و تدبیر کے تحت چل رہا ہے۔ انسان کو چاہیے کہ وہ اپنی تعریفوں اور وفاداریوں کا رخ اپنے رب کی طرف موڑ دے۔',
+      asaanQuran: 'سب تعریفیں اللہ کے لیے اس لیے ہیں کہ انسان کو جو کچھ ملا ہے وہ اللہ کے فضل و کرم سے ملا ہے۔ رب العالمین کا تصور انسان کو عالمگیر نقطہ نظر عطا کرتا ہے کہ اللہ صرف کسی ایک قوم یا خطے کا نہیں بلکہ تمام کائنات کا پروردگار ہے۔',
+      bayanulQuran: 'الحمد للہ دعا کا بہترین صیغہ ہے۔ حدیث میں آتا ہے کہ سب سے افضل دعا الحمد للہ ہے کیونکہ اس میں بندہ اپنے معبود کی کبریائی اور احسانات کا شکر ادا کر کے اس کی رضا حاصل کرتا ہے۔'
+    }
+  },
+  {
+    surahNumber: 2,
+    surahNameUr: 'سورۃ البقرہ (آیت الکرسی)',
+    surahNameAr: 'سورة البقرة',
+    ayahNumber: 255,
+    arabicText: 'اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَن ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ',
+    topic: 'عظمت الٰہی و آیت الکرسی',
+    audioUrl: 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/262.mp3',
+    translations: {
+      jalandhri: 'اللہ (وہ معبود برحق ہے کہ) اس کے سوا کوئی عبادت کے لائق نہیں، وہ زندہ ہے سب کا تھامنے والا، نہ اس کو اونگھ آتی ہے نہ نیند۔ جو کچھ آسمانوں میں اور جو کچھ زمین میں ہے سب اسی کا ہے۔ کون ہے جو اس کی اجازت کے بغیر اس کے پاس کسی کی سفارش کر سکے؟ وہ جانتا ہے جو کچھ ان کے آگے ہے اور جو کچھ ان کے پیچھے ہے۔ اور وہ اس کی معلومات میں سے کسی چیز کا احاطہ نہیں کر سکتے مگر جتنا وہ چاہے۔ اس کی کرسی آسمانوں اور زمین پر چھائی ہوئی ہے، اور ان دونوں کی حفاظت اس پر گراں نہیں گزرتی، اور وہ عالی رتبہ اور بزرگ ہے۔',
+      taqi: 'اللہ وہ ہے جس کے سوا کوئی معبود نہیں، وہ ہمیشہ زندہ رہنے والا، تمام کائنات کو سنبھالنے والا ہے۔ نہ اسے اونگھ پکڑتی ہے نہ نیند۔ اسی کا ہے جو کچھ آسمانوں میں ہے اور جو کچھ زمین میں۔ کون ہے جو اس کے پاس اس کی اجازت کے بغیر سفارش کر سکے؟ وہ ان تمام باتوں کو جانتا ہے جو مخلوق کے سامنے ہیں اور جو ان کے پیچھے ہیں۔ اور وہ اس کے علم میں سے کسی چیز کا احاطہ نہیں کر سکتے مگر جتنا وہ چاہے۔ اس کی کرسی آسمانوں اور زمین کو اپنے گھیرے میں لیے ہوئے ہے اور ان دونوں کی نگہبانی اس پر بوجھ نہیں بنتی، اور وہ عالی قدر، سب سے بڑا ہے۔',
+      junagarhi: 'اللہ تعالیٰ ہی معبود برحق ہے جس کے سوا کوئی معبود نہیں جو زندہ اور سب کا تھامنے والا ہے، جسے نہ اونگھ آئے نہ نیند، اس کی ملکیت میں زمین اور آسمانوں کی تمام چیزیں ہیں۔ کون ہے جو اس کی اجازت کے بغیر اس کے سامنے شفاعت کر سکے، وہ جانتا ہے جو ان کے آگے ہے اور جو ان کے پیچھے ہے اور وہ اس کے علم میں سے کسی چیز کا احاطہ نہیں کر سکتے مگر جتنا وہ چاہے، اس کی کرسی کی وسعت نے زمین و آسمان کو گھیر رکھا ہے اور اللہ تعالیٰ ان کی حفاظت سے نہ تھکتا ہے نہ اکتاتا ہے، وہ تو بہت بلند اور بہت بڑا ہے۔',
+      ahmedRaza: 'اللہ ہے جس کے سوا کسی کی بندگی نہیں آپ زندہ اوروں کا قائم رکھنے والا اسے نہ اونگھ آئے نہ نیند اسی کا ہے جو کچھ آسمانوں میں ہے اور جو کچھ زمین میں وہ کون ہے جو اس کے یہاں سفارش کرے بے اس کے حکم کے جانتا ہے جو کچھ ان کے آگے ہے اور جو کچھ ان کے پیچھے اور وہ نہیں پاتے اس کے علم میں سے مگر جتنا وہ چاہے اس کی کرسی میں سمائے ہوئے ہیں آسمان اور زمین اور اسے بھاری نہیں ان کی نگہبانی اور وہی ہے بلند بڑائی والا۔',
+      saheehEn: 'Allah - there is no deity except Him, the Ever-Living, the Sustainer of [all] existence. Neither drowsiness overtakes Him nor sleep. To Him belongs whatever is in the heavens and whatever is on the earth. Who is it that can intercede with Him except by His permission? He knows what is [presently] before them and what will be after them, and they encompass not a thing of His knowledge except for what He wills. His Kursi extends over the heavens and the earth, and their preservation tires Him not. And He is the Most High, the Most Great.'
+    },
+    tafaseer: {
+      ibnKathir: 'آیت الکرسی قرآن حکیم کی سب سے عظیم ترین آیت ہے۔ صحیح مسلم میں حضرت ابی بن کعب رضی اللہ عنہ سے مروی ہے کہ نبی کریم ﷺ نے ان سے پوچھا: کتاب اللہ کی کون سی آیت سب سے بڑی ہے؟ انہوں نے عرض کیا: آیت الکرسی، تو آپ ﷺ نے ان کے سینے پر ہاتھ مار کر فرمایا: ابو المنذر! تمہیں یہ علم مبارک ہو۔ اس مبارک آیت میں اللہ کے دس بنیادی اوصاف و کمالات کا ذکر ہے جو اس کی بے مثال وحدانیت اور مطلق بادشاہی کو ثابت کرتے ہیں۔',
+      maarifulQuran: 'اس عظیم الشان آیت کے مطالعہ سے انسان کے باطن میں توحید کا نور جگمگا اٹھتا ہے۔ جب یہ معلوم ہوتا ہے کہ کائنات کی عظیم الشان کہکشائیں اللہ کے عرش و کرسی کے مقابلے میں ایک چھوٹے سے حلقے کی مانند ہیں، اور اس عظیم کائنات کو سنبھالنے میں اللہ کو ذرہ برابر بھی تھکن نہیں ہوتی، تو انسان کے دل سے ہر قسم کے غیر اللہ کا خوف و لالچ ہمیشہ کے لیے رخصت ہو جاتا ہے۔',
+      tafheemulQuran: 'آیت الکرسی شرک کے تمام بتوں کو پاش پاش کرتی ہے۔ مشرکین کے وہ تمام باطل نظریات کہ کوئی دیوی دیوتا خدا کی بارگاہ میں زبردستی اپنی بات منوا سکتا ہے، اس جملے 'مَن ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ' سے باطل ہو جاتے ہیں۔ علم و قدرت کا حقیقی سرچشمہ صرف ایک ذات اقدس ہے۔',
+      asaanQuran: 'حدیث میں آتا ہے کہ جو شخص ہر فرض نماز کے بعد آیت الکرسی کی تلاوت کرے گا، اس کے اور جنت کے درمیان موت کے سوا کوئی رکاوٹ نہیں ہوگی۔ یہ آیت انسان کو حفاظت، روحانی سکون اور شیطانی وسوسوں سے امان فراہم کرتی ہے۔',
+      bayanulQuran: 'الحی اور القیوم کو اسم اعظم کہا گیا ہے۔ الحی وہ ہے جس کی حیات کامل، لازوال اور ازلی و ابدی ہو۔ القیوم وہ ہے جو بذات خود قائم ہے اور باقی تمام مخلوقات کا وجود اس کے سہارے اور تدبیر سے وابستہ ہے۔'
+    }
+  },
+  {
+    surahNumber: 112,
+    surahNameUr: 'سورۃ الاخلاص',
+    surahNameAr: 'سورة الإخلاص',
+    ayahNumber: 1,
+    arabicText: 'قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ',
+    topic: 'توحید خالص و صفات الٰہی',
+    audioUrl: 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/6221.mp3',
+    translations: {
+      jalandhri: 'کہو کہ وہ (ذات پاک جس کا نام) اللہ (ہے) ایک ہے۔ معبود برحق جو بےنیاز ہے۔ نہ کسی کا باپ ہے اور نہ کسی کا بیٹا۔ اور کوئی اس کا ہمسر نہیں۔',
+      taqi: 'کہہ دو: بات یہ ہے کہ اللہ ایک ہے۔ اللہ ہی ہے جس پر سب کا انحصار ہے۔ نہ اس نے کسی کو جنم دیا، اور نہ وہ کسی سے پیدا ہوا۔ اور کوئی اس کا ہمسر نہیں۔',
+      junagarhi: 'آپ کہہ دیجئے کہ وہ اللہ تعالیٰ ایک (ہی) ہے۔ اللہ تعالیٰ بے نیاز ہے۔ نہ اس سے کوئی پیدا ہوا نہ وہ کسی سے پیدا ہوا۔ اور نہ کوئی اس کا ہمسر ہے۔',
+      ahmedRaza: 'تم فرماؤ وہ اللہ ہے وہ ایک ہے، اللہ بے نیاز ہے، نہ اس کی کوئی اولاد اور نہ وہ کسی سے پیدا ہوا، اور نہ کوئی اس کے برابر کا۔',
+      saheehEn: 'Say, He is Allah, [who is] One, Allah, the Eternal Refuge. He neither begets nor is born, Nor is there to Him any equivalent.'
+    },
+    tafaseer: {
+      ibnKathir: 'سورۃ الاخلاص ثلث قرآن (قرآن کا ایک تہائی حصہ) کے برابر ہے، کیونکہ قرآن کریم میں تین مضامین بیان ہوئے ہیں: عقائد و توحید، احکام و شریعت، اور قصص و عبرت۔ یہ سورت خالصتاً توحید اور اللہ کی صفات کے بیان پر مشتمل ہے۔ احد کا معنی ہے کہ وہ اپنی ذات و صفات میں یکتا ہے، اس کا کوئی شریک نہیں۔ الصمد کے معنی ہیں وہ سردار جس کی طرف تمام مخلوقات اپنی ضروریات میں رجوع کرتی ہیں اور وہ خود سب سے بے نیاز ہے۔',
+      maarifulQuran: 'مشرکین مکہ اور اہل کتاب نے نبی کریم ﷺ سے سوال کیا تھا کہ اپنے رب کا نسب بیان کیجیے، اس پر یہ سورت نازل ہوئی۔ اس سورت نے یہود و نصاریٰ کے عقیدہ ابنیت اور مشرکین کے فرشتوں کو اللہ کی بیٹیاں قرار دینے کے باطل عقائد کا قطعی رد کیا۔ اللہ جسم اور اعضاء و توالد و تناسل کی تمام جسمانی کیفیات سے پاک و منزہ ہے۔',
+      tafheemulQuran: 'یہ سورت شرک کے ہر باریک اور موٹے تصور کو جڑ سے اکھاڑ پھینکتی ہے۔ خدا نہ کسی کا باپ ہے اور نہ کسی کا بیٹا، اس لیے کہ باپ اور بیٹا ہونے کا مطلب یہ ہے کہ وہ ایک نوع کا حصہ ہو، جبکہ اللہ نوع اور جنس سے پاک اور بے مثل و بے ہمتا ہے۔',
+      asaanQuran: 'روزانہ صبح و شام اور نمازوں کے بعد اس سورت اور معوذتین کی تلاوت مسنون ہے۔ یہ انسان کو ہر قسم کے باطل وسوسوں، نظر بد اور شرک کے زہر سے محفوظ رکھتی ہے۔',
+      bayanulQuran: 'اخلاص اس سورت کا نام اس لیے رکھا گیا کہ جو شخص اس پر دل سے ایمان لاتا ہے وہ شرک کی آمیزش سے خالص ہو کر اللہ کا مخلص بندہ بن جاتا ہے۔'
+    }
+  }
+];
+
+export const HADITH_ENCYCLOPEDIA: HadithRecord[] = [
+  {
+    id: 'hadith-1',
+    hadithNo: 1,
+    bookId: 'bukhari',
+    bookNameUr: 'صحیح البخاری',
+    bookNameAr: 'صحيح البخاري',
+    chapterUr: 'کتاب بدء الوحی - باب کید الوحی و النیۃ',
+    chapterAr: 'كتاب بدء الوحي',
+    narratorUr: 'امیر المؤمنین حضرت عمر بن الخطاب رضی اللہ عنہ',
+    narratorAr: 'عن أمير المؤمنين عمر بن الخطاب رضي الله عنه',
+    matnAr: 'إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ، وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى، فَمَنْ كَانَتْ هِجْرَتُهُ إِلَى دُنْيَا يُصِيبُهَا أَوْ إِلَى امْرَأَةٍ يَنْكِحُهَا، فَهِجْرَتُهُ إِلَى مَا هَاجَرَ إِلَيْهِ.',
+    translationUr: 'اعمال کا دارومدار صرف نیتوں پر ہے اور ہر شخص کے لیے وہی کچھ ہے جس کی اس نے نیت کی۔ پس جس کی ہجرت دنیا حاصل کرنے کے لیے ہو یا کسی عورت سے نکاح کرنے کے لیے ہو، تو اس کی ہجرت اسی مقصد کے لیے شمار ہوگی جس کے لیے اس نے ہجرت کی۔',
+    translationEn: 'The reward of deeds depends upon the intentions and every person will get the reward according to what he has intended.',
+    takhreej: 'صحیح البخاری: 1، صحیح مسلم: 1907، سنن ابی داؤد: 2201، جامع الترمذی: 1647',
+    grade: 'صحیح (متفق علیہ)',
+    sharh: 'یہ مبارک حدیث اسلام کے بنیادی ترین قواعد میں سے ہے، جسے امام شافعی، امام احمد اور امام ابو داؤدؒ نے اسلام کا ایک تہائی قرار دیا ہے۔ امام بخاریؒ نے اپنی کتاب کا آغاز اسی سے کیا تاکہ ہر طالب علم اپنی نیت کو خالص کرے۔',
+    benefits: [
+      'نیت ہی عادت کو عبادت میں بدلتی ہے۔',
+      'ریاکاری سے عمل ضائع ہو جاتا ہے۔',
+      'خلوص نیت کے بغیر کوئی عمل قبول نہیں۔'
+    ],
+    topic: 'ایمان و عقیدہ'
+  },
+  {
+    id: 'hadith-2',
+    hadithNo: 5027,
+    bookId: 'bukhari',
+    bookNameUr: 'صحیح البخاری',
+    bookNameAr: 'صحيح البخاري',
+    chapterUr: 'کتاب فضائل القرآن - باب خیرکم من تعلم القرآن وعلمہ',
+    chapterAr: 'كتاب فضائل القرآن',
+    narratorUr: 'حضرت عثمان بن عفان رضی اللہ عنہ',
+    narratorAr: 'عن عثمان بن عفان رضي الله عنه',
+    matnAr: 'خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ.',
+    translationUr: 'تم میں سے سب سے بہترین شخص وہ ہے جو قرآن سیکھے اور دوسروں کو سکھائے۔',
+    translationEn: 'The best among you (Muslims) are those who learn the Quran and teach it.',
+    takhreej: 'صحیح البخاری: 5027، جامع الترمذی: 2907، سنن ابی داؤد: 1452',
+    grade: 'صحیح (متفق علیہ)',
+    sharh: 'یہ حدیث فاروقی آن لائن قرآن اکیڈمی کے قیام کا بنیادی محرک ہے۔ تمام کلاموں پر اللہ کے کلام کو برتری حاصل ہے، اسی طرح تمام معلمین میں معلم قرآن کو بلند درجہ حاصل ہے۔',
+    benefits: [
+      'قرآن مجید کی درست تجوید و فہم سیکھنا افضل ترین نیکی ہے۔',
+      'معلم قرآن کا رتبہ عند اللہ بلند ترین ہے۔',
+      'تعلیم اور تدریس کا باہم ربط خیریت کا ضامن ہے۔'
+    ],
+    topic: 'فضائل قرآن و علم'
+  },
+  {
+    id: 'hadith-3',
+    hadithNo: 6407,
+    bookId: 'bukhari',
+    bookNameUr: 'صحیح البخاری',
+    bookNameAr: 'صحيح البخاري',
+    chapterUr: 'کتاب الرقاق - باب فضل التسبیح و الذکر',
+    chapterAr: 'كتاب الرقاق',
+    narratorUr: 'حضرت ابو ہریرہ رضی اللہ عنہ',
+    narratorAr: 'عن أبي هريرة رضي الله عنه',
+    matnAr: 'كَلِمَتَانِ حَبِيبَتَانِ إِلَى الرَّحْمَنِ، خَفِيفَتَانِ عَلَى اللِّسَانِ، ثَقِيلَتَانِ فِي الْمِيزَانِ: سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، سُبْحَانَ اللَّهِ الْعَظِيمِ.',
+    translationUr: 'دو کلمے ایسے ہیں جو رحمن کو بہت پیارے ہیں، زبان پر بہت ہلکے ہیں، اور میزانِ عمل میں بہت بھاری ہیں: سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، سُبْحَانَ اللَّهِ الْعَظِيمِ۔',
+    translationEn: 'Two words are light on the tongue, heavy in the balance, and beloved to the Most Merciful: Subhan Allahi wa bihamdihi, Subhan Allahil Azeem.',
+    takhreej: 'صحیح البخاری: 6407، 7563، صحیح مسلم: 2694',
+    grade: 'صحیح (متفق علیہ)',
+    sharh: 'امام بخاریؒ نے صحیح البخاری کو اسی عظیم الشان حدیث پر ختم فرمایا تاکہ مومن کی زندگی کا اختتام بھی ذکر الٰہی اور حمد و تسبیح پر ہو۔',
+    benefits: [
+      'ذکر الٰہی گناہوں کو مٹاتا ہے اور میزان کو وزنی بناتا ہے۔',
+      'مختصر الفاظ میں اتھاہ نیکیوں کا خزانہ۔',
+      'زبان کو مستقل ذکر کا عادی بنانا چاہیے۔'
+    ],
+    topic: 'ذکر و دعائیں'
+  },
+  {
+    id: 'hadith-4',
+    hadithNo: 1956,
+    bookId: 'tirmidhi',
+    bookNameUr: 'جامع الترمذی',
+    bookNameAr: 'جامع الترمذي',
+    chapterUr: 'کتاب البر والصلۃ - باب صنائع المعروف',
+    chapterAr: 'كتاب البر والصلة',
+    narratorUr: 'حضرت ابو ذر غفاری رضی اللہ عنہ',
+    narratorAr: 'عن أبي ذر رضي الله عنه',
+    matnAr: 'تَبَسُّمُكَ فِي وَجْهِ أَخِيكَ لَكَ صَدَقَةٌ، وَأَمْرُكَ بِالْمَعْرُوفِ وَنَهْيُكَ عَنِ الْمُنْكَرِ لَكَ صَدَقَةٌ، وَإِمَاطَتُكَ الْحَجَرَ وَالشَّوْكَةَ وَالْعَظْمَ عَنِ الطَّرِيقِ لَكَ صَدَقَةٌ.',
+    translationUr: 'اپنے بھائی کے سامنے مسکرانا تمہارے لیے صدقہ ہے، بھلائی کا حکم دینا اور برائی سے روکنا صدقہ ہے، اور راستے سے تکلیف دہ چیز ہٹانا صدقہ ہے۔',
+    translationEn: 'Your smiling in the face of your brother is charity for you.',
+    takhreej: 'جامع الترمذی: 1956، ابن حبان: 474',
+    grade: 'صحیح',
+    sharh: 'اسلام نے خدمت خلق اور صدقے کو صرف پیسے خرچ کرنے تک محدود نہیں رکھا بلکہ ہر مثبت اور خیر کا کام صدقہ جاریہ ہے۔',
+    benefits: [
+      'مسکراہٹ اور حسنِ اخلاق بغیر خرچ کا صدقہ ہے۔',
+      'راستوں کی صفائی اور رکاوٹیں ہٹانا ایمان کا حصہ ہے۔',
+      'معاشرتی نفع رسانی اللہ کے قرب کا ذریعہ ہے۔'
+    ],
+    topic: 'خدمت خلق و صدقات'
+  }
+];
+
+export const HARAMAIN_LIVE_STREAMS: LiveStreamInfo[] = [
+  {
+    id: 'makkah-live',
+    titleUr: 'بث مباشر: مکہ مکرمہ لائیو - المسجد الحرام',
+    titleEn: 'Makkah Live 24/7 - Masjid Al-Haram HD',
+    locationUr: 'مکہ مکرمہ، سعودی عرب',
+    locationEn: 'Makkah Al-Mukarramah, KSA',
+    youtubeId: 'live_makkah_official',
+    streamUrl: 'https://www.youtube-nocookie.com/embed/live_stream?channel=UC8h_bA1n0vJ3K8m9N0s0w1A',
+    descriptionUr: 'سعودی قرآن ٹی وی کی طرف سے کعبۃ اللہ شریف کا 24 گھنٹے براہ راست نشر ہونے والا باضابطہ ایچ ڈی منظر مع اذان و طواف۔',
+    officialSource: 'Saudi Quran TV / رئاسة شؤون الحرمين'
+  },
+  {
+    id: 'madinah-live',
+    titleUr: 'بث مباشر: مدینہ منورہ لائیو - المسجد النبوی الشریف',
+    titleEn: 'Madinah Live 24/7 - Masjid An-Nabawi HD',
+    locationUr: 'مدینہ منورہ، سعودی عرب',
+    locationEn: 'Al-Madinah Al-Munawwarah, KSA',
+    youtubeId: 'live_madinah_official',
+    streamUrl: 'https://www.youtube-nocookie.com/embed/live_stream?channel=UC4_rK2g_uL8d8W6q8x9y0zA',
+    descriptionUr: 'سعودی سنہ ٹی وی کی طرف سے روضہ رسول ﷺ اور مسجد نبوی شریف کا 24 گھنٹے براہ راست دلکش منظر۔',
+    officialSource: 'Saudi Sunnah TV / رئاسة شؤون الحرمين'
+  }
+];
+
+export const DAILY_AZKAR_DATA: MasnoonZikr[] = [
+  {
+    id: 'morning-1',
+    titleUr: 'سید الاستغفار (بخشش کی سب سے عظیم دعا)',
+    category: 'morning',
+    categoryUr: 'صبح کے مسنون اذکار',
+    arabicText: 'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عهدك وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ.',
+    translationUr: 'اے اللہ! تو میرا رب ہے، تیرے سوا کوئی معبود نہیں، تو نے مجھے پیدا کیا اور میں تیرا بندہ ہوں، اور میں اپنی طاقت کے مطابق تیرے عہد پر قائم ہوں...',
+    virtueUr: 'یقین کے ساتھ صبح یا شام پڑھنے والا فوت ہو جائے تو جنتی ہے۔',
+    targetCount: 1,
+    takhreej: 'صحیح البخاری: 6306'
+  },
+  {
+    id: 'morning-2',
+    titleUr: 'ہر آفت، جادو اور ناگہانی مصیبت سے حفاظت',
+    category: 'morning',
+    categoryUr: 'صبح و شام کے اذکار',
+    arabicText: 'بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ.',
+    translationUr: 'اللہ کے نام کے ساتھ جس کے نام کی برکت سے زمین اور آسمان میں کوئی چیز نقصان نہیں پہنچا سکتی اور وہ خوب سننے والا، خوب جاننے والا ہے۔',
+    virtueUr: 'صبح اور شام تین مرتبہ پڑھنے والے کو کوئی ناگہانی مصیبت نقصان نہیں پہنچا سکتی۔',
+    targetCount: 3,
+    takhreej: 'سنن ابی داؤد: 5088، جامع الترمذی: 3388'
+  },
+  {
+    id: 'after-salah-1',
+    titleUr: 'تسبیحات فاطمی بعد نماز پنجگانہ',
+    category: 'after_salah',
+    categoryUr: 'نماز کے بعد کے مسنون اذکار',
+    arabicText: 'سُبْحَانَ اللَّهِ (33) ۝ الْحَمْدُ لِلَّهِ (33) ۝ اللَّهُ أَكْبَرُ (33)',
+    translationUr: 'اللہ پاک ہے (33 بار)، تمام تعریف اللہ کے لیے ہے (33 بار)، اللہ سب سے بڑا ہے (33 بار)',
+    virtueUr: 'ہر فرض نماز کے بعد یہ تسبیح پڑھنے والے کے گناہ معاف کر دیے جاتے ہیں۔',
+    targetCount: 33,
+    takhreej: 'صحیح مسلم: 597'
+  }
+];
+
+export const ISLAMIC_LIBRARY_CATEGORIES = [
+  { id: 'all', titleUr: 'تمام ابواب', titleEn: 'All Categories', count: '100+ کتب و مضامین' },
+  { id: 'tafsir', titleUr: 'قرآن و تفاسیر', titleEn: 'Quran & Exegesis', count: '5 جامع تفاسیر مع تراجم' },
+  { id: 'hadith', titleUr: 'احادیث و تخریج', titleEn: 'Hadith & Takhreej', count: 'صحاح ستہ مع شرح' },
+  { id: 'azkar', titleUr: 'اذکار و مسنون دعائیں', titleEn: 'Daily Azkar & Duas', count: 'صبح و شام کے حصن حصین' },
+  { id: 'haramain', titleUr: 'حرمین لائیو', titleEn: 'Haramain 24/7 Live', count: 'مکہ و مدینہ ایچ ڈی سٹریمنگ' }
+];
